@@ -1,0 +1,397 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <!--
+            <button class="navbar-toggler editToggle" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent">
+                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+            </button>
+-->
+        <!--
+             <div class="collaplsLeft collapse" id="navbarToggleExternalContent">
+             </div>
+-->
+<button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <ul class="leftPanel">
+          <!--<li><a href="#"><span><img src="./assets/images/editprofile.png" alt=""></span>Account</a></li>-->
+          <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+            alt=""></span>Change Password</a></li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                >Change Language</a
+              >
+            </li>
+          <li><a routerLink="/document-list"><span><i class="far fa-file-invoice"></i></span>Documents</a></li>
+          <li>
+            <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>Services</a>
+          </li>
+          <li>
+            <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+          </li>
+          <li>
+            <a routerLink="/sp-query-booking-list"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/sp-earning-list"
+              ><span><img src="./assets/images/earning-money.png" alt="earning" /></span
+              >Earnings</a
+            >
+          </li>
+          <li>
+            <a routerLink="/working-hours" class="active"><span><i class="far fa-business-time"></i></span>Working
+              Hours</a>
+          </li>
+          <li><a routerLink="/working-area-list"><span><i class="far fa-place-of-worship"></i></span>Working Area</a>
+          </li>
+          <li><a routerLink="/sp-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a (click)="readNotification()" routerLink="/notification"><span><img src="./assets/images/notification.png"
+                  alt=""></span>Notifications
+                  <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                </a>
+              </li>
+        </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">Working Hours</h3>
+
+          <form (ngSubmit)="addWorkHour()">
+            <div style="font-weight: 500;color: limegreen;font-size: 20px">{{ onoffMessage }}</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="serviceToggle">Emergency Service <button type="button" (click)="emergencyService($event)" *ngIf="workingHourData?.emergency_service_status"
+                    class="btn btn-xs btn-secondary btn-toggle active" data-toggle="button" aria-pressed="true"
+                    autocomplete="off">
+                    <div class="handle"></div>
+                  </button>
+                  <button type="button" (click)="emergencyService($event)" *ngIf="!workingHourData?.emergency_service_status"
+                    class="btn btn-xs btn-secondary btn-toggle" data-toggle="button" aria-pressed="true"
+                    autocomplete="off"><div class="handle"></div>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="serviceToggle">Online <button type="button" (click)="onlineOffline($event)" *ngIf="onlineStatus"
+                    class="btn btn-xs btn-secondary btn-toggle active" data-toggle="button" aria-pressed="true"
+                    autocomplete="off">
+                    <div class="handle"></div>
+                  </button>
+                  <button type="button"  (click)="onlineOffline($event)" *ngIf="!onlineStatus"
+                  class="btn btn-xs btn-secondary btn-toggle" data-toggle="button" aria-pressed="true"
+                  autocomplete="off">
+                  <div class="handle"></div>
+                </button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="workingTimebg">
+                  <div class="radioInn hourDay">
+                    <div class="custom-control custom-checkbox rateListCheck">
+                      <input type="checkbox" class="custom-control-input" id="customCheck1" (change)="changeday($event, 'monday')" *ngIf="workingHourData?.monday" checked>
+                      <input type="checkbox" class="custom-control-input" id="customCheck1" (change)="changeday($event, 'monday')" *ngIf="!workingHourData?.monday">
+                      <label class="custom-control-label" for="customCheck1">Monday</label>
+                    </div>
+                  </div>
+                  <div class="formTobg">
+                    <div class="formCount">
+                      <p>From</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="monday_from_hour" *ngIf="workingHourData?.monday" value="{{mondayFromTime}}"/>
+                        <input type="time" class="inp" id="monday_from_hour" *ngIf="!workingHourData?.monday"/>
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span class="btnActv">AM</span>
+                          <span>PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="formCount">
+                      <p>To</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="monday_to_hour" *ngIf="workingHourData?.monday" value="{{mondayToTime}}"/>
+                        <input type="time" class="inp" id="monday_to_hour" *ngIf="!workingHourData?.monday"/>
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span>AM</span>
+                          <span class="btnActv">PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="workingTimebg">
+                  <div class="radioInn hourDay">
+                    <div class="custom-control custom-checkbox rateListCheck">
+                      <input type="checkbox" class="custom-control-input" id="customCheck2" (change)="changeday($event, 'tuesday')" *ngIf="workingHourData?.tuesday" checked>
+                      <input type="checkbox" class="custom-control-input" id="customCheck2" (change)="changeday($event, 'tuesday')" *ngIf="!workingHourData?.tuesday">
+                      <label class="custom-control-label" for="customCheck2">Tuesday</label>
+                    </div>
+                  </div>
+                  <div class="formTobg">
+                    <div class="formCount">
+                      <p>From</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="tuesday_from_hour" *ngIf="workingHourData?.tuesday" value="{{tuesdayFromTime}}" />
+                        <input type="time" class="inp" id="tuesday_from_hour" *ngIf="!workingHourData?.tuesday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span class="btnActv">AM</span>
+                          <span>PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="formCount">
+                      <p>To</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="tuesday_to_hour" *ngIf="workingHourData?.tuesday" value="{{tuesdayToTime}}" />
+                        <input type="time" class="inp" id="tuesday_to_hour" *ngIf="!workingHourData?.tuesday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span>AM</span>
+                          <span class="btnActv">PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="workingTimebg">
+                  <div class="radioInn hourDay">
+                    <div class="custom-control custom-checkbox rateListCheck">
+                      <input type="checkbox" class="custom-control-input" id="customCheck3" (change)="changeday($event, 'wednesday')" *ngIf="workingHourData?.wednesday" checked>
+                      <input type="checkbox" class="custom-control-input" id="customCheck3" (change)="changeday($event, 'wednesday')" *ngIf="!workingHourData?.wednesday">
+                      <label class="custom-control-label" for="customCheck3">Wednesday</label>
+                    </div>
+                  </div>
+                  <div class="formTobg">
+                    <div class="formCount">
+                      <p>From</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="wednesday_from_hour" *ngIf="workingHourData?.wednesday" value="{{wednesdayFromTime}}" />
+                        <input type="time" class="inp" id="wednesday_from_hour" *ngIf="!workingHourData?.wednesday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span class="btnActv">AM</span>
+                          <span>PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="formCount">
+                      <p>To</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="wednesday_to_hour" *ngIf="workingHourData?.wednesday" value="{{wednesdayToTime}}" />
+                        <input type="time" class="inp" id="wednesday_to_hour" *ngIf="!workingHourData?.wednesday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span>AM</span>
+                          <span class="btnActv">PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="workingTimebg">
+                  <div class="radioInn hourDay">
+                    <div class="custom-control custom-checkbox rateListCheck">
+                      <input type="checkbox" class="custom-control-input" id="customCheck4" (change)="changeday($event, 'thursday')" *ngIf="workingHourData?.thursday" checked>
+                      <input type="checkbox" class="custom-control-input" id="customCheck4" (change)="changeday($event, 'thursday')" *ngIf="!workingHourData?.thursday">
+                      <label class="custom-control-label" for="customCheck4">Thursday</label>
+                    </div>
+                  </div>
+                  <div class="formTobg">
+                    <div class="formCount">
+                      <p>From</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="thursday_from_hour" *ngIf="workingHourData?.thursday" value="{{thursdayFromTime}}" />
+                        <input type="time" class="inp" id="thursday_from_hour" *ngIf="!workingHourData?.thursday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span class="btnActv">AM</span>
+                          <span>PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="formCount">
+                      <p>To</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="thursday_to_hour" *ngIf="workingHourData?.thursday" value="{{thursdayToTime}}" />
+                        <input type="time" class="inp" id="thursday_to_hour" *ngIf="!workingHourData?.thursday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span>AM</span>
+                          <span class="btnActv">PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="workingTimebg">
+                  <div class="radioInn hourDay">
+                    <div class="custom-control custom-checkbox rateListCheck">
+                      <input type="checkbox" class="custom-control-input" id="customCheck5" (change)="changeday($event, 'friday')" *ngIf="workingHourData?.friday" checked>
+                      <input type="checkbox" class="custom-control-input" id="customCheck5" (change)="changeday($event, 'friday')"  *ngIf="!workingHourData?.friday">
+                      <label class="custom-control-label" for="customCheck5">Friday</label>
+                    </div>
+                  </div>
+                  <div class="formTobg">
+                    <div class="formCount">
+                      <p>From</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="friday_from_hour" *ngIf="workingHourData?.friday" value="{{fridayFromTime}}" />
+                        <input type="time" class="inp" id="friday_from_hour" *ngIf="!workingHourData?.friday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span class="btnActv">AM</span>
+                          <span>PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="formCount">
+                      <p>To</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="friday_to_hour" *ngIf="workingHourData?.friday" value="{{fridayToTime}}" />
+                        <input type="time" class="inp" id="friday_to_hour" *ngIf="!workingHourData?.friday" />
+
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span>AM</span>
+                          <span class="btnActv">PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="workingTimebg">
+                  <div class="radioInn hourDay">
+                    <div class="custom-control custom-checkbox rateListCheck">
+                      <input type="checkbox" class="custom-control-input" id="customCheck6" (change)="changeday($event, 'saturday')" *ngIf="workingHourData?.saturday" checked>
+                      <input type="checkbox" class="custom-control-input" id="customCheck6" (change)="changeday($event, 'saturday')" *ngIf="!workingHourData?.saturday">
+                      <label class="custom-control-label" for="customCheck6">Saturday</label>
+                    </div>
+                  </div>
+                  <div class="formTobg">
+                    <div class="formCount">
+                      <p>From</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="saturday_from_hour" *ngIf="workingHourData?.saturday" value="{{saturdayFromTime}}" />
+                        <input type="time" class="inp" id="saturday_from_hour" *ngIf="!workingHourData?.saturday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span class="btnActv">AM</span>
+                          <span>PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="formCount">
+                      <p>To</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="saturday_to_hour" *ngIf="workingHourData?.saturday" value="{{saturdayToTime}}" />
+                        <input type="time" class="inp" id="saturday_to_hour" *ngIf="!workingHourData?.saturday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span>AM</span>
+                          <span class="btnActv">PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="workingTimebg">
+                  <div class="radioInn hourDay">
+                    <div class="custom-control custom-checkbox rateListCheck">
+                      <input type="checkbox" class="custom-control-input" id="customCheck7" (change)="changeday($event, 'sunday')" *ngIf="workingHourData?.sunday" checked>
+                      <input type="checkbox" class="custom-control-input" id="customCheck7" (change)="changeday($event, 'sunday')" *ngIf="!workingHourData?.sunday">
+                      <label class="custom-control-label" for="customCheck7">Sunday</label>
+                    </div>
+                  </div>
+                  <div class="formTobg">
+                    <div class="formCount">
+                      <p>From</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="sunday_from_hour" *ngIf="workingHourData?.sunday" value="{{sundayFromTime}}" />
+                        <input type="time" class="inp" id="sunday_from_hour" *ngIf="!workingHourData?.sunday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span class="btnActv">AM</span>
+                          <span>PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="formCount">
+                      <p>To</p>
+                      <div class="formMain">
+                        <input type="time" class="inp" id="sunday_to_hour" *ngIf="workingHourData?.sunday" value="{{sundayToTime}}" />
+                        <input type="time" class="inp" id="sunday_to_hour" *ngIf="!workingHourData?.sunday" />
+                        <!-- <div class="ampmBg" id="ampmBg">
+                          <span>AM</span>
+                          <span class="btnActv">PM</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="font-weight: 500;color: #ff0000;font-size: 20px">{{ infoMessageRed }}</div>
+            <button type="submit" class="">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br /><br />
+            <button class="def_btn" data-dismiss="modal">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

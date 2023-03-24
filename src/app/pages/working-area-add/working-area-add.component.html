@@ -1,0 +1,75 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <button class="sideBtn" onclick="openNav()">☰</button>
+        <div class="sidepanel" id="mySidepanel">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+          <ul class="leftPanel">
+            <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+            <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+              alt=""></span>Change Password</a></li>
+            <li *ngIf="user_type == 2"><a routerLink="/document-list"><span><i
+                    class="far fa-file-invoice"></i></span>Documents</a></li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>Services</a>
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+            </li>
+            <li>
+              <a routerLink="/sp-query-booking-list"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+                Bookings</a>
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>Working Hours</a>
+            </li>
+            <li *ngIf="user_type == 2"><a routerLink="/working-area-list" class="active"><span><i
+                    class="far fa-place-of-worship"></i></span>Working Area</a></li>
+            <li *ngIf="user_type == 2"><a routerLink="/sp-booking-list"><span><img src="./assets/images/booked.png"
+                    alt=""></span>My Bookings</a></li>
+            <li *ngIf="user_type == 2">
+              <a (click)="readNotification()" routerLink="/notification"><span><img src="./assets/images/notification.png"
+                    alt=""></span>Notifications
+                    <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                  </a>
+                </li>
+
+          </ul>
+        </div>
+      </div> -->
+      <div class="col-md-12">
+        <div class="inner_main_content">
+          <h3 class="innerHdn"><a routerLink="/working-area-list" class="for-back"><i class="fas  fa-arrow-left"></i> </a>  Working Area</h3>
+          <span style="color: #00b2b2">{{infoMessage}}</span>
+          <span style="color: #00b2b2">{{infoMessageRed}}</span>
+          <!--<button class="useCurrentlocation"><i class="fas fa-location"></i> Use The Current Location</button>-->
+          <!--<div class="newAddressOr">Or</div>-->
+          <form [formGroup]="workAreaForm" (ngSubmit)="addWorkArea()">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <input type="text" class="form-control" placeholder="Location" id="location" formControlName="location"
+                  autocomplete="off">
+                <div class="error text-danger"
+                  *ngIf="workAreaForm.controls['location'].hasError('required') && workAreaForm.controls['location'].touched">
+                  Please enter street address.
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <input type="text" class="form-control" placeholder="State" formControlName="state" id="state" readonly>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <input type="text" class="form-control" placeholder="City" formControlName="city" id="city" readonly>
+              </div>
+              <input type="hidden" class="form-control" placeholder="lat" id="lat" formControlName="lattitude">
+              <input type="hidden" class="form-control" placeholder="long" id="long" formControlName="longitude">
+            </div>
+            <button type="submit" class="" [disabled]="workAreaForm.invalid">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

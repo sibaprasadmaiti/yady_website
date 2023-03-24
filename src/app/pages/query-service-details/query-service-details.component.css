@@ -1,0 +1,30 @@
+.servicedes{
+  color: #00B2B2;
+}
+.w-100
+{
+  object-fit: contain;
+}
+.write-ans-23122022{
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 25px;
+}
+.qa-23122022{
+  padding-top: 10px;
+    padding-bottom: 30px;
+    text-align: center;
+    color: #00B2B2;
+}
+.query-submit-btn{
+  margin: 10px;
+}
+.rvtsh{
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.error{
+  color: red;
+}
+

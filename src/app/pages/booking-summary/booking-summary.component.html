@@ -1,0 +1,189 @@
+<section class="innerHdnB">
+	<div class="container customContainer">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>{{'Booking Summary' | translate}}</h2>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="rateListbg">
+  <div *ngIf="booking_data">
+    <div class="container customContainer">
+      <div class="row">
+        <div class="col-md-5 bSummaryLeft">
+          <div class="prof_add_info">
+            <div class="loc_img locNewimg">
+              <img src="./assets/images/booked.png" alt="">
+            </div>
+            <p class="prof_title">{{'Booked on' | translate}}</p>
+            <p>{{ booking_data.booking_date | date }} at {{booking_data.booking_time}}</p>
+          </div>
+          <div class="prof_add_info">
+            <div class="loc_img locNewimg">
+              <img src="./assets/images/locate.png" alt="">
+            </div>
+            <p class="prof_title">{{'Service Location' | translate}}</p>
+            <p>{{booking_data.full_address}}</p>
+          </div>
+          <div class="prof_add_info">
+            <div class="loc_img locNewimg">
+              <img src="./assets/images/servicedetl.png" alt="">
+            </div>
+            <p class="prof_title">{{'Service Details' | translate}}</p>
+            <p>{{'Booked for' | translate}} {{booking_data.cat_subcat_name}} {{booking_data.hour}} </p>
+          </div>
+
+        </div>
+        <div class="col-md-7">
+          <div class="radioSection" *ngIf="booking_data.aq_status == 1 && booking_data.add_on_cost > 0">
+            <h5>{{'Add-Ons' | translate}}</h5>
+            <div class="radioInn" *ngFor="let service_name of booking_data.aq_name;">
+              <div>
+                <input type="checkbox" class="" id="{{service_name}}" checked disabled>&nbsp;
+                <label>{{service_name}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="radioSection" *ngIf="booking_data.aq_status == 2">
+            <h5>{{'Questions' | translate}}</h5>
+            <div class="radioInn" *ngFor="let service_name of booking_data.aq_name; let i = index">
+              <div>
+                <label>{{service_name}}</label>&nbsp;&nbsp;&nbsp;
+                <label>{{booking_data.aq_ans[i]}}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="price_content_block">
+            <p class="cont_adjt"><span>{{booking_data.cat_subcat_name}} :  </span><strong>{{booking_data.price}} {{currency}}</strong></p>
+            <p class="cont_adjt" *ngIf="booking_data.aq_status == 1"><span>{{'Add-Ons' | translate}} : </span><strong>{{booking_data.add_on_cost}} {{currency}}</strong></p>
+            <p class="cont_adjt" *ngIf="booking_data.aq_status == 2"><span>{{'Material Cost' | translate}} : </span><strong>{{booking_data.material_cost}} {{currency}}</strong></p>
+            <p class="cont_adjt"><span>{{'Inspection Charge' | translate}} : </span><strong>{{booking_data.inspection_cost}} {{currency}}</strong></p>
+            <p class="cont_adjt add_border"><span>{{'Promo Amount' | translate}} : </span><strong>-{{booking_data?.discount}} {{currency}}</strong></p>
+            <!-- <div class="totle_pric_def_txt" *ngIf="booking_data.aq_status == 1">
+              <p class="cont_adjt"><span>Total Before Tax : </span><strong>{{booking_data.price + booking_data.add_on_cost + booking_data.inspection_cost }} {{currency}}</strong></p>
+            </div>
+            <div class="totle_pric_def_txt" *ngIf="booking_data.aq_status == 2">
+              <p class="cont_adjt"><span>Total Before Tax : </span><strong>{{booking_data.price + booking_data.add_on_cost + booking_data.inspection_cost + booking_data.material_cost}} {{currency}}</strong></p>
+            </div> -->
+            <div class="totle_pric_txt noBrdrBtm">
+              <p class="cont_adjt"><span>{{'Total Before Tax' | translate}} : </span><strong>{{ booking_data.before_tax_cost }} {{ currency }}</strong></p>
+            </div>
+            <p class="cont_adjt add_border"><span>{{'Tax' | translate}} : </span><strong>{{ booking_data?.tax }} {{ currency }}</strong></p>
+            <p class="cont_adjt add_border"><span>{{'Total' | translate}} : </span><strong>{{ booking_data.before_tax_cost + booking_data.tax }} {{ currency }}</strong></p>
+
+            <div class="totle_pric_txt noBrdrBtm">
+              <p class="cont_adjt"><span>{{'Order Total' | translate}} : </span><strong>{{booking_data?.total_cost}} {{currency}}</strong></p>
+            </div>
+            <p class="cont_adjt add_border" *ngIf="walletpayStatus == 1"><span>{{'Wallet Amount Used' | translate}} : </span><strong>{{usedWalletMoney}} {{currency}}</strong></p>
+            <div class="totle_pric_txt noBrdrBtm" *ngIf="walletpayStatus == 1 && payableCost > 0">
+              <p class="cont_adjt"><span>{{'Pay Total' | translate}} : </span><strong>{{payableCost}} {{currency}}</strong></p>
+            </div>
+          </div>
+          <button type="submit" (click)="confirm_booking()">{{'Confirm Booking' | translate}}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade loginModal quotModal" id="payFromWallet" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+                <h5>{{'Proceed For Payment' | translate}}</h5>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+               <h5 style="color: #00B2B2;">{{currency}} {{booking_data?.total_cost}}</h5>
+               <div class="mt-3">
+                <span >{{'Please choose your payment option' | translate}}</span>
+               </div>
+                <div class="mt-4 pay-wallet-div">
+                  <!-- <div style="flex: 0 0 19%;">
+                    <img src="./assets/images/wallet-balance.png" alt="wallet">
+                  </div> -->
+                  <button class="def_btn pay-wallet-btn" (click)="cashPayment()">
+                    <span><i class="far fa-wallet"></i></span> {{'Pay from Wallet' | translate}}</button>
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade loginModal quotModal" id="payFromCardCash" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+                <h5>{{'Proceed For Payment' | translate}}</h5>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+               <h5 style="color: #00B2B2;" *ngIf="walletpayStatus == 1">{{currency}} {{payableCost}}</h5>
+               <h5 style="color: #00B2B2;" *ngIf="walletpayStatus == 0">{{currency}} {{booking_data?.total_cost}}</h5>
+               <div class="mt-3">
+                <span >{{'Please choose your payment option' | translate}}</span>
+               </div>
+                <div class="mt-4 pay-wallet-div" *ngIf="this.paymentMethod?.cash_status == 1">
+                  <button class="def_btn pay-wallet-btn" (click)="cashPayment()">
+                    <span><i class='far fa-money-bill-alt'></i></span> Pay by Cash</button>
+                </div>
+                <div class="mt-4 pay-wallet-div" *ngIf="this.paymentMethod?.stripe_status == 1">
+                  <button class="def_btn pay-wallet-btn" (click)="cardPayment()">
+                    <span><i class="fa fa-credit-card"></i></span> {{'Pay by Card' | translate}}</button>
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button> -->
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+                <h5 style="text-align: center;">{{'Booking Successful' | translate}}</h5>
+                <h6>{{'Booking Id' | translate}} : <strong style="color: #00B2B2;">{{saveBookingJobNo}}</strong></h6>
+                <br />
+                <div class="prof_add_info">
+                  <p class="prof_title">{{'Service Details' | translate}}</p>
+                  <p>{{'Booked for' | translate}} {{booking_data.cat_subcat_name}} {{booking_data.hour}} </p>
+                </div>
+                <div>
+                  <p>{{'Amount to be paid' | translate}} <strong style="color: #00B2B2;">{{currency}} {{payAbleCashAmount}}</strong></p>
+                  <p *ngIf="walletpayStatus == 1">{{'paid from' | translate}}  <strong style="color: #00B2B2;">{{'Yady Wallet' | translate}}</strong></p>
+                  <p *ngIf="walletpayStatus == 0">{{'paid by' | translate}}  <strong style="color: #00B2B2;">{{'Cash' | translate}}</strong></p>
+                </div>
+                <div class="mt-3">
+                  <button class="def_btn" data-dismiss="modal" (click)="bookingContinue()">{{'Continue' | translate}}</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+<div *ngIf="!booking_data">
+  <h5>{{'Booking Summary Not Found' | translate}}</h5>
+</div>
+</section>

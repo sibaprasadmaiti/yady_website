@@ -1,0 +1,182 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn" onclick="openNav()">☰</button>
+        <div class="sidepanel" id="mySidepanel">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+            >×</a
+          >
+          <ul class="leftPanel">
+            <!--<li><a href="#"><span><img src="images/editprofile.png" alt=""></span>Account</a></li>-->
+            <li>
+              <a routerLink="/profile"
+                ><span><i class="far fa-user-edit"></i></span>Edit Profile</a
+              >
+            </li>
+            <li>
+              <a routerLink="/change_password"
+                ><span
+                  ><img src="./assets/images/changepassword.png" alt="" /></span
+                >Change Password</a
+              >
+            </li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img
+                    src="./assets/images/changelanguage.png"
+                    alt="change language" /></span
+                >Change Language</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/document-list" class="active"
+                ><span><i class="far fa-file-invoice"></i></span>Documents</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/service-list"
+                ><span><i class="fab fa-servicestack"></i></span>Services</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/query-request-list"
+                ><span><i class="far fa-comment-alt"></i></span>Query Request</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/sp-query-booking-list"
+                ><span
+                  ><i class="fa fa-calendar" style="font-size: 36px"></i></span
+                >Query Bookings</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/sp-earning-list"
+                ><span
+                  ><img
+                    src="./assets/images/earning-money.png"
+                    alt="earning" /></span
+                >Earnings</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/working-hours"
+                ><span><i class="far fa-business-time"></i></span>Working
+                Hours</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/working-area-list"
+                ><span><i class="far fa-place-of-worship"></i></span>Working
+                Area</a
+              >
+            </li>
+            <li>
+              <a routerLink="/sp-booking-list"
+                ><span><img src="./assets/images/booked.png" alt="" /></span>My
+                Bookings</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a (click)="readNotification()" routerLink="/notification"
+                ><span
+                  ><img src="./assets/images/notification.png" alt="" /></span
+                >Notifications
+                <span
+                  *ngIf="newNotification"
+                  class="badge badge-light"
+                  style="color: red; width: 45px"
+                  >New</span
+                >
+              </a>
+            </li>
+
+            <!--<li><a href="#" class="active"><span><i class="far fa-business-time"></i></span>Working Hours</a></li>
+                            <li><a href="#"><span><i class="fab fa-servicestack"></i></span>Services</a></li>
+                            <li><a href="#"><span><i class="far fa-place-of-worship"></i></span>Working Area</a></li>
+                            <li><a href="#"><span><i class="far fa-photo-video"></i></span>Image &amp; Video</a></li>
+                            <li><a href="#"><span><img src="images/changepassword.png" alt=""></span>Change Password</a></li>
+                            <li><a href="#"><span><img src="images/changelanguage.png" alt=""></span>Change Language</a></li>
+                            <li><a href="#"><span><img src="images/paymentoption.png" alt=""></span>Terms &amp; Condition</a></li>
+                            <li><a href="#"><span><img src="images/helpcenter.png" alt=""></span>Help Center</a></li>
+                            <li><a href="#"><span><img src="images/notification.png" alt=""></span>Notifications</a></li>
+                            <li><a href="#"><span><img src="images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>
+                            <li><a href="#"><span><img src="images/faq.png" alt=""></span>FAQ</a></li>-->
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">Documents</h3>
+          <span style="color: #00b2b2">{{ alertMsg }}</span>
+          <form [formGroup]="docForm" (ngSubmit)="saveDocuments()">
+            <div class="upload-btn-wrapper">
+              <button class="ubtn">
+                <i class="far fa-arrow-circle-up"></i> Upload Documents
+              </button>
+              <input
+                type="file"
+                id="file"
+                formControlName="file"
+                multiple
+                name="myfile"
+                (change)="onFileChange($event)"
+                accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,.csv"
+              />
+            </div>
+            <!--<img *ngFor='let url of images'  [src]="url" height="150" width="200px" style="margin: 3px;">-->
+
+            <div class="uploadDocumentBase">
+              <div class="spDoc" *ngFor="let url of images; let i = index">
+                <span class="spDcross" (click)="removeImage(i)"
+                  ><i class="far fa-times"></i
+                ></span>
+                <input
+                  type="text"
+                  class=""
+                  placeholder="Add tag"
+                  formControlName="tag"
+                  id="tag{{ i }}"
+                />
+                <img
+                  src="./assets/images/pdf.png"
+                  alt=""
+                  *ngIf="images_type[i] == 'pdf'"
+                />
+                <img
+                  src="./assets/images/word.png"
+                  alt=""
+                  *ngIf="
+                    images_type[i] == 'doc' ||
+                    images_type[i] == 'docx' ||
+                    images_type[i] == 'application/msword' ||
+                    images_type[i] ==
+                      'vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                    images_type[i] == 'msword' ||
+                    images_type[i] == 'csv'
+                  "
+                />
+                <!--{{url.split(';')[0].split('/')[1]}}-->
+                <!--{{images_type[i]}}-->
+              </div>
+              <!--<div class="spDoc">
+									<span class="spDcross"><i class="far fa-times"></i></span>
+									<input type="text" class="" placeholder="Add tag" />
+									<img src="images/word.png" alt="">
+								</div>
+								<div class="spDoc">
+									<span class="spDcross"><i class="far fa-times"></i></span>
+									<input type="text" class="" placeholder="Add tag" />
+									<img src="images/jpg.png" alt="">
+								</div>-->
+            </div>
+
+            <button type="submit" class="">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

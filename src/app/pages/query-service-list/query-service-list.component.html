@@ -1,0 +1,106 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+      <div class="row">
+          <div class="col-md-4">
+            <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+            <div class="sidepanel" id="mySidepanel">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+              <ul class="leftPanel">
+                <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+                <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+                  alt=""></span>Change Password</a></li>
+                  <li>
+                    <a routerLink="/change-language"
+                      ><span
+                        ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                      >Change Language</a
+                    >
+                  </li>
+                <li><a routerLink="/document-list"><span><i class="far fa-file-invoice"></i></span>Documents</a></li>
+                <li>
+                  <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>Services</a>
+                </li>
+                <li>
+                  <a routerLink="/query-request-list" class="active"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+                </li>
+                <li>
+                  <a routerLink="/sp-query-booking-list"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+                    Bookings</a>
+                </li>
+                <li>
+                  <a routerLink="/sp-earning-list"
+                    ><span><img src="./assets/images/earning-money.png" alt="earning" /></span
+                    >Earnings</a
+                  >
+                </li>
+                <li>
+                  <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>Working Hours</a>
+                </li>
+                <li><a routerLink="/working-area-list"><span><i class="far fa-place-of-worship"></i></span>Working Area</a>
+                </li>
+                <li><a routerLink="/sp-booking-list"><span><img src="./assets/images/booked.png"
+                        alt=""></span>My Bookings</a></li>
+                <li>
+                  <a (click)="readNotification()" routerLink="/notification"><span><img src="./assets/images/notification.png"
+                        alt=""></span>Notifications
+                        <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                      </a>
+                    </li>
+              </ul>
+              </div>
+          </div>
+          <div class="col-md-8">
+              <div class="inner_main_content">
+                  <h3 class="innerHdn">Service Query</h3>
+                  <div class="uploadDocumentBase">
+                    <div class="spDoc spQuery" *ngFor='let queryService of queryServiceList; let i = index'>
+                      <h5 class="serviceTyp">{{queryService.service_type}}</h5>
+                        <p>Query from Service Requester : <span class="servicedes">{{queryService.description}}</span></p>
+                        <button type="button" (click)="viewDetails(queryService._id)">View Details</button>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h5 style="text-align: center;">{{message}}</h5><br />
+            <!-- <button class="def_btn" (click)="deleteCategory()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button> -->
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h5 style="text-align: center;">{{message}}</h5><br />
+            <button class="def_btn" data-dismiss="modal">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

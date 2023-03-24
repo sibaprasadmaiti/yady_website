@@ -1,0 +1,200 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+        <div class="sidepanel" id="mySidepanel">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+          <ul class="leftPanel">
+            <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt="profile"></span>Edit
+                Profile</a></li>
+            <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+                    alt="change password"></span>Change Password</a></li>
+                    <li>
+                      <a routerLink="/change-language"
+                        ><span
+                          ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                        >Change Language</a
+                      >
+                    </li>
+            <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment
+                Options</a></li>
+            <li><a routerLink="/my-address-list"><span><img src="./assets/images/locate.png"
+                    alt="sr address"></span>Address</a></li>
+            <li><a routerLink="/sr-wallet" class="active"><span><img src="./assets/images/wallet-menu.png"
+                    alt="sr wallet"></span>My Wallet</a></li>
+            <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png"
+                    alt="booking list"></span>My Bookings</a>
+            </li>
+            <li>
+              <a routerLink="/my-query-list"><span><i class="far fa-file-search" style="font-size:30px"></i></span>My
+                Query</a>
+            </li>
+            <li>
+              <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+                Bookings</a>
+            </li>
+            <li>
+              <a (click)="srReadNotification()" routerLink="/sr-notification"><span><img
+                    src="./assets/images/notification.png" alt="notification"></span>Notifications
+                <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/help-center"
+                ><span
+                  ><img
+                    src="./assets/images/help-center.png"
+                    alt="help center" /></span>Help Center</a>
+            </li>
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/helpcenter.png" alt=""></span>Help Center</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/notification.png" alt=""></span>Notifications</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/faq.png" alt=""></span>FAQ</a></li>-->
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">My Wallet</h3>
+          <div class="inner_content_block">
+            <div class="inner_content_left">
+              <div class="providers_info_wrap providers_info_wrap2">
+                <div class="providers_info">
+
+                  <div class="providers_name">
+                    <p><strong>Yady Balance</strong></p>
+                    <div class="star">
+                      <p><strong>{{ walletData?.currency }} {{ walletAmount }}</strong></p>
+                      <!-- <img src="images/star.png" alt=""> -->
+                    </div>
+                  </div>
+                  <div class="providers_info_price">
+                  </div>
+                  <div style="flex: 0 0 19%;">
+                    <img src="./assets/images/wallet-balance.png" alt="wallet">
+                  </div>
+                </div>
+              </div>
+              <div class="providers_info_wrap providers_info_wrap2">
+                <div class="providers_info">
+                  <div class="providers_pic">
+                    <img src="./assets/images/passbook.png" alt="">
+                  </div>
+                  <div class="providers_name passbook">
+                    <p><strong>Passbook</strong></p>
+                    <div>
+                      <h6 class="check-balance chl-pymt-walt" (click)="checkPayment()">Check your payments from Yady Wallet</h6>
+                    </div>
+                  </div>
+                  <!-- <div class="providers_info_price">
+                    $550.00
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="inner_content_right" *ngIf="paymentMethod?.wallet_topup_status == 2">
+              <div class="prof_add_info">
+                <p>Add Money to your <strong>Yady Wallet</strong></p>
+                <h6>you can book our services by using your wallet money</h6>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="number" [(ngModel)]="addAmount" (input)="checkValue($event)" autocomplete="off"
+                      class="form-control" placeholder="Enter Amount">
+                  </div>
+                  <div style="color: red;">{{ errorMsg }}</div>
+                </div>
+                <div>
+                  <button class="btn btn-sm add-money-btn" (click)="addWalletAmount(100)">+100</button>
+                  <button class="btn btn-sm add-money-btn" (click)="addWalletAmount(200)">+200</button>
+                  <button class="btn btn-sm add-money-btn" (click)="addWalletAmount(500)">+500</button>
+                  <button class="btn btn-sm add-money-btn" (click)="addWalletAmount(1000)">+1000</button>
+                </div>
+                <div class="add-money-button">
+                  <button type="submit" class="def_btn" (click)="addMoney()">Proceed to Add Money</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button> -->
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+              <h5 style="text-align: center;">Wallet current balance will be lost if the country code of your registered phone number changes.</h5><br />
+              <button class="def_btn" data-dismiss="modal">Ok</button>
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade loginModal quotModal" id="cardPaymentModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <h3 class="innerHdn" style="padding-top: 0px;margin-bottom: 9px">Payment</h3>
+              <button type="button" style="margin-bottom: 9px" (click)="hideCardPaymentModal()" data-toggle="modal" data-target="#paymentcard">Add New Card</button>
+              <div class="row">
+                <div class="col-md-6" *ngFor="let savedCards of cardData; let i = index">
+                  <div class="paymentCardbg">
+                    <div>
+                      <h5>{{savedCards.brand}}</h5>
+                      <p>********{{savedCards.last4}}</p>
+                    </div>
+                    <div>
+                      <span class="form-group">
+                        <input type="checkbox" id="{{savedCards.id}}" [checked]="savedCards.default_status == 1"
+                          (click)="makeDefault(savedCards.id)">
+                        <label for="{{savedCards.id}}"></label>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="" (click)="topupPayment()">Proceed Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade loginModal quotModal" id="successPaymentModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button> -->
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+              <h4 style="text-align: center;">{{message}}</h4><br />
+              <button type="button" data-dismiss="modal">OK</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+.query-submit-btn{
+  margin: auto !important;
+  width: auto !important;
+  margin-bottom: 0px !important;
+  display: block;
+  }
+.get-in-touch
+{
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+}
+.get-in-touch-txt{
+  color: #00B2B2;
+  font-weight: bold;
+}
+.get-in-touch-div{
+  text-align: center;
+  margin-bottom: 30px;
+}
+.email-phone{
+  color: #00B2B2;
+}
+.error{
+  color: red;
+}

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome To YADY</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- CSS only -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/innerpages.css" />
+    <link rel="stylesheet" href="assets/css/animate.css" />
+    <link rel="stylesheet" href="assets/css/calender.css" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="assets/css/owl.theme.default.css" />
+  </head>
+  <body>
+    <app-root></app-root>
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/wow.js"></script>
+    <script src="assets/js/calender-script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      Stripe.setPublishableKey("pk_test_R1dALSLgt4yc3tlnmbvWrydg00ZQIZ6Qfb");
+    </script>
+
+    <script>
+      wow = new WOW({
+        animateClass: "animated",
+        offset: 100,
+        callback: function (box) {
+          console.log("WOW: animating <" + box.tagName.toLowerCase() + ">");
+        },
+      });
+      wow.init();
+      document.getElementById("moar").onclick = function () {
+        var section = document.createElement("section");
+        section.className = "section--purple wow fadeInDown";
+        this.parentNode.insertBefore(section, this);
+      };
+    </script>
+    <script>
+      $(window).scroll(function () {
+        if ($(this).scrollTop() > 50) {
+          $(".header").addClass("fixedhead");
+        } else {
+          $(".header").removeClass("fixedhead");
+        }
+      });
+      // $('.dropdown-menu a').on('click', function() {
+      //  var getValue = $(this).text();
+      //  $('.dropSelect').text(getValue);
+      //});
+    </script>
+    <script>
+      $(function () {
+        $(".selectpicker").selectpicker();
+      });
+    </script>
+    <script>
+      const $menu = $("#navbarToggleExternalContent");
+
+      $menu.on("show.bs.collapse", function () {
+        $menu.addClass("menu-show");
+      });
+
+      $menu.on("hide.bs.collapse", function () {
+        $menu.removeClass("menu-show");
+      });
+    </script>
+    <script src="https://maps.google.com/maps/api/js?sensor=false&libraries=places&language=en-AU&key=AIzaSyA-D0BU9p64xEqJI6pQOGguMoPV5NTJ6T4"></script>
+    <script type="text/javascript">
+      /*function initialize() {
+		var input = document.getElementById('street_address');
+		var options = {
+			types: ['address']
+		};
+		new google.maps.places.Autocomplete(input,options);
+		google.maps.event.addListener(autocomplete, 'place_changed', function() {
+			var place = autocomplete.getPlace();
+			for (var i = 0; i < place.address_components.length; i++) {
+				for (var j = 0; j < place.address_components[i].types.length; j++) {
+				if (place.address_components[i].types[j] == "postal_code") {
+						//document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+						console.log('zip code',place.address_components[i].long_name);
+					}
+				}
+			}
+		})
+
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);*/
+
+      function initialize() {
+        var input = document.getElementById("street_address");
+        var options = {
+          types: ["geocode", "establishment"],
+        };
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+        google.maps.event.addListener(
+          autocomplete,
+          "place_changed",
+          function () {
+            var place = autocomplete.getPlace();
+            console.log("sr address place", place);
+            //console.log('place',place.name);
+            document.getElementById("house_no").value = place.name;
+            document.getElementById("lat").value =
+              place.geometry.location.lat();
+            document.getElementById("long").value =
+              place.geometry.location.lng();
+
+            for (var i = 0; i < place.address_components.length; i++) {
+              for (
+                var j = 0;
+                j < place.address_components[i].types.length;
+                j++
+              ) {
+                if (place.address_components[i].types[j] == "postal_code") {
+                  document.getElementById("zip_code").value =
+                    place.address_components[i].long_name;
+                  //alert(place.address_components[i].long_name);
+                }
+                if (
+                  place.address_components[i].types[j] ==
+                  "administrative_area_level_1"
+                ) {
+                  document.getElementById("state").value =
+                    place.address_components[i].long_name;
+                }
+                if (place.address_components[i].types[j] == "locality") {
+                  document.getElementById("city").value =
+                    place.address_components[i].long_name;
+                }
+              }
+            }
+          }
+        );
+      }
+      google.maps.event.addDomListener(window, "load", initialize);
+
+      //Working Area
+      function initialize2() {
+        var input = document.getElementById("location");
+        var options = {
+          types: ["geocode"],
+        };
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+        google.maps.event.addListener(
+          autocomplete,
+          "place_changed",
+          function () {
+            var place = autocomplete.getPlace();
+            console.log("place", place);
+            document.getElementById("lat").value =
+              place.geometry.location.lat();
+            document.getElementById("long").value =
+              place.geometry.location.lng();
+            for (var i = 0; i < place.address_components.length; i++) {
+              for (
+                var j = 0;
+                j < place.address_components[i].types.length;
+                j++
+              ) {
+                if (
+                  place.address_components[i].types[j] ==
+                  "administrative_area_level_1"
+                ) {
+                  document.getElementById("state").value =
+                    place.address_components[i].long_name;
+                }
+                if (place.address_components[i].types[j] == "locality") {
+                  document.getElementById("city").value =
+                    place.address_components[i].long_name;
+                }
+              }
+            }
+          }
+        );
+      }
+      google.maps.event.addDomListener(window, "load", initialize2);
+
+      //function getCoordinates()
+      //{
+      //var zip_code = document.getElementById('zip_code').value;
+      //alert(zip_code);
+      //fetch("https://maps.googleapis.com/maps/api/geocode/json?address="+zip_code+'&key=AIzaSyA-D0BU9p64xEqJI6pQOGguMoPV5NTJ6T4')
+      //.then(response => response.json())
+      //.then(data => {
+      //console.log(data);
+      //if(data.status == "OK") {
+      //console.log(data.results[0].geometry.location.lat);
+      //document.getElementById('lat').value = data.results[0].geometry.location.lat;
+      //document.getElementById('lat').innerHTML = data.results[0].geometry.location.lat;
+      //document.getElementById('long').value = data.results[0].geometry.location.lng;
+      //document.getElementById('long').innerHTML = data.results[0].geometry.location.lng;
+      //} else {
+      //alert('Please enter a valid pincode');
+      //}
+      //})
+      //}
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $(".owl-carousel").owlCarousel({
+          loop: false,
+          rewind: true,
+          margin: 10,
+          nav: true,
+          responsive: {
+            0: {
+              items: 1,
+            },
+            600: {
+              items: 3,
+            },
+            1000: {
+              items: 4,
+            },
+          },
+        });
+      });
+    </script>
+    <script>
+      function openNav() {
+        document.getElementById("mySidepanel").style.width = "70%";
+      }
+
+      function closeNav() {
+        document.getElementById("mySidepanel").style.width = "0";
+      }
+    </script>
+  </body>
+</html>

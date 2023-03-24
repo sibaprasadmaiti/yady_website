@@ -1,0 +1,119 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>Edit Profile</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change
+              Password</a></li>
+              <li>
+                <a routerLink="/change-language"
+                  ><span
+                    ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                  >Change Language</a
+                >
+              </li>
+          <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment
+              Options</a></li>
+          <li><a routerLink="/my-address-list"><span><img src="./assets/images/locate.png" alt=""></span>Address</a>
+          </li>
+          <li><a routerLink="/sr-wallet"><span><img src="./assets/images/wallet-menu.png" alt="sr wallet"></span>My Wallet</a></li>
+          <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/my-query-list"><span><i class="far fa-file-search"
+                  style="font-size:30px"></i></span>My Query</a>
+          </li>
+          <li>
+            <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+          <a routerLink="/sr-notification" class="active"><span><img
+                src="./assets/images/notification.png" alt=""></span>Notifications
+            <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+          </a>
+          </li>
+          <li>
+            <a routerLink="/help-center"
+              ><span
+                ><img
+                  src="./assets/images/help-center.png"
+                  alt="help center" /></span>Help Center</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <h3 class="innerHdn">Notifications</h3>
+        <!-- <div class="">
+          <button type="submit" class="rejectBtn" data-dismiss="modal">Read</button>
+          <button type="submit">Unread</button>
+        </div> -->
+        <div class="row" *ngIf="notificationList?.length > 0">
+          <div class="col-md-6" *ngFor="let item of notificationList | paginate: { itemsPerPage: perPage, currentPage: page, totalItems: totalRecords };
+          let i = index">
+            <div class="notificationText">
+              <div style="float: right;" (click)="srDeleteNotification(item.notification_id)"><i class="fa fa-trash"
+                  title="Delete Notification" aria-hidden="true" style="cursor: pointer;"></i></div>
+              <h6>{{item.title}}</h6>
+              <p>{{item.msg}}</p>
+              <span *ngIf="item.received_date">{{ item.received_date }} at {{item.received_time}}</span>
+            </div>
+          </div>
+          <div class="has-text-centered">
+            <pagination-controls (pageChange)="nextPage(page = $event)"></pagination-controls>
+          </div>
+        </div>
+        <div class="row" *ngIf="notificationList?.length == 0">
+          <div class="col-md-6">
+            <h5>Data not found.</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button> -->
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+              <h4 style="text-align: center;">{{message}}</h4><br /><br />
+              <button class="def_btn2" data-dismiss="modal">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button> -->
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+              <h4 style="text-align: center;">{{message}}</h4><br /><br />
+              <button class="def_btn2" data-dismiss="modal">Ok</button>
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

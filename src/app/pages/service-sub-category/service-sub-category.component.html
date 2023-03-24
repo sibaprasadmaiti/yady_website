@@ -1,0 +1,58 @@
+<section class="homeBannerbg innerBanner">
+	<div class="container customContainer">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="socialLink socialBlack">
+					<span class="socialText">Social</span>
+					<a href="#"><i class="fab fa-facebook-f"></i></a>
+					<a href="#"><i class="fab fa-twitter"></i></a>
+					<a href="#"><i class="fab fa-google-plus-g"></i></a>
+				</div>
+			   <div class="sliderInn">
+					<div class="slideTxt">
+						<h1>Our Services</h1>
+							<p>
+							   Providing you with the peace of mind you deserve is what initiates the services we offer.
+							</p>
+<!--                           <a href="" class="mulColor"><span>Make an appointment</span></a>-->
+							<form class="form-inline bannerSearch">
+								<input class="form-control" name="sub_category_name" id="sub_category_name" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="sub_category_name">
+								<button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)='searchSubCategory(sub_category_name)'><i class="fas fa-search"></i></button>
+							</form>
+					</div>
+					<div class="slideImg"><img src="./assets/images/innerbanner.jpg" alt=""></div>
+				</div>
+			</div>
+		</div>
+    </div>
+</section>
+<section class="sr-serviceinnn">
+        <div class="container customContainer">
+            <div class="row">
+                <div class="col-md-12">
+                   <ul class="sr_servBlock">
+                       <li *ngFor="let subcategory of subCategoryData  | paginate: { itemsPerPage: 6, currentPage: page } ;let i = index">
+                           <img src="{{subcategory.sub_category_image}}" alt="">
+                            <h5>{{subcategory.sub_category_name}}</h5>
+                            <!--<p>It is a long established fact that a reader will be distracted by the readable. </p>-->
+                            <a *ngIf="login_status == 1" (click)='getServicePrice("subcat",subcategory.sub_category_id,subcategory.aq_status)' class="booknow"><span>Book Now</span></a>
+							<a href="#" data-toggle="modal" data-target="#demo-1" *ngIf="login_status == 0" class="btn btn-success"><span>Login</span></a>
+                       </li>
+                   </ul>
+                </div>
+            </div>
+			<div class="row" *ngIf="subCategoryData?.length == 0">
+				<div class="col-md-12">
+					<span style="text-align: center;width: 100%;display: block;">No data found</span>
+				</div>
+			</div>
+        </div>
+    </section>
+	<section class="pgn" *ngIf="subCategoryData?.length > 0">
+        <div aria-label="Page navigation example">
+		<ul class="pagination justify-content-center" >
+			<pagination-controls (pageChange)="page = $event"></pagination-controls>
+		</ul>
+        </div>
+    </section>
+	<section class="mapBg"><img src="./assets/images/map.jpg" alt=""></section>

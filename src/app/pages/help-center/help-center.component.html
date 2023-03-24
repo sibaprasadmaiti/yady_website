@@ -1,0 +1,283 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button
+          class="sideBtn btn-block btn-info text-center"
+          onclick="openNav()"
+        >
+          ☰ {{'Open Left menu' | translate}}
+        </button>
+        <div class="sidepanel" id="mySidepanel">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+            >×</a
+          >
+          <ul class="leftPanel">
+            <li>
+              <a routerLink="/profile"
+                ><span
+                  ><img
+                    src="./assets/images/editprofile.png"
+                    alt="edit profile" /></span
+                >{{'Edit Profile' | translate}}</a
+              >
+            </li>
+            <li>
+              <a routerLink="/change_password"
+                ><span
+                  ><img
+                    src="./assets/images/changepassword.png"
+                    alt="change password" /></span
+                >{{'Change Password' | translate}}</a
+              >
+            </li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                >{{'Change Language' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/payment-option"
+                ><span
+                  ><img
+                    src="./assets/images/paymentoption.png"
+                    alt="payment option" /></span
+                >{{'Payment Options' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/my-address-list"
+                ><span
+                  ><img
+                    src="./assets/images/locate.png"
+                    alt="my address list" /></span
+                >{{'Address' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/sr-wallet"
+                ><span
+                  ><img
+                    src="./assets/images/wallet-menu.png"
+                    alt="wallet" /></span
+                >{{'My Wallet' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/my-booking-list"
+                ><span
+                  ><img
+                    src="./assets/images/booked.png"
+                    alt="my bookings" /></span
+                >{{'My Bookings' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/my-query-list"
+                ><span
+                  ><i
+                    class="far fa-file-search"
+                    style="font-size: 30px"
+                  ></i></span
+                >{{'My Query' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/query-bookings"
+                ><span
+                  ><i class="fa fa-calendar" style="font-size: 36px"></i></span
+                >{{'Query Bookings' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/sr-notification"
+                ><span
+                  ><img
+                    src="./assets/images/notification.png"
+                    alt="notification" /></span
+                >{{'Notifications' | translate}}
+                <span
+                  *ngIf="srNewNotification"
+                  class="badge badge-light"
+                  style="color: red; width: 45px"
+                  >{{'New' | translate}}</span
+                >
+              </a>
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/help-center" class="active"
+                ><span
+                  ><img
+                    src="./assets/images/help-center.png"
+                    alt="help center" /></span>{{'Help Center' | translate}}</a>
+            </li>
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/helpcenter.png" alt=""></span>Help Center</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/notification.png" alt=""></span>Notifications</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/faq.png" alt=""></span>FAQ</a></li>-->
+            <!-- <li *ngIf="user_type == 2">
+              <a routerLink="/document-list">
+                <span><i class="far fa-file-invoice"></i></span>Documents</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/service-list"
+                ><span><i class="fab fa-servicestack"></i></span>Services</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/query-request-list"
+                ><span><i class="far fa-comment-alt"></i></span>Query Request</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/sp-query-booking-list"
+                ><span
+                  ><i class="fa fa-calendar" style="font-size: 36px"></i></span
+                >Query Bookings</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/sp-earning-list"
+                ><span
+                  ><img
+                    src="./assets/images/earning-money.png"
+                    alt="earning" /></span
+                >Earnings</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/working-hours"
+                ><span><i class="far fa-business-time"></i></span>Working
+                Hours</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/working-area-list"
+                ><span><i class="far fa-place-of-worship"></i></span>Working
+                Area</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/sp-booking-list"
+                ><span><img src="./assets/images/booked.png" alt="" /></span>My
+                Bookings</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/notification"
+                ><span
+                  ><img src="./assets/images/notification.png" alt="" /></span
+                >Notifications
+                <span
+                  *ngIf="newNotification"
+                  class="badge badge-light"
+                  style="color: red; width: 45px"
+                  >New</span
+                >
+              </a>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <!-- <span style="font-size: 25px">{{ infoMessage }}</span> -->
+        <h3 class="innerHdn">{{'Help Center' | translate}}</h3>
+        <div class="get-in-touch-div">
+          <img class="get-in-touch" src="./assets/images/get-in-touch.png" alt="get in touch">
+          <h5 class="get-in-touch-txt">{{'Get in Touch' | translate}}</h5>
+          <h6>{{'Feel free to drop us a line bellow' | translate}}</h6>
+          <h6>{{'Email Address' | translate}} : <span class="email-phone">{{ helpData?.email_1 }} {{'or' | translate}} {{ helpData?.email_2 }}</span> {{'Call Us' | translate}} : <span class="email-phone">{{ helpData?.help_center_number }}</span></h6>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <p style="color: hotpink; text-align: center;">{{ infoMessage }}</p>
+        </div>
+        <form [formGroup]="helpForm" (ngSubmit)="submitHelpForm()">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="{{'Your Name' | translate}}"
+                formControlName="full_name"
+                id="full_name"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  helpForm.controls['full_name'].hasError('required') &&
+                  helpForm.controls['full_name'].touched
+                "
+              >
+                {{'Please enter your name' | translate}}
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <input
+                type="email"
+                class="form-control"
+                placeholder="{{'Your Email Address' | translate}}"
+                formControlName="email_address"
+                id="email_address"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  helpForm.controls['email_address'].hasError('required') &&
+                  helpForm.controls['email_address'].touched
+                "
+              >
+                {{'Please enter your email address' | translate}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <input
+                style="position: relative"
+                type="text"
+                class="form-control pr-4"
+                formControlName="subject"
+                placeholder="{{'Subject' | translate}}"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  helpForm.controls['subject'].hasError('required') &&
+                  helpForm.controls['subject'].touched
+                "
+              >
+                {{'Please enter your subject' | translate}}
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <div class="input-group">
+                <textarea
+                  class="form-control"
+                  autocomplete="off"
+                  formControlName="message"
+                  placeholder="{{'Your Message' | translate}}"
+                ></textarea>
+              </div>
+              <div
+                class="error"
+                *ngIf="
+                  helpForm.controls['message'].hasError('required') &&
+                  helpForm.controls['message'].touched
+                "
+              >
+                {{'Please enter your message' | translate}}.
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="query-submit-btn" [disabled]="helpForm.invalid">
+            {{'Submit' | translate}}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,220 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <ul class="leftPanel">
+          <!--<li><a href="#"><span><img src="images/editprofile.png" alt=""></span>Account</a></li>-->
+          <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+            alt=""></span>Change Password</a></li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                >Change Language</a
+              >
+            </li>
+          <li><a routerLink="/document-list"><span><i class="far fa-file-invoice"></i></span>Documents</a></li>
+          <li>
+            <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>Services</a>
+          </li>
+          <li>
+            <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+          </li>
+          <li>
+            <a routerLink="/sp-query-booking-list" class="active"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/sp-earning-list"
+              ><span><img src="./assets/images/earning-money.png" alt="earning" /></span
+              >Earnings</a
+            >
+          </li>
+          <li>
+            <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>Working Hours</a>
+          </li>
+          <li><a routerLink="/working-area-list"><span><i class="far fa-place-of-worship"></i></span>Working Area</a>
+          </li>
+          <li><a routerLink="/sp-booking-list"><span><img src="./assets/images/booked.png"
+                  alt=""></span>My Bookings</a></li>
+          <li>
+            <a (click)="readNotification()" routerLink="/notification"><span><img src="./assets/images/notification.png"
+                  alt=""></span>Notifications
+                  <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                </a>
+              </li>
+          <!--<li><a href="#" class="active"><span><i class="far fa-business-time"></i></span>Working Hours</a></li>
+                      <li><a href="#"><span><i class="fab fa-servicestack"></i></span>Services</a></li>
+                      <li><a href="#"><span><i class="far fa-place-of-worship"></i></span>Working Area</a></li>
+                      <li><a href="#"><span><i class="far fa-photo-video"></i></span>Image &amp; Video</a></li>
+                      <li><a href="#"><span><img src="images/changepassword.png" alt=""></span>Change Password</a></li>
+                      <li><a href="#"><span><img src="images/changelanguage.png" alt=""></span>Change Language</a></li>
+                      <li><a href="#"><span><img src="images/paymentoption.png" alt=""></span>Terms &amp; Condition</a></li>
+                      <li><a href="#"><span><img src="images/helpcenter.png" alt=""></span>Help Center</a></li>
+                      <li><a href="#"><span><img src="images/notification.png" alt=""></span>Notifications</a></li>
+                      <li><a href="#"><span><img src="images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>
+                      <li><a href="#"><span><img src="images/faq.png" alt=""></span>FAQ</a></li>-->
+        </ul>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">Query Bookings</h3>
+          <div class="tabsection">
+
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="pills-incomplete-tab" data-toggle="pill" href="#pills-incomplete" (click)="getMyBookingList(1)">Upcoming</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-ongoing-tab" data-toggle="pill" href="#pills-ongoing" (click)="getMyBookingList(2)">Ongoing</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-completed-tab" data-toggle="pill" href="#pills-completed" (click)="getMyBookingList(3)">Completed</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-incomplete" role="tabpanel" aria-labelledby="pills-incomplete-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="tabinfo_block"  *ngFor="let pendingBookingList of booking_data | paginate: { itemsPerPage: 10, currentPage: page } ; let i = index">
+                    <div class="tabinfo_cont crd-bdy">
+                      <p class="date_cont"><span>Booking Date: </span><strong>{{ pendingBookingList.booking_date | date: 'EE, MMM d, y' }}</strong></p>
+                      <p><span>Booking ID: </span><strong>{{ pendingBookingList.booking_job_no }}</strong></p>
+                      <p><span>Cusomer Name : </span><strong>{{ pendingBookingList.customer_name }}</strong></p>
+                      <p><span>Cusomer Adddress : </span><strong>{{ pendingBookingList.full_address }}</strong></p>
+                      <h3><strong>{{pendingBookingList.cost}} {{pendingBookingList.currency}}</strong></h3>
+                    </div>
+                    <div class="tabinfo_pub modf_pub">
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(pendingBookingList.query_booking_id)">View</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No upcomming records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+              <div class="tab-pane fade" id="pills-ongoing" role="tabpanel" aria-labelledby="pills-ongoing-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="tabinfo_block"  *ngFor="let ongoingBookingList of booking_data | paginate: { itemsPerPage: 10, currentPage: page } ; let i = index">
+                    <div class="tabinfo_cont crd-bdy">
+                      <div *ngIf="ongoingBookingList.start_status == 0 && ongoingBookingList.tracking_status != 0"><img class="batch-img" src="./assets/images/on-the-way.png" alt="Batch image"></div>
+                      <div *ngIf="ongoingBookingList.start_status != 0"><img class="batch-img" src="./assets/images/service-start.png" alt="Batch image"></div>
+                      <p class="date_cont"><span>Booking Date: </span><strong>{{ ongoingBookingList.booking_date | date: 'EE, MMM d, y' }}</strong></p>
+                      <p><span>Booking ID: </span><strong>{{ ongoingBookingList.booking_job_no }}</strong></p>
+                      <p><span>Cusomer Name : </span><strong>{{ ongoingBookingList.customer_name }}</strong></p>
+                      <p><span>Cusomer Adddress : </span><strong>{{ ongoingBookingList.full_address }}</strong></p>
+                      <h3><strong>{{ongoingBookingList.cost}} {{ongoingBookingList.currency}}</strong></h3>
+                    </div>
+                    <div class="tabinfo_pub modf_pub">
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(ongoingBookingList.query_booking_id)">View</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No ongoing records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+              <div class="tab-pane fade show" id="pills-completed" role="tabpanel"
+                aria-labelledby="pills-completed-tab">
+                <div class="tabinfo_wrap">
+                  <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                    <div class="tabinfo_block"  *ngFor="let completedBookingList of booking_data | paginate: { itemsPerPage: 10, currentPage: page } ; let i = index">
+                      <div class="tabinfo_cont crd-bdy">
+                        <div><img class="batch-img" src="./assets/images/completed.png" alt="Batch image"></div>
+                        <p class="date_cont"><span>Booking Date: </span><strong>{{ completedBookingList.booking_date | date: 'EE, MMM d, y' }}</strong></p>
+                        <p><span>Booking ID: </span><strong>{{ completedBookingList.booking_job_no }}</strong></p>
+                        <p><span>Cusomer Name : </span><strong>{{ completedBookingList.customer_name }}</strong></p>
+                        <p><span>Cusomer Adddress : </span><strong>{{ completedBookingList.full_address }}</strong></p>
+                        <h3><strong>{{completedBookingList.cost}} {{completedBookingList.currency}}</strong></h3>
+                      </div>
+                      <div class="tabinfo_pub modf_pub">
+                        <!-- <div class="rev_opt">
+                          <span>89</span>Reviews
+                        </div> -->
+                        <div class="fixed_opt">
+                          <span class="def_btn" (click)="viewDetails(completedBookingList.query_booking_id)">View</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                    <div><strong>No complete records found.</strong></div>
+                  </div>
+                  <section class="pgn" *ngIf="booking_data?.length > 0">
+                    <div aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center">
+                        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                      </ul>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="warning_modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

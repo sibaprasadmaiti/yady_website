@@ -1,0 +1,150 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { ToastrService } from 'ngx-toastr';
+import { ApiServiceService } from '../../services/api-service.service';
+
+@Component({
+  selector: 'app-payment',
+  templateUrl: './payment.component.html',
+  styleUrls: ['./payment.component.css']
+})
+export class PaymentComponent implements OnInit {
+	
+	paymentForm: FormGroup;
+	showCardDiv: Boolean = true;
+	showCashDiv: Boolean = false;
+	logtoken = localStorage.getItem('LoginToken');
+	user_id = localStorage.getItem('userID');
+	total_price;
+	card_error_msg;
+	card_status;
+	booking_id;
+	body_obj;
+	infoMessage = "";
+
+  constructor(public formbuilder: FormBuilder, private route: ActivatedRoute,
+				private router: Router,public api_service: ApiServiceService,
+				private spinnerService: Ng4LoadingSpinnerService,
+				public toastr: ToastrService) { 
+				
+					this.paymentForm = formbuilder.group({
+						card_number : ['', Validators.compose([Validators.required,Validators.pattern("^[0-9]*$")])],
+						month : ['', Validators.compose([Validators.required,Validators.pattern("^[0-9]*$")])],
+						year: ['', Validators.compose([Validators.required,Validators.pattern("^[0-9]*$")])],
+						cvc: ['', Validators.compose([Validators.required,Validators.pattern("^[0-9]*$")])]
+					});
+				
+				}
+
+	ngOnInit() {
+		if(this.logtoken == '' || this.logtoken == null) {
+			this.router.navigateByUrl('/')
+				.then(() => {
+					localStorage.clear();
+				window.location.reload();
+			});
+		}
+		
+		this.route.params.subscribe(params => {
+			this.booking_id = params.booking_id;
+		});
+		this.getBookingSummary();
+	}
+	getBookingSummary() {
+		var token = this.logtoken;
+		var booking_id = this.booking_id;
+		this.spinnerService.show();
+		
+		this.api_service.HttpGetReq(`website/bookingSummary/?token=${token}&booking_id=${booking_id}`, true)
+			.then(
+				(response: any) => {
+				   this.spinnerService.hide();
+				   console.log('ccccccccc',response.data);
+				   //this.booking_data = response.data;
+				   this.total_price = response.data.total_cost;
+				  },
+				  (error) => {
+					this.spinnerService.hide();
+				  /*this.toastr.error('Internal server error');
+				  this.snackBar.open('Internal server error', 'End now', {
+					duration: 5000,
+				  });*/
+			});
+	}
+  
+	async payment() {
+		await (<any>window).Stripe.card.createToken({
+			number: this.paymentForm.value.card_number,
+			exp_month: this.paymentForm.value.month,
+			exp_year: this.paymentForm.value.year,
+			cvc: this.paymentForm.value.cvc
+		}, (status: number, response: any) => {
+			console.log(status);
+			console.log(response);
+			if(status == 402) {
+				alert('Invalid Card Details');
+				return false;
+			} else if(status == 200) {
+				console.log(response.id);
+				this.confirmBooking(response.id);
+			}
+		})
+	}
+	
+	showCard() {
+		this.showCardDiv = true;
+		this.showCashDiv = false;
+	}
+	showCash() {
+		this.showCardDiv = false;
+		this.showCashDiv = true;
+	}
+	
+	confirmBooking(stripe_token) {
+		this.spinnerService.show();
+		var body_obj = {stripe_token: stripe_token, booking_id: this.booking_id, amount: this.total_price, user_id: this.user_id, paid_medium: 1};
+		
+		this.api_service.HttpPostReqHeader('website/confirmBooking',body_obj,true,this.logtoken).then((response:any)=>{
+			if(response.success == true){
+				this.spinnerService.hide();
+				//alert(response.message);
+				this.router.navigateByUrl(`/success/Y2FyZA`)
+					.then(() => {
+					window.location.reload();
+				});
+			} else if(response.success == false) {
+				//console.log(response.message);
+				alert(response.message);
+				this.spinnerService.hide();
+			}
+			else{
+				this.spinnerService.hide();
+			}
+		})
+	}
+	
+	cashPayment() {
+		this.spinnerService.show();
+		var body_obj = { booking_id: this.booking_id, amount: this.total_price, user_id: this.user_id, paid_medium: 2};
+		//console.log(body_obj);
+		this.api_service.HttpPostReqHeader('website/confirmBooking',body_obj,true,this.logtoken).then((response:any)=>{
+			if(response.success == true){
+				this.spinnerService.hide();
+				//alert(response.message);
+				this.router.navigateByUrl(`/success/Y2FzaA`)
+					.then(() => {
+					window.location.reload();
+				});
+			} else if(response.success == false) {
+				//console.log(response.message);
+				alert(response.message);
+				this.spinnerService.hide();
+			}
+			else{
+				this.spinnerService.hide();
+			}
+		})
+	}
+}

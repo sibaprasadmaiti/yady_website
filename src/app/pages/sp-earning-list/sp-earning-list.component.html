@@ -1,0 +1,165 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <!--
+            <button class="navbar-toggler editToggle" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent">
+                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+            </button>
+-->
+        <!--
+             <div class="collaplsLeft collapse" id="navbarToggleExternalContent">
+             </div>
+-->
+        <button
+          class="sideBtn btn-block btn-info text-center mb-3"
+          onclick="openNav()"
+        >
+          ☰ Open Left menu
+        </button>
+        <div class="sidepanel" id="mySidepanel">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+            >×</a
+          >
+          <ul class="leftPanel">
+            <!--<li><a href="#"><span><img src="./assets/images/editprofile.png" alt=""></span>Account</a></li>-->
+            <li>
+              <a routerLink="/profile"
+                ><span><i class="far fa-user-edit"></i></span>Edit Profile</a
+              >
+            </li>
+            <li>
+              <a routerLink="/change_password"
+                ><span
+                  ><img src="./assets/images/changepassword.png" alt="" /></span
+                >Change Password</a
+              >
+            </li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                >Change Language</a
+              >
+            </li>
+            <li>
+              <a routerLink="/document-list"
+                ><span><i class="far fa-file-invoice"></i></span>Documents</a
+              >
+            </li>
+            <li>
+              <a routerLink="/service-list"
+                ><span><i class="fab fa-servicestack"></i></span>Services</a
+              >
+            </li>
+            <li>
+              <a routerLink="/query-request-list"
+                ><span><i class="far fa-comment-alt"></i></span>Query Request</a
+              >
+            </li>
+            <li>
+              <a routerLink="/sp-query-booking-list"
+                ><span
+                  ><i class="fa fa-calendar" style="font-size: 36px"></i></span
+                >Query Bookings</a
+              >
+            </li>
+            <li>
+              <a routerLink="/sp-earning-list" class="active"
+                ><span><img src="./assets/images/earning-money.png" alt="earning" /></span
+                >Earnings</a
+              >
+            </li>
+            <li>
+              <a routerLink="/working-hours"
+                ><span><i class="far fa-business-time"></i></span>Working
+                Hours</a
+              >
+            </li>
+            <li>
+              <a routerLink="/working-area-list"
+                ><span><i class="far fa-place-of-worship"></i></span>Working
+                Area</a
+              >
+            </li>
+            <li>
+              <a routerLink="/sp-booking-list"
+                ><span><img src="./assets/images/booked.png" alt="" /></span>My
+                Bookings</a
+              >
+            </li>
+            <li>
+              <a routerLink="/notification"
+                ><span
+                  ><img src="./assets/images/notification.png" alt="" /></span
+                >Notifications
+                <span
+                  *ngIf="newNotification"
+                  class="badge badge-light"
+                  style="color: red; width: 45px"
+                  >New</span
+                >
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">Earning Details</h3>
+          <div class="row">
+            <div class="col-md-4">
+              <span class="form-group col-lg-4 col-sm-12 col-md-12">
+                <label for="from_date">From Date</label>
+                <div class="input-group no-border">
+                  <input class="form-control"
+                    type="date"
+                    name="to_date"
+                    id="from_date"
+                    [(ngModel)]="from_date"
+                  />
+                </div>
+              </span>
+            </div>
+            <div class="col-md-4">
+              <span class="form-group col-lg-4 col-sm-12 col-md-12">
+                <label for="to_date">To Date</label>
+                <div class="input-group no-border">
+                  <input class="form-control"
+                    type="date"
+                    name="to_date"
+                    id="from_date"
+                    [(ngModel)]="to_date"
+                  />
+                </div>
+              </span>
+            </div>
+            <div class="col-md-4">
+              <span class="form-group col-lg-4 col-sm-12 col-md-12">
+                <button type="button" class="btn btn-primary" style="margin-top: 35px;" (click)="seachTransaction()">Search</button>
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" *ngFor="let item of myTransactionData">
+              <div class="prof_add_info" style="text-align: left;background-color: #00B2;">
+                <h5 class="prof_title"><strong>{{ item.booking_job_no }}</strong></h5>
+                <p>Service Name: <strong>{{item?.cat_subcat_name}}</strong></p>
+                <p>Total Earning: <strong>{{item?.total_earning}} {{item?.currency}}</strong></p>
+                <p>Platform Fee: <strong>{{item?.platform_fee}} {{item?.currency}}</strong></p>
+                <p>Net Earning: <strong>{{item?.sp_net_earning}} {{item?.currency}}</strong></p>
+                <p>Sattlement Status: <strong *ngIf="item?.settlement_status == 0" style="color: orange;">Pending</strong>
+                  <strong *ngIf="item?.settlement_status == 1" style="color: green;">Successful</strong></p>
+                <p>Booking Date: <strong>{{item?.booking_date}}</strong></p>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="myTransactionData.length == 0">
+              <p>No earning history found.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

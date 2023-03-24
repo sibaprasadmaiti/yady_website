@@ -1,0 +1,28 @@
+.cat-img{
+  height: 105px;
+  width: 105px;
+  object-fit: contain;
+}
+.start-col{
+  color: #ccc;
+}
+.start-col-yell{
+  color: #FFCC36;
+}
+.crd-bdy
+{
+  flex: 1;
+}
+.batch-img
+{
+  width: 60px;float: right;margin-right: 0px;
+}
+
+.srmyBooking.srtBatchaddtop {
+  position: relative;
+}
+.srmyBooking.srtBatchaddtop .batchimg-icon {
+  position: absolute;
+  right: -10px;
+  top: -6px;
+}

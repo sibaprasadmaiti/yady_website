@@ -1,0 +1,496 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button
+          class="sideBtn btn-block btn-info text-center"
+          onclick="openNav()"
+        >
+          ☰ {{'Open Left menu' | translate}}
+        </button>
+        <div class="sidepanel" id="mySidepanel">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+            >×</a
+          >
+          <ul class="leftPanel">
+            <li>
+              <a routerLink="/profile" class="active"
+                ><span
+                  ><img src="./assets/images/editprofile.png" alt="" /></span
+                >{{'Edit Profile' | translate}}</a
+              >
+            </li>
+            <li>
+              <a routerLink="/change_password"
+                ><span
+                  ><img src="./assets/images/changepassword.png" alt="" /></span
+                >{{'Change Password' | translate}}</a
+              >
+            </li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                >{{'Change Language' | translate}}</a
+              >
+            </li>
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/changelanguage.png" alt=""></span>Change Language</a></li>-->
+            <li *ngIf="userType == 1">
+              <a routerLink="/payment-option"
+                ><span
+                  ><img src="./assets/images/paymentoption.png" alt="" /></span
+                >{{'Payment Options' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/my-address-list"
+                ><span><img src="./assets/images/locate.png" alt="" /></span
+                >{{'Address' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/sr-wallet"
+                ><span
+                  ><img src="./assets/images/wallet-menu.png" alt="" /></span
+                >{{'My Wallet' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/my-booking-list"
+                ><span><img src="./assets/images/booked.png" alt="" /></span>{{'My Bookings' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/my-query-list"
+                ><span
+                  ><i
+                    class="far fa-file-search"
+                    style="font-size: 30px"
+                  ></i></span
+                >{{'My Query' | translate}}</a
+              >
+            </li>
+            <li *ngIf="userType == 1">
+              <a routerLink="/query-bookings"
+                ><span
+                  ><i class="fa fa-calendar" style="font-size: 36px"></i></span
+                >{{'Query Bookings' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 1">
+              <a routerLink="/sr-notification"
+                ><span
+                  ><img src="./assets/images/notification.png" alt="" /></span
+                >{{'Notifications' | translate}}
+                <span
+                  *ngIf="srNewNotification"
+                  class="badge badge-light"
+                  style="color: red; width: 45px"
+                  >{{'New' | translate}}</span
+                >
+              </a>
+            </li>
+            <li *ngIf="user_type == 1">
+              <a routerLink="/help-center"
+                ><span
+                  ><img src="./assets/images/help-center.png" alt="" /></span
+                >{{'Help Center' | translate}}
+              </a>
+            </li>
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/helpcenter.png" alt=""></span>Help Center</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/notification.png" alt=""></span>Notifications</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>-->
+            <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/faq.png" alt=""></span>FAQ</a></li>-->
+            <li *ngIf="user_type == 2">
+              <a routerLink="/document-list">
+                <span><i class="far fa-file-invoice"></i></span>{{'Documents' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/service-list"
+                ><span><i class="fab fa-servicestack"></i></span>{{'Services' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/query-request-list"
+                ><span><i class="far fa-comment-alt"></i></span>{{'Query Request' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/sp-query-booking-list"
+                ><span
+                  ><i class="fa fa-calendar" style="font-size: 36px"></i></span
+                >{{'Query Bookings' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/sp-earning-list"
+                ><span
+                  ><img
+                    src="./assets/images/earning-money.png"
+                    alt="earning" /></span
+                >{{'Earnings' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/working-hours"
+                ><span><i class="far fa-business-time"></i></span>{{'Working Hours' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/working-area-list"
+                ><span><i class="far fa-place-of-worship"></i></span>{{'Working Area' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/sp-booking-list"
+                ><span><img src="./assets/images/booked.png" alt="" /></span>{{'My Bookings' | translate}}</a
+              >
+            </li>
+            <li *ngIf="user_type == 2">
+              <a routerLink="/notification"
+                ><span
+                  ><img src="./assets/images/notification.png" alt="" /></span
+                >{{'Notifications' | translate}}
+                <span
+                  *ngIf="newNotification"
+                  class="badge badge-light"
+                  style="color: red; width: 45px"
+                  >{{'New' | translate}}</span
+                >
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <span style="font-size: 25px">{{ infoMessage }}</span>
+        <h3 class="innerHdn">{{'Update your Profile Details from here' | translate}}</h3>
+        <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="{{'First name' | translate}}"
+                formControlName="first_name"
+                id="first_name"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  profileForm.controls['first_name'].hasError('required') &&
+                  profileForm.controls['first_name'].touched
+                "
+              >
+                {{'Please enter a first name' | translate}}.
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Last name"
+                formControlName="last_name"
+                id="last_name"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  profileForm.controls['last_name'].hasError('required') &&
+                  profileForm.controls['last_name'].touched
+                "
+              >
+                Please enter a last name.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <input
+                style="position: relative"
+                type="email"
+                class="form-control pr-4"
+                formControlName="email"
+                placeholder="Email"
+                readonly
+              />
+              <span
+                style="
+                  position: absolute;
+                  right: 18px;
+                  top: 23px;
+                  cursor: pointer;
+                "
+                class="fas fa-edit"
+                data-toggle="modal"
+                data-target="#emailEdit"
+                title="Edit Email"
+              ></span>
+            </div>
+
+            <div class="form-group col-md-6 phn">
+              <!--<div class="selectLang">
+                              <select class="selectpicker" data-width="fit">
+                                     <option data-content='<span class="flag-icon flag-icon-us"></span>'>EN</option>
+                                     <option  data-content='<span class="flag-icon flag-icon-mx"></span>'>ESP</option>
+                              </select>
+                          </div>
+                          <input type="text" class="form-control" placeholder="Phone Number">-->
+              <input
+                type="text"
+                class="form-control"
+                formControlName="mobile_no"
+                ng2TelInput
+                [ng2TelInputOptions]="{ initialCountry: 'in' }"
+                readonly
+              />
+              <span
+                class="mobile-nom fas fa-edit"
+                style="
+                  position: absolute;
+                  right: 115px;
+                  top: 23px;
+                  cursor: pointer;
+                "
+                data-toggle="modal"
+                data-target="#mobileEdit"
+                title="Edit Mobile Number"
+              ></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <div>
+                <img class="d-block"
+                  src="{{ profileImage }}"
+                  alt="profile image"
+                  (error)="onImgError($event)"
+                  height="230"
+                  width="230"
+                  style="
+                    object-fit: contain;
+                    border: 1px solid #ccc;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="upload-btn-wrapper" style="padding-top: 10px">
+                  <button class="ubtn">
+                    <i class="far fa-arrow-circle-up"></i> {{'Change Image' | translate}}
+                  </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="myfile"
+                    (change)="imagePreview($event)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" formControlName="user_id" />
+          <button type="submit" class="" [disabled]="profileForm.invalid">
+            {{'Submit' | translate}}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- [ Email Edit ] -->
+<div class="modal fade loginModal quotModal" id="emailEdit" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>{{'Update Email' | translate}}</h5>
+        <span style="font-weight: 500; color: #0e6060; font-size: 13px">{{
+          infoMessage
+        }}</span>
+        <span style="font-weight: 500; color: #ff0000; font-size: 13px">{{
+          infoMessageRed
+        }}</span>
+        <form [formGroup]="emailUpdateForm" (ngSubmit)="verifyEmailOTP()">
+          <div class="form-group">
+            <div class="input-group">
+              <input
+                type="email"
+                autocomplete="off"
+                class="form-control"
+                formControlName="Email"
+                [(ngModel)]="email"
+                placeholder="Input email"
+              />
+            </div>
+            <div>{{ timeleft }}</div>
+            <button
+              type="button"
+              [hidden]="emailSendButton"
+              class="btn btn-primary"
+              (click)="getEmailOTP($event, email)"
+            >
+              {{'Send OTP' | translate}}
+            </button>
+            <button
+              type="button"
+              [hidden]="emailReSendButton"
+              class="btn btn-primary"
+              (click)="resendEmailOTP($event, email)"
+            >
+              {{'Resend OTP' | translate}}
+            </button>
+            <div
+              class="error"
+              *ngIf="
+                emailUpdateForm.controls['email'].hasError('required') &&
+                emailUpdateForm.controls['email'].touched
+              "
+            >
+              {{'Please enter a valid email' | translate}}.
+            </div>
+            <div
+              class="error"
+              *ngIf="
+                emailUpdateForm.controls['email'].hasError('pattern') &&
+                emailUpdateForm.controls['email'].touched
+              "
+            >
+              {{'Please enter a valid email' | translate}}.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input
+                type="text"
+                autocomplete="off"
+                class="form-control"
+                formControlName="email_otp"
+                placeholder="Email OTP"
+                disabled
+              />
+            </div>
+            <div
+              class="error"
+              *ngIf="
+                emailUpdateForm.controls['email_otp'].hasError('required') &&
+                emailUpdateForm.controls['email_otp'].touched
+              "
+            >
+              {{'Please enter email OTP' | translate}}.
+            </div>
+          </div>
+          <button type="submit" [disabled]="emailUpdateForm.invalid">
+            {{'Verify OTP' | translate}}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [ Mobile Edit ] -->
+<div class="modal fade loginModal quotModal" id="mobileEdit" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>{{'Update Mobile No' | translate}}.</h5>
+        <span style="font-weight: 500; color: #0e6060; font-size: 13px">{{
+          infoMessage
+        }}</span>
+        <span style="font-weight: 500; color: #ff0000; font-size: 13px">{{
+          infoMessageRed
+        }}</span>
+        <form [formGroup]="mobileUpdateForm" (ngSubmit)="verifyMobileOTP()">
+          <div class="form-group phn phoneNobg">
+            <div class="input-group">
+              <input
+                type="text"
+                autocomplete="off"
+                class="form-control"
+                formControlName="mobile_no"
+                ng2TelInput
+                (countryChange)="onCountryChange($event)"
+                (intlTelInputObject)="telInputObject($event)"
+              />
+            </div>
+            <div>{{ timeleft2 }}</div>
+            <button
+              type="button"
+              [hidden]="mobileSendButton"
+              class="btn btn-primary"
+              (click)="getMobileOTP($event)"
+            >
+              {{'Send OTP' | translate}}
+            </button>
+            <button
+              type="button"
+              [hidden]="mobileReSendButton"
+              class="btn btn-primary"
+              (click)="resendMobileOTP($event)"
+            >
+              {{'Resend OTP' | translate}}
+            </button>
+            <input
+              type="hidden"
+              class="form-control"
+              formControlName="country_code"
+            />
+            <div
+              class="error"
+              *ngIf="
+                mobileUpdateForm.controls['mobile_no'].hasError('required') &&
+                mobileUpdateForm.controls['mobile_no'].touched
+              "
+            >
+              {{'Please enter mobile number' | translate}}.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input
+                type="text"
+                autocomplete="off"
+                class="form-control"
+                formControlName="mobile_otp"
+                disabled
+                placeholder="Mobile OTP"
+              />
+            </div>
+            <div
+              class="error"
+              *ngIf="
+                mobileUpdateForm.controls['mobile_otp'].hasError('required') &&
+                mobileUpdateForm.controls['mobile_otp'].touched
+              "
+            >
+              {{'Please enter mobile OTP' | translate}}.
+            </div>
+          </div>
+          <button type="submit" [disabled]="mobileUpdateForm.invalid">
+            {{'Verify OTP' | translate}}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

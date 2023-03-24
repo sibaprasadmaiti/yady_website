@@ -1,0 +1,313 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <ul class="leftPanel">
+          <!--<li><a href="#"><span><img src="images/editprofile.png" alt=""></span>Account</a></li>-->
+          <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+            alt=""></span>Change Password</a></li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                >Change Language</a
+              >
+            </li>
+          <li><a routerLink="/document-list"><span><i class="far fa-file-invoice"></i></span>Documents</a></li>
+          <li>
+            <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>Services</a>
+          </li>
+          <li>
+            <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+          </li>
+          <li>
+            <a routerLink="/sp-query-booking-list"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/sp-earning-list"
+              ><span><img src="./assets/images/earning-money.png" alt="earning" /></span
+              >Earnings</a
+            >
+          </li>
+          <li>
+            <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>Working Hours</a>
+          </li>
+          <li><a routerLink="/working-area-list"><span><i class="far fa-place-of-worship"></i></span>Working Area</a>
+          </li>
+          <li><a routerLink="/sp-booking-list" class="active"><span><img src="./assets/images/booked.png"
+                  alt=""></span>My Bookings</a></li>
+          <li>
+            <a routerLink="/notification"><span><img src="./assets/images/notification.png"
+                  alt=""></span>Notifications
+                  <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                </a>
+              </li>
+          <!--<li><a href="#" class="active"><span><i class="far fa-business-time"></i></span>Working Hours</a></li>
+                      <li><a href="#"><span><i class="fab fa-servicestack"></i></span>Services</a></li>
+                      <li><a href="#"><span><i class="far fa-place-of-worship"></i></span>Working Area</a></li>
+                      <li><a href="#"><span><i class="far fa-photo-video"></i></span>Image &amp; Video</a></li>
+                      <li><a href="#"><span><img src="images/changepassword.png" alt=""></span>Change Password</a></li>
+                      <li><a href="#"><span><img src="images/changelanguage.png" alt=""></span>Change Language</a></li>
+                      <li><a href="#"><span><img src="images/paymentoption.png" alt=""></span>Terms &amp; Condition</a></li>
+                      <li><a href="#"><span><img src="images/helpcenter.png" alt=""></span>Help Center</a></li>
+                      <li><a href="#"><span><img src="images/notification.png" alt=""></span>Notifications</a></li>
+                      <li><a href="#"><span><img src="images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>
+                      <li><a href="#"><span><img src="images/faq.png" alt=""></span>FAQ</a></li>-->
+        </ul>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">My Bookings</h3>
+          <div class="tabsection">
+
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="pills-bookingRequests-tab" data-toggle="pill"
+                  href="#pills-bookingRequests" (click)="getMyBookingList(0)">Booking Request</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-incomplete-tab" data-toggle="pill" href="#pills-incomplete" (click)="getMyBookingList(1)">Upcoming</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-ongoing-tab" data-toggle="pill" href="#pills-ongoing" (click)="getMyBookingList(3)">Ongoing</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-completed-tab" data-toggle="pill" href="#pills-completed" (click)="getMyBookingList(2)">Completed</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-cancel-tab" data-toggle="pill" href="#pills-cancel" (click)="getMyBookingList(4)">Cancel</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-bookingRequests" role="tabpanel"
+                aria-labelledby="pills-bookingRequests-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="tabinfo_block"  *ngFor="let pendingBookingList of booking_data | paginate: { itemsPerPage: 10, currentPage: page } ; let i = index">
+                    <div class="tabinfo_cont">
+                      <h3 class="headewrap_price"><span>{{pendingBookingList.cat_subcat_name}} </span></h3>
+                      <p class="date_cont">{{ pendingBookingList.booking_date | date }} at {{pendingBookingList.booking_time}}</p>
+                      <p><span>Booking ID: </span><strong>{{ pendingBookingList.booking_job_no }}</strong></p>
+                      <p><span>Customer Name : </span><strong>{{ pendingBookingList.customer_name }}</strong></p>
+                      <p><span>Customer Adddress : </span><strong>{{ pendingBookingList.address }}</strong></p>
+                      <h3><strong>{{pendingBookingList.total_cost}} {{pendingBookingList.currency}}</strong> </h3>
+                    </div>
+                    <div class="tabinfo_pub modf_pub">
+                      <div class="fixed_opt">
+                        <span class="def_btn" style="margin-right: 10px;" (click)="viewDetails(pendingBookingList._id)">View</span>
+                        <span class="def_btn2" (click)="rejectConfirmation(pendingBookingList._id)">Reject</span>
+                        <span class="def_btn" (click)="acceptRequest(pendingBookingList._id)">Accept</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No pending records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+              <div class="tab-pane fade" id="pills-incomplete" role="tabpanel" aria-labelledby="pills-incomplete-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="tabinfo_block"  *ngFor="let pendingBookingList of booking_data | paginate: { itemsPerPage: 10, currentPage: page } ; let i = index">
+                    <div class="tabinfo_cont crd-bdy">
+                      <div *ngIf="pendingBookingList.reschedule_status != 0 || pendingBookingList.sp_reschedule_status != 0"><img class="batch-img" src="./assets/images/reschedule.png" alt="Batch image"></div>
+                      <h3 class="headewrap_price"><span>{{pendingBookingList.cat_subcat_name}} </span> </h3>
+                      <p class="date_cont">{{ pendingBookingList.booking_date | date }} at {{pendingBookingList.booking_time}}</p>
+                      <p><span>Booking ID: </span><strong>{{ pendingBookingList.booking_job_no }}</strong></p>
+                      <p><span>Customer Name : </span><strong>{{ pendingBookingList.customer_name }}</strong></p>
+                      <p><span>Customer Adddress : </span><strong>{{ pendingBookingList.address }}</strong></p>
+                      <h3><strong>{{pendingBookingList.total_cost}} {{pendingBookingList.currency}}</strong></h3>
+                    </div>
+                    <div class="tabinfo_pub modf_pub">
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(pendingBookingList._id)">View</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No upcomming records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+              <div class="tab-pane fade" id="pills-ongoing" role="tabpanel" aria-labelledby="pills-ongoing-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="tabinfo_block"  *ngFor="let pendingBookingList of booking_data | paginate: { itemsPerPage: 10, currentPage: page } ; let i = index">
+                    <div class="tabinfo_cont crd-bdy">
+                      <div *ngIf="pendingBookingList.reschedule_status != 0 && pendingBookingList.tracking_status == 0"><img class="batch-img" src="./assets/images/reschedule.png" alt="Batch image"></div>
+                      <div *ngIf="pendingBookingList.start_status == 0 && pendingBookingList.tracking_status != 0"><img class="batch-img" src="./assets/images/on-the-way.png" alt="Batch image"></div>
+                      <div *ngIf="pendingBookingList.start_status != 0"><img class="batch-img" src="./assets/images/service-start.png" alt="Batch image"></div>
+                      <h3 class="headewrap_price"><span>{{pendingBookingList.cat_subcat_name}} </span> </h3>
+                      <p class="date_cont">{{ pendingBookingList.booking_date | date }} at {{pendingBookingList.booking_time}}</p>
+                      <p><span>Booking ID: </span><strong>{{ pendingBookingList.booking_job_no }}</strong></p>
+                      <p><span>Customer Name : </span><strong>{{ pendingBookingList.customer_name }}</strong></p>
+                      <p><span>Customer Adddress : </span><strong>{{ pendingBookingList.address }}</strong></p>
+                      <h3><strong>{{pendingBookingList.total_cost}} {{pendingBookingList.currency}}</strong></h3>
+                    </div>
+                    <div class="tabinfo_pub modf_pub">
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(pendingBookingList._id)">View</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No ongoing records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+              <div class="tab-pane fade show" id="pills-completed" role="tabpanel"
+                aria-labelledby="pills-completed-tab">
+                <div class="tabinfo_wrap">
+                  <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                    <div class="tabinfo_block"  *ngFor="let pendingBookingList of booking_data | paginate: { itemsPerPage: 10, currentPage: page } ; let i = index">
+                      <div class="tabinfo_cont crd-bdy">
+                        <div><img class="batch-img" src="./assets/images/completed.png" alt="Batch image"></div>
+                        <h3 class="headewrap_price"><span>{{pendingBookingList.cat_subcat_name}} </span> </h3>
+                        <p class="date_cont">{{ pendingBookingList.booking_date | date }} at {{pendingBookingList.booking_time}}</p>
+                        <p><span>Booking ID: </span><strong>{{ pendingBookingList.booking_job_no }}</strong></p>
+                        <p><span>Customer Name : </span><strong>{{ pendingBookingList.customer_name }}</strong></p>
+                        <p><span>Customer Adddress : </span><strong>{{ pendingBookingList.address }}</strong></p>
+                        <h3><strong>{{pendingBookingList.total_cost}} {{pendingBookingList.currency}}</strong></h3>
+                      </div>
+                      <div class="tabinfo_pub modf_pub">
+                        <!-- <div class="rev_opt">
+                          <span>89</span>Reviews
+                        </div> -->
+                        <div class="fixed_opt">
+                          <span class="def_btn" (click)="viewDetails(pendingBookingList._id)">View</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                    <div><strong>No complete records found.</strong></div>
+                  </div>
+                  <section class="pgn" *ngIf="booking_data?.length > 0">
+                    <div aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center">
+                        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                      </ul>
+                    </div>
+                  </section>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="pills-cancel" role="tabpanel" aria-labelledby="pills-cancel-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="tabinfo_block"  *ngFor="let pendingBookingList of booking_data | paginate: { itemsPerPage: 10, currentPage: page } ; let i = index">
+                    <div class="tabinfo_cont">
+                      <h3 class="headewrap_price"><span>{{pendingBookingList.cat_subcat_name}} </span> </h3>
+                      <p class="date_cont">{{ pendingBookingList.booking_date | date }} at {{pendingBookingList.booking_time}}</p>
+                      <p><span>Booking ID: </span><strong>{{ pendingBookingList.booking_job_no }}</strong></p>
+                      <p><span>Customer Name : </span><strong>{{ pendingBookingList.customer_name }}</strong></p>
+                      <p><span>Customer Adddress : </span><strong>{{ pendingBookingList.address }}</strong></p>
+                      <h3><strong>{{pendingBookingList.total_cost}} {{pendingBookingList.currency}}</strong></h3>
+                    </div>
+                    <div class="tabinfo_pub modf_pub">
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(pendingBookingList._id)">View</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No cancel records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" (click)="rejectRequest()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="warning_modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

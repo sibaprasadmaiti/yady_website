@@ -1,0 +1,467 @@
+<section class="innerHdnB">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-12">
+        <h2><a routerLink="/query-bookings" class="for-back"><i class="fas  fa-arrow-left"></i> </a> Query Booking
+          Details</h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rateListbg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-5 bSummaryLeft">
+        <div class="prof_add_info">
+          <div class="loc_img locNewimg">
+            <img src="./assets/images/booked.png" alt="">
+          </div>
+          <p class="prof_title">Booked ID: <span>{{bookingData?.booking_job_no}}</span></p>
+          <p class="prof_title">Booked On: <span>{{bookingData?.booking_date | date:'EEEE, MMMM d, y'}}</span></p>
+          <p class="prof_title">Service Provider: <span>{{bookingData?.sp_name}}</span></p>
+          <p class="prof_title">Booking Status: <span>{{bookingData?.bookingStatusStr}}</span></p>
+          <div *ngIf="bookingData?.tracking_status == 1">
+            <div><a class="ubtn" href="tel:{{bookingData?.sp_mobile_no}}">Call Service Provider</a></div>
+            <div style="margin-top: 20px;">
+              <button type="button" class="newaddons" (click)="startTracking()">Track Service</button>
+            </div>
+          </div>
+        </div>
+        <div class="prof_add_info">
+          <div class="loc_img locNewimg">
+            <img src="./assets/images/locate.png" alt="locate">
+          </div>
+          <p class="prof_title">Service Location</p>
+          <p>{{bookingData?.full_address}}</p>
+        </div>
+        <div class="prof_add_info">
+          <div class="loc_img locNewimg">
+            <img src="./assets/images/description.png" alt="description" style="width: 40px;">
+          </div>
+          <p class="prof_title">Service Type</p>
+          <p>{{bookingData?.service_type}}</p>
+        </div>
+
+        <div style="margin-bottom: 60px;text-align: center;">
+          <button type="button" class="newaddons" data-toggle="modal" data-target="#serviceImageModal">Service
+            Image(s)</button>
+        </div>
+
+        <div class="prof_add_info bdInfo late-reason">
+          <div class="loc_img locNewimg">
+            <img src="./assets/images/instruction.png" alt="instruction" style="width: 40px;">
+          </div>
+          <p class="prof_title">Service Description</p>
+          <p>{{bookingData?.description}}</p>
+        </div>
+
+      </div>
+      <div class="col-md-7">
+        <div class="price_content_block">
+          <p class="cont_adjt"><span>Service Cost: </span><strong>{{ bookingData?.before_tax_cost }}
+              {{bookingData?.currency}}</strong></p>
+          <p class="cont_adjt add_border"><span>Tax: </span><strong>{{ bookingData?.tax }} {{ bookingData?.currency }}</strong></p>
+
+          <p class="cont_adjt"><span>After Tax Total: </span>
+            <strong>{{bookingData?.after_tax_cost}}
+              {{bookingData?.currency}}</strong>
+          </p>
+          <p class="cont_adjt add_border"><span>Wallet Amount Used: </span>
+            <strong *ngIf="bookingData?.wallet_pay_status == 1" style="color: #004E4E;font-weight: 500;">{{ bookingData?.used_wallet_money }}
+              {{ bookingData?.currency }}</strong>
+              <strong *ngIf="bookingData?.wallet_pay_status == 0" style="color: #004E4E;font-weight: 500;">0
+                {{ bookingData?.currency }}</strong>
+          </p>
+          <div class="totle_pric_txt noBrdrBtm">
+            <p class="cont_adjt"><span>Order Total: </span>
+              <strong>{{bookingData?.cost}}
+                {{bookingData?.currency}}</strong>
+            </p>
+          </div>
+          <p class="cont_adjt add_border">
+            <span>Additional Part(s) Cost: </span>
+            <strong>{{bookingData?.extra_part_total_cost}}
+              {{bookingData?.currency}}</strong>
+          </p>
+          <div class="totle_pric_txt noBrdrBtm" >
+            <p class="cont_adjt"><span>Total Pay: </span>
+              <strong>{{ bookingData?.cost + bookingData?.extra_part_total_cost }}
+                {{bookingData?.currency}}</strong>
+            </p>
+          </div>
+        </div>
+        <div class="amountPaid">Paid By: <span *ngIf="bookingData?.paid_medium == 1">Card</span><span
+            *ngIf="bookingData?.paid_medium == 2">Cash</span></div>
+            <div *ngIf="bookingData?.booking_status == 3 && bookingData?.invoice">
+              <a target="_blank" href="{{bookingData?.invoice}}">
+              <button type="button" class="newaddons">View Invoice</button>
+              </a>
+            </div>
+        <div class="providers_info_wrap providers_info_wrap2 bookingDetlUsr">
+          <!-- <div class="providers_info" style="display: block;">
+            <div class="bookRating">
+              <div class="providers_pic">
+                <img src="{{bookingData?.profile_img}}" alt="">
+              </div>
+              <div class="providers_name">
+                <p>{{bookingData?.sp_name}}
+                  <span class="srbIcon">
+
+                  </span>
+                </p>
+                <div class="star">
+
+                  <span>
+
+                    <i class='fa fa-star fa-fw start-col'></i>
+
+                    <i class='fa fa-star fa-fw start-col'></i>
+
+                    <i class='fa fa-star fa-fw start-col'></i>
+
+                    <i class='fa fa-star fa-fw start-col'></i>
+
+                    <i class='fa fa-star fa-fw start-col'></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="newaddons"
+              *ngIf="bookingData?.booking_status == 3 && bookingData?.rating == null && bookingData?.review == null">Write
+              a Review</button> -->
+            <!-- <div *ngIf="bookingData?.review != null">
+              <p>{{bookingData?.review}}</p>
+            </div>
+          </div> -->
+          <div class="providers_info"
+            *ngIf="bookingData?.booking_status == 3">
+            <div class="bookRating">
+              <div class="providers_pic">
+                <img src="./assets/images/pic1.png" alt="">
+              </div>
+              <div class="providers_name">
+                <p>{{bookingData?.customer_name}}
+                  <span class="srbIcon">
+                    <!-- <i class="far fa-heart"></i> -->
+                  </span>
+                </p>
+                <p>{{bookingData?.review_date | date:'EEEE, MMMM d, y'}}</p>
+                <div class="star">
+                  <!-- <img src="./assets/images/star.png" alt=""> -->
+                  <span>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 1"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating == null"></i>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 2"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 2"></i>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 3"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 3"></i>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 4"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 4"></i>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating == 5"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 5"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="bookingData?.review != null">
+              <p>{{bookingData?.review}}</p>
+            </div>
+
+            <button type="button" class="newaddons"
+            *ngIf="bookingData?.booking_status == 3 && bookingData?.rating == null && bookingData?.review == null" data-toggle="modal" data-target="#ratingReviewModal">Write
+            a Review</button>
+          </div>
+
+        </div>
+        <!-- Request for additional parts -->
+        <div class="radioSection" *ngIf="pauseType == 2 && confirmStatus == 0 && adminApproval ==1">
+          <h5>Requested for additional parts</h5>
+          <p class="cont_adjt"><span class="addlPartreq">Reason : {{extraPartsData?.reason}}</span></p>
+          <p class="cont_adjt"><span class="addlPartreq">Additional Cost : {{extraPartsData?.cost}}
+              {{extraPartsData?.currency}}</span></p>
+          <br />
+          <button type="button" class="newaddons float-right" data-toggle="modal" data-target="#pauseImage">View
+            Document(s)</button>
+          <button type="submit" class="rejectBtn" data-toggle="modal"
+            data-target="#additonalPartsReject">Reject</button>
+          <button type="submit" data-toggle="modal" data-target="#additonalPartsAccept">Accept</button>
+        </div>
+        <!-- Request forAdditional time -->
+         <div class="radioSection" *ngIf="extraTimeStatus == 1 && extraDayConfirmStatus == 0">
+          <h5>Requested for an Additional Day</h5>
+          <button type="submit" class="rejectBtn" data-toggle="modal"
+            data-target="#additonalTimeReject">Reject</button>
+          <button type="submit" data-toggle="modal" data-target="#additonalTimeAccept">Accept</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade loginModal quotModal" id="serviceImageModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>Service Image(s)</h5><br />
+        <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" *ngIf="bookingData?.query_images.length > 0">
+            <div class="carousel-item " [ngClass]="{active:isFirst}"
+              *ngFor="let image of bookingData?.query_images; index as i;first as isFirst">
+              <img class="d-block w-100" src="{{image.q_booking_img}}" alt="Document" width="460" height="345">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleControls1" *ngIf="bookingData?.query_images.length > 1"
+            role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color:#00B2B2"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls1" *ngIf="bookingData?.query_images.length > 1"
+            role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="background-color:#00B2B2"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h5 style="text-align: center;">{{message}}</h5><br />
+            <!-- <button class="def_btn" data-dismiss="modal">Ok</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="pauseImage" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>Pause Image(s)</h5><br />
+        <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" *ngIf="extraPartsData?.pause_image.length > 0">
+            <div class="carousel-item " [ngClass]="{active:isFirst}"
+              *ngFor="let image of extraPartsData?.pause_image; index as i;first as isFirst">
+              <img class="d-block w-100" src="{{image.pause_image}}" alt="Document" width="460" height="345">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleControls3"
+            *ngIf="extraPartsData?.pause_image.length > 1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color:#00B2B2"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls3"
+            *ngIf="extraPartsData?.pause_image.length > 1" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="background-color:#00B2B2"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="additonalPartsReject" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">Are you sure want to reject the quotation?</h4><br /><br />
+            <button class="def_btn"
+              (click)="rejectAditionalParts(bookingData?._id, extraPartsData?.booking_pause_id)">PROCEED</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="additonalPartsAccept" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">Are you sure want to proceed for payment?</h4><br /><br />
+            <button class="def_btn" (click)="payment()">PAY NOW</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="onlinePayment" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn">Card Details</h3>
+            <div class="row">
+              <div class="col-md-6" *ngFor="let savedCards of cardData; let i = index">
+                <div class="paymentCardbg">
+                  <div>
+                    <h5>{{savedCards.brand}}</h5>
+                    <p>********{{savedCards.last4}}</p>
+                  </div>
+                  <div>
+                    <span class="form-group">
+                      <input type="checkbox" id="{{savedCards.id}}" [checked]="savedCards.default_status == 1"
+                        (click)="makeDefault(savedCards.id)">
+                      <label for="{{savedCards.id}}"></label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="" (click)="onlinePayment()">Proceed Payment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="additonalTimeAccept" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">Are you sure want to accept this request?</h4><br /><br />
+            <button class="def_btn" (click)="acceptAdditionalTimeRequest()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="additonalTimeReject" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">Are you sure want to reject the quotation?</h4><br /><br />
+            <button class="def_btn"
+              (click)="rejectAditionalTimeRequest()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="ratingReviewModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn">Rating & Review</h3>
+            <div class="">
+              <span *ngIf="bookingData?.rating != null">
+                <i class='fa fa-star fa-fw start-col-yell' id="star1" (click)="startRating($event,1)" *ngIf="bookingData?.rating >= 1" data-value="1"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star1" (click)="startRating($event,1)" *ngIf="bookingData?.rating == null" data-value="1"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star2" (click)="startRating($event,2)" *ngIf="bookingData?.rating >= 2" data-value="2"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star2" (click)="startRating($event,2)" *ngIf="bookingData?.rating < 2" data-value="2"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star3" (click)="startRating($event,3)" *ngIf="bookingData?.rating >= 3" data-value="3"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star3" (click)="startRating($event,3)" *ngIf="bookingData?.rating < 3" data-value="3"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star4" (click)="startRating($event,4)" *ngIf="bookingData?.rating >= 4" data-value="4"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star4" (click)="startRating($event,4)" *ngIf="bookingData?.rating < 4" data-value="4"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star5" (click)="startRating($event,5)" *ngIf="bookingData?.rating == 5" data-value="5"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star5" (click)="startRating($event,5)" *ngIf="bookingData?.rating < 5" data-value="5"></i>
+              </span>
+              <span *ngIf="bookingData?.rating == null">
+
+                <i class='fa fa-star fa-fw start-col' id="star1" (click)="startRating($event,1)" data-value="1"></i>&nbsp;
+
+                <i class='fa fa-star fa-fw start-col' id="star2" (click)="startRating($event,2)" data-value="2"></i>&nbsp;
+
+                <i class='fa fa-star fa-fw start-col' id="star3" (click)="startRating($event,3)" data-value="3"></i>&nbsp;
+
+                <i class='fa fa-star fa-fw start-col' id="star4" (click)="startRating($event,4)" data-value="4"></i>&nbsp;
+
+                <i class='fa fa-star fa-fw start-col' id="star5" (click)="startRating($event,5)" data-value="5"></i>
+              </span>
+            </div>
+            <div>
+              <textarea class="form-control mb-3" cols="40" rows="1" [(ngModel)]="reviewText" name="reviewText" placeholder="Write here"></textarea>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary" (click)="submitReview()" style="width: auto;">Submit</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<section class="editProfileBg">
+        <div class="container customContainer">
+            <div class="row">
+                <div class="col-md-4">
+                    <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+                    <ul class="leftPanel">
+                        <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>Edit Profile</a></li>
+                        <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change Password</a></li>
+                        <li>
+                          <a routerLink="/change-language"
+                            ><span
+                              ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                            >Change Language</a
+                          >
+                        </li>
+                        <li><a routerLink="/payment-option" class="active"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment Options</a></li>
+                        <li><a routerLink="/my-address-list"><span><img src="./assets/images/locate.png" alt=""></span>Address</a></li>
+                        <li><a routerLink="/sr-wallet"><span><img src="./assets/images/wallet-menu.png" alt="sr wallet"></span>My Wallet</a></li>
+                        <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+                        </li>
+                        <li>
+                          <a routerLink="/my-query-list"><span><i class="far fa-file-search" style="font-size:30px"></i></span>My Query</a></li>
+                <li>
+                  <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query Bookings</a></li>
+                        <li>
+                          <a routerLink="/sr-notification"><span><img
+                                src="./assets/images/notification.png" alt=""></span>Notifications
+                            <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                          </a>
+                          </li>
+                          <li>
+                            <a routerLink="/help-center"
+                              ><span
+                                ><img
+                                  src="./assets/images/help-center.png"
+                                  alt="help center" /></span>Help Center</a>
+                          </li>
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/helpcenter.png" alt=""></span>Help Center</a></li>-->
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/notification.png" alt=""></span>Notifications</a></li>-->
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>-->
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/faq.png" alt=""></span>FAQ</a></li>-->
+                    </ul>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h3 class="innerHdn">Payment Option</h3>
+					<span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+					<span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6" *ngFor="let savedCards of cardData; let i = index">
+                                <div class="paymentCardbg">
+									<span class="crossIcon" (click)="deleteCard(savedCards.id)"><i class="far fa-times-circle"></i></span>
+                                    <div>
+                                        <h5>{{savedCards.brand}}</h5>
+                                        <p>********{{savedCards.last4}}</p>
+                                    </div>
+                                    <div>
+                                        <span class="form-group">
+                                            <input type="checkbox" id="{{savedCards.id}}" [checked]="savedCards.default_status == 1" (click)="makeDefault(savedCards.id)">
+                                            <label for="{{savedCards.id}}"></label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="" data-toggle="modal" data-target="#paymentcard">Add New Card</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </section>

@@ -1,0 +1,89 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="inner_main_content" *ngIf="!serviceAddScreen">
+          <h3 class="innerHdn"><a routerLink="/service-list" class="for-back"><i class="fas  fa-arrow-left"></i> </a> {{'Service Category' | translate}}</h3>
+          <form>
+            <div class="row">
+              <div class="form-group col-md-12">
+
+                  <label class="label_opt">{{'Select service category' | translate}}</label>
+                  <div class="radioInn" *ngFor="let item of allCategory; let i = index">
+                    <div class="custom-control custom-checkbox rateListCheck">
+                      <input type="checkbox" class="custom-control-input" id="customCheck{{i}}" (change)="selectedCategory($event,item.category_id)">
+                      <label class="custom-control-label" for="customCheck{{i}}">{{ item.category_name }}</label>
+                    </div>
+                  </div>
+
+                <button type="button" class="" (click)="addService()">{{'Next' | translate}}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="inner_main_content" *ngIf="serviceAddScreen">
+          <h3 class="innerHdn">{{'Service Sub Category' | translate}}</h3>
+          <form>
+            <div class="row">
+              <div class="form-group col-md-8">
+                <div class="radioSection" *ngFor="let item of subCategoryData">
+                  <label class="label_opt">{{item.category_name}}</label>
+                  <div *ngIf="item.sub_category_details !='xxxx'">
+                    <div class="custom-control custom-checkbox rateListCheck" *ngFor="let subItem of item.sub_category_details; let i = index" style="margin-bottom: 10px;">
+                      <input type="checkbox" class="custom-control-input" id="subCheck{{i}}" (change)="selectedSubCategory($event,subItem._id)">
+                      <label class="custom-control-label" for="subCheck{{i}}">{{ subItem.sub_category_name }}</label>
+                    </div>
+                  </div>
+
+                </div>
+                <button type="button" class="" (click)="saveService()">{{'Submit' | translate}}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <!-- <button class="def_btn" (click)="deleteCategory()">Yes</button>&nbsp;&nbsp;&nbsp; -->
+            <button class="def_btn2" data-dismiss="modal">{{'Ok' | translate}}</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br /><br />
+            <button class="def_btn" data-dismiss="modal">{{'Ok' | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

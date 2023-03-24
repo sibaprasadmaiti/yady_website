@@ -1,0 +1,62 @@
+<section class="editProfileBg">
+	<div class="container customContainer">
+		<div class="row">
+			<div class="col-md-4">
+				<ul class="leftPanel">
+					<li style="cursor: pointer"><a (click)="showCard()"><span><img src="./assets/images/paymentoption.png" alt=""></span>Credit / Debit Card</a></li>
+					<li style="cursor: pointer"><a (click)="showCash()"><span><img src="./assets/images/paymentoption.png" alt=""></span>Cash</a></li>
+				</ul>
+			</div>
+			<div class="col-md-8" *ngIf="showCardDiv">
+				<h3 class="innerHdn">Card Details</h3>
+				<form [formGroup]="paymentForm" (ngSubmit)="payment()">
+					<div class="row">
+						<div class="form-group col-md-12">
+							<input type="text" class="form-control" placeholder="Card Number" id="card_number" formControlName="card_number">
+							<div class="error" *ngIf="paymentForm.controls['card_number'].hasError('required') && paymentForm.controls['card_number'].touched">
+								Please enter card number.
+							</div>
+							<div *ngIf="paymentForm.controls['card_number'].hasError('pattern') && paymentForm.controls['card_number'].touched">
+								Please enter a valid card number.
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-4">
+							<input type="text" class="form-control" placeholder="Month" id="month" formControlName="month">
+							<div class="error" *ngIf="paymentForm.controls['month'].hasError('required') && paymentForm.controls['month'].touched">
+								Please enter month.
+							</div>
+							<div *ngIf="paymentForm.controls['month'].hasError('pattern') && paymentForm.controls['month'].touched">
+								Please enter a valid month.
+							</div>
+						</div>
+						<div class="form-group col-md-4">
+							<input type="text" class="form-control" placeholder="Year" id="year" formControlName="year">
+							<div class="error" *ngIf="paymentForm.controls['year'].hasError('required') && paymentForm.controls['year'].touched">
+								Please enter year.
+							</div>
+							<div *ngIf="paymentForm.controls['year'].hasError('pattern') && paymentForm.controls['year'].touched">
+								Please enter a valid year.
+							</div>
+						</div>
+						<div class="form-group col-md-4">
+							<input type="text" class="form-control" placeholder="CVC" id="cvc" formControlName="cvc">
+							<div class="error" *ngIf="paymentForm.controls['cvc'].hasError('required') && paymentForm.controls['cvc'].touched">
+								Please enter CVC.
+							</div>
+							<div *ngIf="paymentForm.controls['cvc'].hasError('pattern') && paymentForm.controls['cvc'].touched">
+								Please enter a valid CVC.
+							</div>
+						</div>
+					</div>
+					<button type="submit" class="" [disabled]="paymentForm.invalid" >Submit</button>
+				</form>
+			</div>
+			<div class="col-md-8" *ngIf="showCashDiv">
+				<h3 class="innerHdn">Cash Payment</h3>
+				<button type="submit" class="" (click)="cashPayment()">Submit</button>
+			</div>
+		</div>
+	</div>
+</section>

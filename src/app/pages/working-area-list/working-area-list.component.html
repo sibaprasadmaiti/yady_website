@@ -1,0 +1,102 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <ul class="leftPanel">
+          <!--<li><a href="#"><span><img src="images/editprofile.png" alt=""></span>Account</a></li>-->
+          <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+            alt=""></span>Change Password</a></li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                >Change Language</a
+              >
+            </li>
+          <li *ngIf="user_type == 2"><a routerLink="/document-list"><span><i
+                  class="far fa-file-invoice"></i></span>Documents</a></li>
+          <li *ngIf="user_type == 2">
+            <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>Services</a>
+          </li>
+          <li *ngIf="user_type == 2">
+            <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+          </li>
+          <li>
+            <a routerLink="/sp-query-booking-list"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/sp-earning-list"
+              ><span><img src="./assets/images/earning-money.png" alt="earning" /></span
+              >Earnings</a
+            >
+          </li>
+          <li *ngIf="user_type == 2">
+            <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>Working Hours</a>
+          </li>
+          <li *ngIf="user_type == 2"><a routerLink="/working-area-list" class="active"><span><i
+                  class="far fa-place-of-worship"></i></span>Working Area</a></li>
+          <li *ngIf="user_type == 2"><a routerLink="/sp-booking-list"><span><img src="./assets/images/booked.png"
+                  alt=""></span>My Bookings</a></li>
+          <li>
+            <a routerLink="/notification"><span><img src="./assets/images/notification.png"
+                  alt=""></span>Notifications
+                  <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                </a>
+              </li>
+          <!--<li><a href="#" class="active"><span><i class="far fa-business-time"></i></span>Working Hours</a></li>
+                            <li><a href="#"><span><i class="fab fa-servicestack"></i></span>Services</a></li>
+                            <li><a href="#"><span><i class="far fa-place-of-worship"></i></span>Working Area</a></li>
+                            <li><a href="#"><span><i class="far fa-photo-video"></i></span>Image &amp; Video</a></li>
+                            <li><a href="#"><span><img src="images/changepassword.png" alt=""></span>Change Password</a></li>
+                            <li><a href="#"><span><img src="images/changelanguage.png" alt=""></span>Change Language</a></li>
+                            <li><a href="#"><span><img src="images/paymentoption.png" alt=""></span>Terms &amp; Condition</a></li>
+                            <li><a href="#"><span><img src="images/helpcenter.png" alt=""></span>Help Center</a></li>
+                            <li><a href="#"><span><img src="images/notification.png" alt=""></span>Notifications</a></li>
+                            <li><a href="#"><span><img src="images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>
+                            <li><a href="#"><span><img src="images/faq.png" alt=""></span>FAQ</a></li>-->
+        </ul>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">Working Area</h3>
+          <button class="useCurrentlocation" (click)="addNewWorkArea()">Add a New Working Area</button>
+          <div class="prof_add_info workingArea" *ngFor="let workingAreaList of workingAreaData; let i = index">
+            <span class="clsIcon"><i class="fal fa-times-circle"></i></span>
+            <div class="loc_img locNewimg">
+              <img src="assets/images/locate.png" alt="">
+            </div>
+            <p class="prof_title">Service Location</p>
+            <p>{{workingAreaList.location}}</p>
+            <div class="workingMap">
+              <!--<img src="assets/images/map.jpg" alt="">-->
+              <agm-map [latitude]="latList[i]" [longitude]="longList[i]" style="width:100%; height:40vh;" [zoom]="10">
+                <agm-marker class="mapMarker" [latitude]="latList[i]" [longitude]="longList[i]">
+                  <agm-circle style="width:100vw; height:100vh;" [latitude]="latList[i]" [longitude]="longList[i]"
+                    [radius]="15000" [fillColor]="'#0000FF'" [strokeColor]="'#0000FF'"></agm-circle>
+                </agm-marker>
+              </agm-map>
+              <!--{{latList[i]}}-->
+              <!--{{longList[i]}}-->
+            </div>
+          </div>
+
+          <!--<div class="prof_add_info workingArea">
+                            <div class="loc_img locNewimg">
+                                <img src="assets/images/locate.png" alt="">
+                            </div>
+                            <p class="prof_title">Service Location</p>
+                            <p>R-84, Ground Floor, Flat B, Moonshine Apartment, Kolkata - 700001</p>
+                            <div class="workingMap"><img src="assets/images/map.jpg" alt=""></div>
+                        </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

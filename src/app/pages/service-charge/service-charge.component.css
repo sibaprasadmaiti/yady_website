@@ -1,0 +1,59 @@
+.pr-bk-slot .bk-slot:hover {
+  background: #0E6060;
+  color: #fff;
+  border: 1px solid #0E6060;
+}
+.current{
+  background: #0E6060 !important;
+  color: #fff !important;
+  border: 1px solid #0E6060 !important;
+}
+.pr-bk-slot .bk-slot {
+  outline: none;
+  cursor: pointer;
+  padding: 13px 20px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #7A7A7A;
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid #7A7A7A;
+  width: 122px;
+    text-align: center;
+    flex: none;
+    margin: 0;
+    margin-right: 5px;
+}
+.pr-bk-slot{
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+  margin-bottom: 15px;
+    margin-top: 15px;
+    padding-bottom: 10px;
+}
+.pr-bk-slot::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.pr-bk-slot::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(45, 17, 145, 0.3);
+}
+
+.pr-bk-slot::-webkit-scrollbar-thumb {
+  background-color: #0e6060;
+  outline: 1px solid slategrey;
+}
+
+.cat-img{
+  width: 20%;
+  height: 85px;
+  float: right;
+  object-fit: contain;
+}
+.yady-wall{
+  color: #00B2B2;
+  font-size: larger;
+  font-weight: 600;
+}

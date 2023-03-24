@@ -1,0 +1,628 @@
+<section class="innerHdnB">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="pb-2"><a routerLink="/my-booking-list" class="for-back"><i class="fas  fa-arrow-left"></i> </a> {{'Booking Details' | translate}}</h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rateListbg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-5 bSummaryLeft">
+        <div class="prof_add_info">
+          <div class="loc_img locNewimg">
+            <img src="./assets/images/booked.png" alt="">
+          </div>
+          <p class="prof_title">{{'Booked ID' | translate}}: <span>{{bookingData?.booking_id}}</span><span
+              *ngIf="bookingData?.reschedule_status"> ({{'Rescheduled' | translate}})</span></p>
+          <p class="prof_title">{{'Booked On' | translate}}: <span>{{bookingData?.booking_date | date:'EEEE, MMMM d, y'}} {{'at' | translate}}
+              {{bookingData?.booking_time}}</span></p>
+          <p class="prof_title" *ngIf="bookingData?.start_date_time">{{'Start Date Time' | translate}}:
+            <span>{{bookingData?.start_date_time | date:'EEEE, MMMM d, y h:mm a'}}</span>
+          </p>
+          <p class="prof_title">{{'Booking Status' | translate}}:
+            <span *ngIf="bookingData?.booking_status == 0">{{'Active' | translate}}</span>
+            <span *ngIf="bookingData?.booking_status == 1">{{'Upcoming' | translate}}</span>
+            <span *ngIf="bookingData?.booking_status == 2">{{'Completed' | translate}}</span>
+            <span *ngIf="bookingData?.booking_status == 3">{{'On-Going' | translate}}</span>
+            <span *ngIf="bookingData?.booking_status == 4">{{'Canceled' | translate}}</span>
+          </p>
+          <p class="prof_title" *ngIf="bookingData?.end_date_time">{{'End Date Time' | translate}}: <span>{{bookingData?.end_date_time |
+              date:'EEEE, MMMM d, y h:mm a'}}</span></p>
+          <p class="prof_title" *ngIf="bookingData?.booking_status == 2"><span> {{'Your Service has been completed by the Service Provider' | translate}}</span></p>
+
+          <p class="prof_title"
+            *ngIf="(bookingData?.booking_status == 3 || bookingData?.booking_status == 1)  && bookingData?.start_status == 1 ">
+            <span *ngIf="bookingData?.pause_status == 0">{{'Your Service Provider Started the Service' | translate}}</span>
+            <button type="button" class="newaddons" id="timer" *ngIf="bookingData?.timer_display_status">{{ displayTimer
+              }}</button>
+          </p>
+          <p *ngIf="bookingData?.booking_status == 3 && bookingData?.pause_status == 1 && bookingData?.start_status == 1"><span>{{'Your Service is Paused by the Service Provider' | translate}}</span></p>
+          <p><span>{{ serviceCompleteMsg }}</span></p>
+          <p *ngIf="bookingData?.tracking_status == 1">
+            <button type="button" class="newaddons" (click)="startTracking(bookingData?._id)">{{'Track SP' | translate}}</button>
+          </p>
+
+        </div>
+        <div class="bookingclock">
+          <!-- <img src="./assets/images/bookingclock.png" alt=""> -->
+        </div>
+        <div class="prof_add_info">
+          <div class="loc_img locNewimg">
+            <img src="./assets/images/locate.png" alt="">
+          </div>
+          <p class="prof_title">{{'Service Location' | translate}}</p>
+          <p>{{bookingData?.customer_address}}</p>
+        </div>
+        <div class="prof_add_info">
+          <div class="loc_img locNewimg">
+            <img src="./assets/images/servicedetl.png" alt="">
+          </div>
+          <p class="prof_title">{{'Service Details' | translate}}</p>
+          <p>{{'Booked for' | translate}} {{bookingData?.hour}} {{'Service' | translate}} {{bookingData?.cat_subcat_name}}</p>
+        </div>
+
+        <div class="prof_add_info bdInfo late-reason" *ngIf="bookingData?.late_status == 1">
+          <div class="loc_img locNewimg">
+            <img src="./assets/images/late.png" alt="">
+          </div>
+          <p class="prof_title">{{'Late Reason' | translate}}</p>
+          <p>{{bookingData?.late_reason}}</p>
+        </div>
+
+        <div *ngIf="bookingData?.booking_status == 4">
+          <div class="prof_add_info" style="margin-bottom: 30px;">
+            <div class="loc_img locNewimg">
+              <img src="./assets/images/cancel-icon.png" alt="" style="height: 40px;">
+            </div>
+            <p class="prof_title">{{'Cancel Reason' | translate}}</p>
+            <p>{{ cancelBookingReasonData?.cancel_reason }}</p>
+          </div>
+          <div class="cancel_image">
+            <button type="button" class="newaddons" data-toggle="modal" data-target="#cancelImage">{{'Cancel Image(s)' | translate}}</button>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="col-md-7">
+        <div class="radioSection" *ngIf="bookingData?.add_ons.length > 0">
+          <h5>{{'Add-Ons' | translate}}</h5>
+          <div class="radioInn" *ngFor="let item of bookingData?.add_ons; let i = index">
+            <div class="custom-control custom-checkbox rateListCheck">
+              <input type="checkbox" class="custom-control-input adon-checkbox" id="customCheck1{{i}}" checked disabled>
+              <label class="custom-control-label" for="customCheck1{{i}}">{{item}}</label>
+			        <p *ngIf="bookingData?.aq_ans">{{bookingData?.aq_ans[i]}}</p>
+            </div>
+            <!--<span class="radioRgt">500 AED/hr</span>-->
+          </div>
+          <!-- <div class="radioInn">
+                      <div class="custom-control custom-checkbox rateListCheck">
+                          <input type="checkbox" class="custom-control-input" id="customCheck2" checked>
+                          <label class="custom-control-label" for="customCheck2">Install Pipe Fittings</label>
+                      </div>
+                  </div>
+                  <div class="radioInn">
+                      <div class="custom-control custom-checkbox rateListCheck">
+                          <input type="checkbox" class="custom-control-input" id="customCheck3">
+                          <label class="custom-control-label" for="customCheck3">Fixtures in Residential Structures</label>
+                      </div>
+                  </div> -->
+          <!-- <br />
+                  <button type="button" class="newaddons">New Add-Ons</button> -->
+
+        </div>
+		<div class="radioSection" *ngIf="bookingData?.instruction">
+			<h5>{{'Service Instruction' | translate}}</h5>
+			<label class="custom-control-label">{{bookingData?.instruction}}</label>
+		</div>
+		<div class="radioSection" *ngIf="bookingData?.note">
+			<h5>{{'Service Description' | translate}}</h5>
+			<label class="custom-control-label">{{bookingData?.note}}</label>
+		</div>
+<div class="gftfg">
+  <button class="def_btn sr-img-btn" *ngIf="bookingData?.note_image.length > 0" data-toggle="modal" data-target="#noteImage">{{'Service Image(s)' | translate}}</button>
+</div>
+        <div class="price_content_block">
+          <p class="cont_adjt"><span>{{bookingData?.cat_subcat_name}} : </span><strong>{{bookingData?.price}}
+              {{bookingData?.currency}}</strong></p>
+          <p class="cont_adjt"><span>{{'Add-Ons' | translate}} : </span><strong>{{bookingData?.add_on_cost}}
+              {{bookingData?.currency}}</strong></p>
+          <p class="cont_adjt"><span>{{'Inspection Charge' | translate}} : </span><strong>{{bookingData?.inspection_cost}}
+              {{bookingData?.currency}}</strong></p>
+          <p class="cont_adjt add_border"><span>{{'Discount' | translate}} : </span><strong
+            *ngIf="bookingData?.promo_code_apply !=''">-{{bookingData?.promo_code_apply}}
+            {{bookingData?.currency}}</strong><strong *ngIf="bookingData?.promo_code_apply ==''">-0
+            {{bookingData?.currency}}</strong></p>
+              <p class="cont_adjt"><span>{{'Before Tax Total' | translate}} : </span><strong>{{bookingData?.before_tax_cost}}
+                {{bookingData?.currency}}</strong></p>
+          <p class="cont_adjt add_border"><span>{{'Tax' | translate}} : </span><strong>{{bookingData?.tax}}
+              {{bookingData?.currency}}</strong></p>
+          <p class="cont_adjt"><span>{{'After Tax Total' | translate}} : </span><strong>{{bookingData?.after_tax_cost }}
+              {{bookingData?.currency}}</strong></p>
+          <p class="cont_adjt add_border"><span>{{'Wallet Amount Used' | translate}} : </span>
+            <strong style="color: #004E4E;font-weight: 500;" *ngIf="bookingData?.wallet_pay_status == 1">{{bookingData?.used_wallet_money}}
+                {{bookingData?.currency}}</strong>
+                <strong style="color: #004E4E;font-weight: 500;" *ngIf="bookingData?.wallet_pay_status == 0">0
+                  {{bookingData?.currency}}</strong>
+              </p>
+          <div class="totle_pric_txt">
+            <p class="cont_adjt"><span>{{'Order Total' | translate}} : </span>
+              <strong>{{ bookingData?.order_total }} {{bookingData?.currency}}</strong>
+            </p>
+          </div>
+          <p class="cont_adjt add_border"><span>{{'Additional Cost' | translate}} : </span><strong>{{bookingData?.cost}}
+              {{bookingData?.currency}}</strong></p>
+
+
+          <div class="totle_pric_txt noBrdrBtm">
+            <p class="cont_adjt"><span>{{'Total Pay' | translate}} : </span>
+              <strong>{{ bookingData?.order_total + bookingData?.cost }} {{bookingData?.currency}}</strong>
+            </p>
+          </div>
+        </div>
+        <div class="amountPaid">{{'Paid By' | translate}}: <span *ngIf="bookingData?.paid_medium == 1">{{'Card' | translate}}</span><span
+            *ngIf="bookingData?.paid_medium == 2">{{'Cash' | translate}}</span></div>
+        <a href="{{bookingData?.invoice}}"
+          *ngIf="bookingData?.booking_status == 2 || (bookingData?.booking_status == 1 && bookingData?.sp_reschedule_status == 1) || (bookingData?.booking_status == 4 && bookingData?.invoice)">
+          <button type="button" class="newaddons">{{'View Invoice' | translate}}</button>
+        </a>
+        <button type="button" class="newaddons"
+          *ngIf="(bookingData?.booking_status == 0 || (bookingData?.booking_status == 1 && bookingData?.sp_reschedule_status == 0)) && bookingData?.start_status == 0" data-toggle="modal" data-target="#cancelBookingAlert">{{'Cancel Booking' | translate}}</button>&nbsp;&nbsp;&nbsp;
+        <button type="button" class="newaddons" *ngIf="chkRescheduleData?.reschedule_status && bookingData?.booking_status != 4 && bookingData?.booking_status != 2"
+          (click)="rescheduleBooking(bookingData?.booking_date)">{{'Reschedule Booking' | translate}}</button>
+        <div class="providers_info_wrap providers_info_wrap2 bookingDetlUsr">
+          <div class="providers_info" *ngIf="bookingData?.booking_status != 0 && bookingData?.booking_status != 4">
+            <div class="bookRating">
+              <div class="providers_pic">
+                <img src="{{bookingData?.sp_image}}" alt="sp" (error)="onImgError($event)">
+              </div>
+              <div class="providers_name">
+                <p>{{bookingData?.sp_name}}
+                  <span class="srbIcon">
+                    <!-- <i class="far fa-heart"></i> -->
+                  </span>
+                </p>
+                <div class="star" *ngIf="bookingData?.rating != null">
+                  <!-- <img src="./assets/images/star.png" alt=""> -->
+                  <span>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 1"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating == null"></i>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 2"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 2"></i>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 3"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 3"></i>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 4"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 4"></i>
+                    <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating == 5"></i>
+                    <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 5"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="newaddons"
+              *ngIf="bookingData?.booking_status == 2 && bookingData?.rating == null && bookingData?.review == null" data-toggle="modal" data-target="#ratingReviewModal">{{'Write a Review' | translate}}</button>
+            <div *ngIf="bookingData?.booking_status == 2 && bookingData?.review != null">
+              <p>{{bookingData?.review}}</p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="radioSection" *ngIf="pauseType == 1 && confirmStatus == 0">
+          <h5>{{'Requested for Additional Time' | translate}}</h5>
+          <p class="cont_adjt"><span class="addlPartreq">{{'Reason' | translate}} : {{pauseData?.reason}}</span></p>
+          <p class="cont_adjt"><span class="addlPartreq">{{'No. of minute' | translate}} : {{pauseData?.additional_time}} {{'min' | translate}}</span></p>
+          <p class="cont_adjt"><span class="addlPartreq">{{'Additional Cost' | translate}} : {{pauseData?.cost}}
+              {{pauseData?.currency}}</span></p>
+          <br />
+          <button type="submit" class="rejectBtn"
+            (click)="rejectAditionalTime(bookingData?._id, pauseData?.booking_pause_id)">{{'Reject' | translate}}</button>
+          <button type="submit"
+            (click)="payment(bookingData?._id, pauseData?.booking_pause_id, pauseData?.cost, pauseData?.currency, bookingData?.paid_medium)">{{'Accept' | translate}}</button>
+        </div>
+
+        <div class="radioSection"
+          *ngIf="pauseType == 2 && confirmStatus == 0 && (spRescheduleStatus == 0 || adminApprovalStatus == 1)">
+          <h5>{{'Additional Parts Required' | translate}}</h5>
+          <p class="cont_adjt"><span class="addlPartreq">{{'Reason' | translate}} : {{pauseData?.reason}}</span></p>
+          <p class="cont_adjt"><span class="addlPartreq">{{'Aditional Cost' | translate}} : {{pauseData?.cost}}
+              {{pauseData?.currency}}</span></p>
+          <br />
+          <button type="button" class="newaddons float-right" data-toggle="modal" data-target="#pauseDocument">{{'View Document(s)' | translate}}</button>
+          <button type="submit" class="rejectBtn"
+            (click)="rejectAditionalTime(bookingData?._id, pauseData?.booking_pause_id)">{{'Reject' | translate}}</button>
+          <button type="submit"
+            (click)="payment(bookingData?._id, pauseData?.booking_pause_id, pauseData?.cost, pauseData?.currency, bookingData?.paid_medium)">{{'Accept' | translate}}</button>
+        </div>
+        <br /><br />
+
+        <div class="radioSection" *ngIf="spRescheduleStatus == 1 && spRescheduleAcceptedStatus == 0">
+          <h5>{{'Requested for following time slots' | translate}}</h5>
+          <div class="radioInn" *ngFor="let pauseRescheduleDate of pauseRescheduleDates; let i = index">
+            <span class="radioLft"><input type="radio" id="test{{i}}" name="radio-group"
+                (click)="rescheduleDataId(pauseRescheduleDate.reschedule_date_id)"><label for="test{{i}}">{{
+                pauseRescheduleDate.formatted_date }} at {{ pauseRescheduleDate.formatted_time }}</label></span>
+          </div>
+          <button type="submit" (click)="acceptRescheduleDate()">{{'Accept' | translate}}</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade loginModal quotModal" id="pauseDocument" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>{{'Additional Parts Document' | translate}}</h5><br />
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" *ngIf="pauseData">
+            <div class="carousel-item " [ngClass]="{active:isFirst}" *ngFor="let image of pauseData?.pause_image; index as i;first as isFirst">
+              <img class="d-block w-100" src="{{image.pause_image}}" alt="Document" width="460" height="345">
+            </div>
+          </div>
+          <div class="carousel-inner" *ngIf="!pauseData">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="./assets/images/no-imge.jpg" alt="Document" width="460" height="345">
+            </div>
+          </div>
+
+          <a class="carousel-control-prev" href="#carouselExampleControls" *ngIf="pauseData?.pause_image.length > 1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">{{'Previous' | translate}}</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls" *ngIf="pauseData?.pause_image.length > 1" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">{{'Next' | translate}}</span>
+          </a>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="aditionalPayment" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="onlinePayment" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn">{{'Card Details' | translate}}</h3>
+            <div class="row">
+              <div class="col-md-6" *ngFor="let savedCards of cardData; let i = index">
+                <div class="paymentCardbg">
+                  <div>
+                    <h5>{{savedCards.brand}}</h5>
+                    <p>********{{savedCards.last4}}</p>
+                  </div>
+                  <div>
+                    <span class="form-group">
+                      <input type="checkbox" id="{{savedCards.id}}" [checked]="savedCards.default_status == 1"
+                        (click)="makeDefault(savedCards.id)">
+                      <label for="{{savedCards.id}}"></label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class=""
+              (click)="onlinePayment(bookingData?._id, pauseData?.booking_pause_id, pauseData?.cost, pauseData?.currency, bookingData?.paid_medium)">{{'Pay By Card' | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="rescheduleBooking" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn" style="padding-top: 0px;padding-bottom: 0px">{{'Reschedule' | translate}}</h3>
+            <div class="row">
+              <div class="col-md-12">
+                <div id="calendarOpen" style="text-align: -webkit-center;"></div>
+                <div class="error" *ngIf="dateError"> {{'Date is required' | translate}}!</div>
+                <div class="pr-bk-slot" *ngIf="timeSlotArray.length > 0 && showSlot">
+                  <div class="bk-slot" *ngFor="let item of timeSlotArray" (click)="getTime($event,item.result)">{{item.result}}</div>
+                </div>
+                <div class="pr-bk-slot" *ngIf="timeSlotArray.length == 0 && showSlot">
+                  <p style="color: red;">{{'Time is not available for this date. please choose another date' | translate}}.</p>
+                </div>
+                <!-- <div class="owlBtn owl-carousel owl-theme" style="margin-bottom: 0px;">
+                  <div class="item" (click)="getTime($event,'08:00AM')" style="font-size: 16px;">08:00AM</div>
+                  <div class="item" (click)="getTime($event,'09:00AM')" style="font-size: 16px;">09:00AM</div>
+                  <div class="item" (click)="getTime($event,'10:00AM')" style="font-size: 16px;">10:00AM</div>
+                  <div class="item" (click)="getTime($event,'11:00AM')" style="font-size: 16px;">11:00AM</div>
+                  <div class="item" (click)="getTime($event,'12:00PM')" style="font-size: 16px;">12:00PM</div>
+                  <div class="item" (click)="getTime($event,'01:00PM')" style="font-size: 16px;">01:00PM</div>
+                  <div class="item" (click)="getTime($event,'02:00PM')" style="font-size: 16px;">02:00PM</div>
+                  <div class="item" (click)="getTime($event,'03:00PM')" style="font-size: 16px;">03:00PM</div>
+                  <div class="item" (click)="getTime($event,'04:00PM')" style="font-size: 16px;">04:00PM</div>
+                  <div class="item" (click)="getTime($event,'05:00PM')" style="font-size: 16px;">05:00PM</div>
+                  <div class="item" (click)="getTime($event,'06:00PM')" style="font-size: 16px;">06:00PM</div>
+                  <div class="item" (click)="getTime($event,'07:00PM')" style="font-size: 16px;">07:00PM</div>
+                  <div class="item" (click)="getTime($event,'08:00PM')" style="font-size: 16px;">08:00PM</div>
+                </div> -->
+                <div class="error" *ngIf="timeError"> {{'Time is required' | translate}}!</div>
+                <h5 class="spjdHdn">{{'Request for reschedule' | translate}}</h5>
+                <div style="text-align: left;margin: 0px 88px;">
+                  <div><input type="radio" id="customCheck1"
+                      (change)="rescheduleReson('Not present at home that time')"> {{'Not present at home that time' | translate}}</div>
+                  <div><input type="radio" id="customCheck2" (change)="rescheduleReson('Change my mind')"> {{'Change my mind' | translate}}</div>
+                  <div><input type="radio" id="customCheck3" (change)="rescheduleReson('Other')"> {{'Other' | translate}}</div>
+                </div>
+                <div class="error" *ngIf="reasonError"> {{'Reason is required' | translate}}!</div>
+
+              </div>
+              <button type="submit" class="" (click)="confirmRescheduling()">{{'Confirm Rescheduling' | translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="cancelBookingAlert" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px"><br />
+            <h4 style="text-align: center;">{{'Are you sure to cancel this booking?' | translate}}</h4><br />
+            <button type="submit" (click)="cancelBooking()">{{'Yes' | translate}}</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="cancelBookingOnlineRefund" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn" style="padding-top: 0px;padding-bottom: 0px">{{'Refund' | translate}}</h3>
+            <!-- <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br /> -->
+            <button type="submit" class="" (click)="walletRefund()">{{'Refund in Wallet' | translate}}</button>
+            <button type="submit" class="" (click)="cardRefund()">{{'Refund in Card' | translate}}</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="reschedulePayment" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn">{{'Card Details' | translate}}</h3>
+            <div class="row">
+              <div class="col-md-6" *ngFor="let savedCards of cardData; let i = index">
+                <div class="paymentCardbg">
+                  <div>
+                    <h5>{{savedCards.brand}}</h5>
+                    <p>********{{savedCards.last4}}</p>
+                  </div>
+                  <div>
+                    <span class="form-group">
+                      <input type="checkbox" id="{{savedCards.id}}" [checked]="savedCards.default_status == 1"
+                        (click)="makeDefault(savedCards.id)">
+                      <label for="{{savedCards.id}}"></label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="" (click)="confirmReschedule()">{{'Pay By Card' | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="ratingReviewModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn">{{'Rating & Review' | translate}}</h3>
+            <div class="">
+              <span *ngIf="bookingData?.rating != null">
+                <i class='fa fa-star fa-fw start-col-yell' id="star1" (click)="startRating($event,1)" *ngIf="bookingData?.rating >= 1" data-value="1"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star1" (click)="startRating($event,1)" *ngIf="bookingData?.rating == null" data-value="1"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star2" (click)="startRating($event,2)" *ngIf="bookingData?.rating >= 2" data-value="2"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star2" (click)="startRating($event,2)" *ngIf="bookingData?.rating < 2" data-value="2"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star3" (click)="startRating($event,3)" *ngIf="bookingData?.rating >= 3" data-value="3"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star3" (click)="startRating($event,3)" *ngIf="bookingData?.rating < 3" data-value="3"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star4" (click)="startRating($event,4)" *ngIf="bookingData?.rating >= 4" data-value="4"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star4" (click)="startRating($event,4)" *ngIf="bookingData?.rating < 4" data-value="4"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star5" (click)="startRating($event,5)" *ngIf="bookingData?.rating == 5" data-value="5"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star5" (click)="startRating($event,5)" *ngIf="bookingData?.rating < 5" data-value="5"></i>
+              </span>
+              <span *ngIf="bookingData?.rating == null">
+
+                <i class='fa fa-star fa-fw start-col' id="star1" (click)="startRating($event,1)" data-value="1"></i>&nbsp;
+
+                <i class='fa fa-star fa-fw start-col' id="star2" (click)="startRating($event,2)" data-value="2"></i>&nbsp;
+
+                <i class='fa fa-star fa-fw start-col' id="star3" (click)="startRating($event,3)" data-value="3"></i>&nbsp;
+
+                <i class='fa fa-star fa-fw start-col' id="star4" (click)="startRating($event,4)" data-value="4"></i>&nbsp;
+
+                <i class='fa fa-star fa-fw start-col' id="star5" (click)="startRating($event,5)" data-value="5"></i>
+              </span>
+            </div>
+            <div>
+              <textarea class="form-control mb-3" cols="40" rows="1" [(ngModel)]="reviewText" name="reviewText" placeholder="{{'Write here' | translate}}"></textarea>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary" (click)="submitReview()" style="width: auto;">{{'Submit' | translate}}</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="cancelImage" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>{{'Cancel Image(s)' | translate}}</h5><br />
+        <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" *ngIf="cancelBookingReasonData">
+            <div class="carousel-item " [ngClass]="{active:isFirst}" *ngFor="let image of cancelBookingReasonData?.cancel_image; index as i;first as isFirst">
+                <img class="d-block w-100" src="{{image.cancel_image}}" alt="Document" width="460" height="345">
+            </div>
+          </div>
+          <div class="carousel-inner" *ngIf="!cancelBookingReasonData">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="./assets/images/no-image.jpg" alt="Document" width="460" height="345">
+            </div>
+          </div>
+
+          <a class="carousel-control-prev" href="#carouselExampleControls1" *ngIf="cancelBookingReasonData?.cancel_image.length > 1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">{{'Previous' | translate}}</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls1" *ngIf="cancelBookingReasonData?.cancel_image.length > 1" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">{{'Next' | translate}}</span>
+          </a>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="noteImage" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>{{'Service Image(s)' | translate}}</h5><br />
+        <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" *ngIf="bookingData?.note_image.length > 0">
+            <div class="carousel-item " [ngClass]="{active:isFirst}" *ngFor="let image of bookingData?.note_image; index as i;first as isFirst">
+                <img class="d-block w-100" src="{{image.booking_img}}" alt="Document" width="460" height="345">
+            </div>
+          </div>
+          <div class="carousel-inner" *ngIf="bookingData?.note_image.length == 0">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="./assets/images/no-imge.jpg" alt="Document" width="460" height="345">
+            </div>
+          </div>
+
+          <a class="carousel-control-prev" href="#carouselExampleControls1" *ngIf="bookingData?.note_image.length > 1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">{{'Previous' | translate}}</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls1" *ngIf="bookingData?.note_image.length > 1" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">{{'Next' | translate}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

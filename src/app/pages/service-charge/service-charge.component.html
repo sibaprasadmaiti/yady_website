@@ -1,0 +1,297 @@
+<section class="innerHdnB">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>{{cat_sub_details.name}}</h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rateListbg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-5">
+        <div class="radioSection" *ngIf="cat_sub_details?.description">
+          <div>
+            <img class="cat-img" src="{{ cat_sub_details?.category_image }}" alt="Category">
+          </div>
+          <h5>Service Description</h5>
+          <h6 style="color: #00B2B2;">{{ cat_sub_details?.description }}</h6>
+        </div>
+        <div class="radioSection">
+          <h5>{{price_structure_question}}</h5>
+          <div class="radioInn" *ngFor="let service_prices_hour of servicePriceHours">
+            <span class="radioLft"><input type="radio" id="{{service_prices_hour.hour}}" name="radio-group"
+                (click)="getHoursPrice(service_prices_hour)"><label
+                for="{{service_prices_hour.hour}}">{{service_prices_hour.hour}} <span
+                  *ngIf="cat_sub_details.price_status == '1'"></span></label></span>
+            <span class="radioRgt">{{service_prices_hour.price}} {{cat_sub_details.currency}}</span>
+          </div>
+        </div>
+        <h5 class="selectDt">Select Date</h5>
+        <div class="dateCalender">
+          <div class="app__main">
+            <div class="calendar">
+              <div id="bokkingCalendar"></div>
+              <input type="hidden" id="booking_date" name="booking_date" [(ngModel)]="booking_date"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="listBtns">
+                        <button *ngFor="let time_array of time_array_data; let i = index" (click)="getTime($event,time_array)"> {{time_array}}</button>
+                    </div>-->
+        <div class="pr-bk-slot" *ngIf="timeSlotArray.length > 0 && showSlot">
+          <div class="bk-slot" *ngFor="let item of timeSlotArray" (click)="getTime($event,item.result)">{{item.result}}
+          </div>
+        </div>
+        <div class="pr-bk-slot" *ngIf="timeSlotArray.length == 0 && showSlot">
+          <p style="color: red;">Time is not available for this date. please choose another date.</p>
+        </div>
+
+        <!-- <div class="owlBtn owl-carousel owl-theme" id="slot-carousel">
+
+           <div class="item" (click)="getTime($event,'06:30AM')">06:30AM</div>
+          <div class="item" (click)="getTime($event,'07:00AM')">07:00AM</div>
+          <div class="item" (click)="getTime($event,'07:30AM')">07:30AM</div>
+          <div class="item" (click)="getTime($event,'08:00AM')">08:00AM</div>
+          <div class="item" (click)="getTime($event,'08:30AM')">08:30AM</div>
+          <div class="item" (click)="getTime($event,'09:00AM')">09:00AM</div>
+          <div class="item" (click)="getTime($event,'09:30AM')">09:30AM</div>
+          <div class="item" (click)="getTime($event,'10:00AM')">10:00AM</div>
+          <div class="item" (click)="getTime($event,'10:30AM')">10:30AM</div>
+          <div class="item" (click)="getTime($event,'11:00AM')">11:00AM</div>
+          <div class="item" (click)="getTime($event,'11:30AM')">11:30AM</div>
+          <div class="item" (click)="getTime($event,'00:00PM')">00:00PM</div>
+          <div class="item" (click)="getTime($event,'00:30PM')">00:30PM</div>
+          <div class="item" (click)="getTime($event,'01:00PM')">01:00PM</div>
+          <div class="item" (click)="getTime($event,'01:30PM')">01:30PM</div>
+          <div class="item" (click)="getTime($event,'02:00PM')">02:00PM</div>
+          <div class="item" (click)="getTime($event,'02:30PM')">02:30PM</div>
+          <div class="item" (click)="getTime($event,'03:00PM')">03:00PM</div>
+          <div class="item" (click)="getTime($event,'03:30PM')">03:30PM</div>
+          <div class="item" (click)="getTime($event,'04:00PM')">04:00PM</div>
+          <div class="item" (click)="getTime($event,'04:30PM')">04:30PM</div>
+          <div class="item" (click)="getTime($event,'05:00PM')">05:00PM</div>
+          <div class="item" (click)="getTime($event,'05:30PM')">05:30PM</div>
+          <div class="item" (click)="getTime($event,'06:00PM')">06:00PM</div>
+          <div class="item" (click)="getTime($event,'06:30PM')">06:30PM</div>
+          <div class="item" (click)="getTime($event,'07:00PM')">07:00PM</div>
+          <div class="item" (click)="getTime($event,'07:30PM')">07:30PM</div>
+          <div class="item" (click)="getTime($event,'08:00PM')">08:00PM</div>
+          <div class="item" (click)="getTime($event,'08:30PM')">08:30PM</div>
+          <div class="item" (click)="getTime($event,'09:00PM')">09:00PM</div>
+          <div class="item" (click)="getTime($event,'09:30PM')">09:30PM</div>
+          <div class="item" (click)="getTime($event,'10:00PM')">10:00PM</div>
+          <div class="item" (click)="getTime($event,'10:30PM')">10:30PM</div>
+          <div class="item" (click)="getTime($event,'11:00PM')">11:00PM</div>
+          <div class="item" (click)="getTime($event,'11:30PM')">11:30PM</div>
+        </div> -->
+
+
+
+        <form [formGroup]="servicePriceForm" (ngSubmit)="save_booking()" id="service_price_form">
+          <textarea class="form-control putNote" placeholder="Put your note" formControlName="notes"
+            id="notes"></textarea>
+          <div class="attachedImages">
+            <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+            <div class="fileUpload">
+              <span><i class="fas fa-paperclip"></i></span>
+              <input id="uploadBtn" formControlName="file" id="file" type="file" class="upload" multiple
+                (change)="onFileChange($event)" />
+            </div>
+          </div>
+          <textarea class="form-control putNote" placeholder="Address" formControlName="address"
+            id="address"></textarea>
+          <button type="button" class="rejectBtn" data-toggle="modal" data-target="#addressSelect">Change
+            Address</button>
+          <button type="button" class="" data-toggle="modal" data-target="#addressAdd">Add New Address</button>
+        </form>
+
+      </div>
+      <div class="col-md-7">
+        <div class="radioSection" *ngIf="aq_status_res == 2">
+          <h5>Questions</h5>
+          <div class="row" *ngFor="let service_prices_questions of servicePricesData; let i = index">
+            <div class="col-md-12">{{service_prices_questions.question}}</div>
+            <div class="col-md-3" *ngFor="let service_prices_answers of service_prices_questions.options">
+              <input type="radio" id="{{service_prices_answers.option}}{{i}}" name="radio-group{{i}}"
+                (click)="getQustionPrice(service_prices_answers,service_prices_questions)">&nbsp;<label
+                for="{{service_prices_answers.option}}">{{service_prices_answers.option}}</label>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="aq_status_res == 2">
+          <div class="col-md-12">
+            <textarea class="form-control putNote" placeholder="Your Service instruction" id="instruction"></textarea>
+          </div>
+        </div>
+
+        <div class="radioSection" *ngIf="aq_status_res == 1 && servicePricesData.length > 0">
+          <h5>Select Add-on Services</h5>
+          <div class="radioInn" *ngFor="let service_prices_addons of servicePricesData">
+            <div class="custom-control custom-checkbox rateListCheck">
+              <input type="checkbox" class="custom-control-input" id="{{service_prices_addons.add_on_title}}"
+                (change)="getAddOnPrice($event,service_prices_addons)">
+              <label class="custom-control-label"
+                for="{{service_prices_addons.add_on_title}}">{{service_prices_addons.add_on_title}}</label>
+            </div>
+            <span class="radioRgt">{{service_prices_addons.price}} {{cat_sub_details.currency}}<span
+                *ngIf="service_prices_addons.per_hour_status">/hr</span></span>
+          </div>
+        </div>
+        <div class="price_content_block">
+          <p class="cont_adjt"><span>{{cat_sub_details.name}} : </span><strong *ngIf="cost">{{cost}}
+              {{cat_sub_details.currency}}</strong><strong *ngIf="!cost">0 {{cat_sub_details.currency}}</strong></p>
+          <p class="cont_adjt"><span *ngIf="aq_status == 1">Add-Ons : </span><span *ngIf="aq_status == 2">Material Cost
+              : </span><strong *ngIf="add_ons">{{add_ons}} {{cat_sub_details.currency}}</strong><strong
+              *ngIf="!add_ons">0 {{cat_sub_details.currency}}</strong></p>
+          <p class="cont_adjt" *ngIf="inspection_cost != 0 || inspection_cost != ''"><span>Inspection Charge:
+            </span><strong *ngIf="inspection_cost">{{inspection_cost}} {{cat_sub_details.currency}}</strong><strong
+              *ngIf="!inspection_cost">0 {{cat_sub_details.currency}}</strong></p>
+
+          <div class="totle_pric_def_txt">
+            <p class="cont_adjt"><span>Total Before Tax : </span><strong *ngIf="total_before_tax">{{total_before_tax}}
+                {{cat_sub_details.currency}}</strong><strong *ngIf="!total_before_tax">0
+                {{cat_sub_details.currency}}</strong></p>
+          </div>
+          <p class="cont_adjt add_border"><span>Tax : </span><strong *ngIf="tax">{{tax}}
+              {{cat_sub_details.currency}}</strong><strong *ngIf="!tax">0 {{cat_sub_details.currency}}</strong></p>
+          <p class="cont_adjt add_border"><span>Total : </span><strong *ngIf="total">{{total}}
+              {{cat_sub_details.currency}}</strong><strong *ngIf="!total">0 {{cat_sub_details.currency}}</strong></p>
+          <p class="cont_adjt promoAdd">
+            <span>Promo Code : </span>
+            <span class="respPromo">
+              <input type="text" [disabled]='promo_code_text' placeholder="Add promo code" [(ngModel)]="promo_code"
+                [ngModelOptions]="{standalone: true}" />
+              <span>
+                <button class="tickBtn" [disabled]='promo_code_tick' (click)="apply_promo_code(total,promo_code)"><i
+                    class="far fa-check"></i></button>
+                <button class="crossBtn" [disabled]='promo_code_cross' (click)="remove_promo_code()"><i
+                    class="far fa-times"></i></button>
+              </span>
+            </span>
+          </p>
+          <span style="text-align: right !important;width: 100%;display: block;color: red;font-size: 15px;">{{
+            infoMessage }}</span>
+          <p class="cont_adjt add_border"><span>Discounted Amount : </span><strong
+              *ngIf="discounted_amount">-{{discounted_amount}} {{cat_sub_details.currency}}</strong><strong
+              *ngIf="!discounted_amount">-0 {{cat_sub_details.currency}}</strong>
+          </p>
+          <div class="totle_pric_txt noBrdrBtm">
+            <p class="cont_adjt"><span>Order Total : </span><strong *ngIf="order_total">{{order_total}}
+                {{cat_sub_details.currency}}</strong><strong *ngIf="!order_total">0
+                {{cat_sub_details.currency}}</strong></p>
+          </div>
+          <div class="radioInn" *ngIf="cat_sub_details?.currency == walletData?.currency && walletAmount != 0">
+            <div class="custom-control custom-checkbox rateListCheck">
+              <input type="checkbox" class="custom-control-input" id="wallet-balance"
+                (change)="useWalletBalance($event)">
+              <label class="custom-control-label"
+                for="wallet-balance">Use balance from <span class="yady-wall">Yady Wallet</span></label>
+            </div>
+            <span class="radioRgt">{{walletAmount}} {{walletData?.currency}}</span>
+          </div>
+        </div>
+        <span style="color: red;font-size: 20px;">{{alertMsg}}</span><br>
+        <button type="submit" form="service_price_form">Continue</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- [ Address Select ] -->
+<div class="modal fade loginModal quotModal" id="addressSelect" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>Select Address</h5>
+        <div class="form-group">
+          <div class="card" *ngFor="let alladdressList of alladdressData; let i = index" style="margin-bottom: 10px;">
+            <div class="card-body">
+              <h5 class="card-title" *ngIf="alladdressList.address_type == 1">Home Address <span
+                  *ngIf="alladdressList.default_status == 1"> (Default)</span></h5>
+              <h5 class="card-title" *ngIf="alladdressList.address_type == 2">Office Address <span
+                  *ngIf="alladdressList.default_status == 1"> (Default)</span></h5>
+              <p class="card-text">{{alladdressList.street_address}} {{alladdressList.city}} {{alladdressList.state}}
+                {{alladdressList.zip_code}}</p>
+              <button type="button" (click)="setDefaultAddress(alladdressList._id)"
+                *ngIf="alladdressList.default_status == 0">Set Deafult Address</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [ Address Add ] -->
+<div class="modal fade loginModal quotModal" id="addressAdd" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>Add Address</h5>
+        <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" formControlName="street_address"
+                placeholder="Area, Street, Locality" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" formControlName="house_no"
+                placeholder="Flat, House No., Appartment" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Landmark" formControlName="land_mark" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Town / City" formControlName="city" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="State" formControlName="state" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Zip Code" formControlName="zip_code" id="zip_code"
+                onchange="getCoordinates()" />
+            </div>
+            <input type="hidden" class="form-control" id="lat" placeholder="lat" formControlName="lattitude">
+            <input type="hidden" class="form-control" id="long" placeholder="long" formControlName="longitude">
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="radioLft">
+                <input type="radio" id="test1" name="address_type" value="1" formControlName="address_type"><label
+                  for="test1">Home</label>
+              </span>&nbsp;
+              <span class="radioLft">
+                <input type="radio" id="test2" name="address_type" value="2" formControlName="address_type"><label
+                  for="test2">Oǘce/Commercial</label>
+              </span>
+            </div>
+          </div>
+          <button type="submit" [disabled]="addressForm.invalid">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

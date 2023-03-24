@@ -1,0 +1,375 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ {{'Open Left menu' | translate}}</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>{{'Edit Profile' | translate}}</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>{{'Change Password' | translate}}</a></li>
+          <li>
+            <a routerLink="/change-language"
+              ><span
+                ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+              >{{'Change Language' | translate}}</a
+            >
+          </li>
+          <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>{{'Payment Options' | translate}}</a></li>
+          <li><a routerLink="/my-address-list" ><span><img src="./assets/images/locate.png"
+                  alt=""></span>{{'Address' | translate}}</a></li>
+          <li><a routerLink="/sr-wallet"><span><img src="./assets/images/wallet-menu.png" alt="sr wallet"></span>{{'My Wallet' | translate}}</a></li>
+          <li><a routerLink="/my-booking-list" class="active"><span><img src="./assets/images/booked.png" alt=""></span>{{'My Bookings' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/my-query-list"><span><i class="far fa-file-search" style="font-size:30px"></i></span>{{'My Query' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>{{'Query Bookings' | translate}}</a>
+          </li>
+          <li>
+            <a (click)="srReadNotification()" routerLink="/sr-notification"><span><img
+                  src="./assets/images/notification.png" alt=""></span>{{'Notifications' | translate}}
+              <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">{{'New' | translate}}</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/help-center"
+              ><span
+                ><img
+                  src="./assets/images/help-center.png"
+                  alt="help center" /></span>{{'Help Center' | translate}}</a>
+          </li>
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/helpcenter.png" alt=""></span>Help Center</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/notification.png" alt=""></span>Notifications</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/faq.png" alt=""></span>FAQ</a></li>-->
+        </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">{{'My Bookings' | translate}}</h3>
+          <div class="tabsection">
+
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="pills-bookingRequests-tab" data-toggle="pill"
+                  href="#pills-bookingRequests" (click)="getMyBookingList(0)">{{'Active' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-upcoming-tab" data-toggle="pill" href="#pills-upcoming"
+                  (click)="getMyBookingList(1)">{{'Upcoming' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-ongoing-tab" data-toggle="pill" href="#pills-ongoing"
+                  (click)="getMyBookingList(3)">{{'On-Going' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-completed-tab" data-toggle="pill" href="#pills-completed"
+                  (click)="getMyBookingList(2)">{{'Completed' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-cancel-tab" data-toggle="pill" href="#pills-cancel"
+                  (click)="getMyBookingList(4)">{{'Cancel' | translate}}</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="pills-tabContent">
+
+              <div class="tab-pane fade show active" id="pills-bookingRequests" role="tabpanel"
+                aria-labelledby="pills-bookingRequests-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="srbookingBlock"
+                    *ngFor="let pendingBookingList of booking_data | paginate: { itemsPerPage: 9, currentPage: page } ; let i = index">
+                    <div class="srmyBooking">
+                      <img class="cat-img" src="{{pendingBookingList.cat_subcat_image}}" alt="">
+                      <div class="srmBtext crd-bdy">
+                        <div *ngIf="pendingBookingList.reschedule_status"><img class="batch-img" src="./assets/images/reschedule.png" alt="Batch Image"></div>
+                        <h5>{{pendingBookingList.cat_subcat_name}}</h5>
+                        <p>{{pendingBookingList.booking_job_no}}</p>
+                        <p>{{ pendingBookingList.booking_date | date : 'EE, MMM d, y' }} at {{pendingBookingList.booking_time}}</p>
+                        <div class="completeJb"><i class="fas fa-check-circle"></i> {{'Accept Pending' | translate}} </div>
+                      </div>
+                    </div>
+                    <div class="srmyBookFooter">
+                      <!-- <div class="srmRating">
+                        <img src="./assets/images/pic1.png" alt="">
+                        <div class="">
+                          <h6 *ngIf="pendingBookingList?.sp_name">{{pendingBookingList.sp_name}}</h6>
+                          <h6 *ngIf="!pendingBookingList?.sp_name">Not Assigned</h6>
+
+                          <div>
+                            <span *ngIf="pendingBookingList?.rating != null">
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="pendingBookingList?.rating >= 1"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="pendingBookingList?.rating == 0"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="pendingBookingList?.rating >= 2"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="pendingBookingList?.rating < 2"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="pendingBookingList?.rating >= 3"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="pendingBookingList?.rating < 3"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="pendingBookingList?.rating >= 4"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="pendingBookingList?.rating < 4"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="pendingBookingList?.rating == 5"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="pendingBookingList?.rating < 5"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div> -->
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(pendingBookingList._id)">{{'View' | translate}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>{{'No pending records found' | translate}}.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+
+              <div class="tab-pane fade" id="pills-upcoming" role="tabpanel" aria-labelledby="pills-upcoming-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="srbookingBlock"
+                    *ngFor="let upcomingBookingList of booking_data | paginate: { itemsPerPage: 9, currentPage: page } ; let i = index">
+                    <div class="srmyBooking">
+                      <img class="cat-img" src="{{upcomingBookingList.cat_subcat_image}}" alt="">
+                      <div class="srmBtext crd-bdy">
+                        <div *ngIf="upcomingBookingList.start_status == 1 && upcomingBookingList.reschedule_status == 0 && upcomingBookingList.sp_reschedule_status == 0"><img class="batch-img" src="./assets/images/service-start.png" alt="Batch Image"></div>
+                        <div *ngIf="upcomingBookingList.reschedule_status != 0 && upcomingBookingList.tracking_status == 0"><img class="batch-img" src="./assets/images/reschedule.png" alt="Batch Image"></div>
+                        <div *ngIf="upcomingBookingList.sp_reschedule_status != 0"><img class="batch-img" src="./assets/images/reschedule.png" alt="Batch Image"></div>
+
+
+                        <h5>{{upcomingBookingList.cat_subcat_name}}</h5>
+                        <p>{{upcomingBookingList.booking_job_no}}</p>
+                        <p>{{ upcomingBookingList.booking_date | date : 'EE, MMM d, y' }} at {{upcomingBookingList.booking_time}}</p>
+                        <div class="completeJb"><i class="fas fa-check-circle"></i>{{'Accepted and Upcoming' | translate}} </div>
+                      </div>
+                    </div>
+                    <div class="srmyBookFooter">
+                      <div class="srmRating">
+                        <img src="{{upcomingBookingList.sp_image}}" alt="sp" (error)="onImgError($event)">
+                        <div class="">
+                          <h6>{{upcomingBookingList.sp_name}}</h6>
+                          <!-- <div class="star">
+                            <img src="./assets/images/star.png" alt="">
+                          </div> -->
+                          <div>
+                            <span *ngIf="upcomingBookingList?.rating != null">
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating >= 1"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating == 0"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating >= 2"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating < 2"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating >= 3"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating < 3"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating >= 4"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating < 4"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating == 5"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating < 5"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(upcomingBookingList._id)">{{'View' | translate}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>{{'No upcoming records found' | translate}}.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+
+              <div class="tab-pane fade" id="pills-ongoing" role="tabpanel" aria-labelledby="pills-ongoing-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="srbookingBlock"
+                    *ngFor="let ongoingBookingList of booking_data | paginate: { itemsPerPage: 9, currentPage: page } ; let i = index">
+                    <div class="srmyBooking">
+                      <img class="cat-img" src="{{ongoingBookingList.cat_subcat_image}}" alt="">
+                      <div class="srmBtext crd-bdy">
+                        <div *ngIf="ongoingBookingList.start_status == 1"><img class="batch-img" src="./assets/images/service-start.png" alt="Batch image"></div>
+                        <div *ngIf="ongoingBookingList.tracking_status == 1"><img class="batch-img" src="./assets/images/on-the-way.png" alt="Batch image"></div>
+                        <h5>{{ongoingBookingList.cat_subcat_name}}</h5>
+                        <p>{{ongoingBookingList.booking_job_no}}</p>
+                        <p>{{ ongoingBookingList.booking_date | date : 'EE, MMM d, y' }} {{'at' | translate}} {{ongoingBookingList.booking_time}}</p>
+                        <div class="completeJb"><i class="fas fa-check-circle"></i> {{'Ongoing' | translate}} </div>
+                      </div>
+                    </div>
+                    <div class="srmyBookFooter">
+                      <div class="srmRating">
+                        <img src="{{ongoingBookingList.sp_image}}" alt="sp" (error)="onImgError($event)">
+                        <div class="">
+                          <h6>{{ongoingBookingList.sp_name}}</h6>
+                          <!-- <div class="star">
+                            <img src="./assets/images/star.png" alt="">
+                          </div> -->
+                          <div>
+                            <span *ngIf="ongoingBookingList?.rating != null">
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating >= 1"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating == 0"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating >= 2"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating < 2"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating >= 3"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating < 3"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating >= 4"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating < 4"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating == 5"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating < 5"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(ongoingBookingList._id)">{{'View' | translate}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>{{'No ongoing records found' | translate}}.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+
+              <div class="tab-pane fade" id="pills-completed" role="tabpanel" aria-labelledby="pills-completed-tab">
+                <div class="tabinfo_wrap">
+                  <div class="srbookingBlock"
+                    *ngFor="let completedBookingList of booking_data | paginate: { itemsPerPage: 9, currentPage: page } ; let i = index">
+                    <div class="srmyBooking">
+                      <img class="cat-img" src="{{completedBookingList.cat_subcat_image}}" alt="">
+                      <div class="srmBtext crd-bdy">
+                        <div><img class="batch-img" src="./assets/images/completed.png" alt="Batch image"></div>
+                        <h5>{{completedBookingList.cat_subcat_name}}</h5>
+                        <p>{{completedBookingList.booking_job_no}}</p>
+                        <p>{{ completedBookingList.booking_date | date : 'EE, MMM d, y' }} {{'at' | translate}}
+                          {{completedBookingList.booking_time}}</p>
+                        <div class="completeJb"><i class="fas fa-check-circle"></i> {{'Completed' | translate}} </div>
+                      </div>
+                    </div>
+                    <div class="srmyBookFooter">
+                      <div class="srmRating">
+                        <img src="{{completedBookingList.sp_image}}" alt="sp" (error)="onImgError($event)">
+                        <div class="">
+                        <h6>{{completedBookingList.sp_name}}</h6>
+                          <!-- <div class="star">
+                            <img src="./assets/images/star.png" alt="">
+                          </div> -->
+                          <div>
+                            <!-- <img src="./assets/images/star.png" alt=""> -->
+                            <span *ngIf="completedBookingList?.rating != null">
+
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating >= 1"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating == 0"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating >= 2"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating < 2"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating >= 3"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating < 3"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating >= 4"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating < 4"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating == 5"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating < 5"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(completedBookingList._id)">{{'View' | translate}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+
+              <div class="tab-pane fade" id="pills-cancel" role="tabpanel" aria-labelledby="pills-cancel-tab">
+                <div class="tabinfo_wrap">
+                  <div class="srbookingBlock"
+                    *ngFor="let cancelBookingList of booking_data | paginate: { itemsPerPage: 9, currentPage: page } ; let i = index">
+                    <div class="srmyBooking">
+                      <img class="cat-img" src="{{cancelBookingList.cat_subcat_image}}" alt="">
+                      <div class="srmBtext crd-bdy">
+                        <div *ngIf="cancelBookingList?.reschedule_status != 0 && cancelBookingList?.tracking_status == 0"><img class="batch-img" src="./assets/images/reschedule.png" alt="Batch Image"></div>
+                        <div *ngIf="cancelBookingList?.sp_reschedule_status != 0"><img class="batch-img" src="./assets/images/reschedule.png" alt="Batch Image"></div>
+                        <h5>{{cancelBookingList.cat_subcat_name}}</h5>
+                        <p>{{cancelBookingList.booking_job_no}}</p>
+                        <p>{{ cancelBookingList.booking_date | date : 'EE, MMM d, y' }} {{'at' | translate}}
+                          {{cancelBookingList.booking_time}}</p>
+                        <div class="completeJb"><i class="fas fa-check-circle"></i> {{'Canceled' | translate}} </div>
+                      </div>
+                    </div>
+                    <div class="srmyBookFooter">
+                      <div class="srmRating">
+                        <img src="{{cancelBookingList.sp_image}}" alt="sp" (error)="onImgError($event)">
+                        <div class="">
+                        <h6 *ngIf="cancelBookingList?.sp_name">{{cancelBookingList.sp_name}}</h6>
+                        <h6 *ngIf="!cancelBookingList?.sp_name">{{'Not Assigned' | translate}}</h6>
+                          <!-- <div class="star">
+                            <img src="./assets/images/star.png" alt="">
+                          </div> -->
+                          <div>
+                            <!-- <img src="./assets/images/star.png" alt=""> -->
+                            <span *ngIf="cancelBookingList?.rating != null">
+
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="cancelBookingList?.rating >= 1"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="cancelBookingList?.rating == 0"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="cancelBookingList?.rating >= 2"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="cancelBookingList?.rating < 2"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="cancelBookingList?.rating >= 3"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="cancelBookingList?.rating < 3"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="cancelBookingList?.rating >= 4"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="cancelBookingList?.rating < 4"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="cancelBookingList?.rating == 5"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="cancelBookingList?.rating < 5"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(cancelBookingList._id)">{{'View' | translate}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

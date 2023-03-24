@@ -1,0 +1,105 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center" onclick="openNav()"> ☰ {{'Open Left menu' | translate}}</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>{{'Edit Profile' | translate}}</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>{{'Change Password' | translate}}</a></li>
+          <li>
+            <a routerLink="/change-language"
+              ><span
+                ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+              >{{'Change Language' | translate}}</a
+            >
+          </li>
+          <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>{{'Payment Options' | translate}}</a></li>
+          <li><a routerLink="/my-address-list"><span><img src="./assets/images/locate.png" alt=""></span>{{'Address' | translate}}</a>
+          </li>
+          <li><a routerLink="/sr-wallet"><span><img src="./assets/images/wallet-menu.png" alt="sr wallet"></span>{{'My Wallet' | translate}}</a></li>
+          <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>{{'My Bookings' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/my-query-list" class="active"><span><i class="far fa-file-search"
+                  style="font-size:30px"></i></span>{{'My Query' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>{{'Query Bookings' | translate}}</a>
+          </li>
+          <li>
+            <a (click)="srReadNotification()" routerLink="/sr-notification"><span><img
+                  src="./assets/images/notification.png" alt=""></span>{{'Notifications' | translate}}
+              <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">{{'New' | translate}}</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/help-center"
+              ><span
+                ><img
+                  src="./assets/images/help-center.png"
+                  alt="help center" /></span>{{'Help Center' | translate}}</a>
+          </li>
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/helpcenter.png" alt=""></span>Help Center</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/notification.png" alt=""></span>Notifications</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/faq.png" alt=""></span>FAQ</a></li>-->
+        </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <h3 class="innerHdn" style="margin-bottom: 0px;">{{'Query List' | translate}} </h3>
+        <div class="myAddress">
+          <div class="row">
+            <div class="col-lg-12 col-xl-6" *ngFor="let item of queryServiceList" style="padding-bottom: 15px;">
+              <div class="srbookingBlock" style="width: 100%;">
+                <div class="srmyBooking">
+                  <div class="srmBtext crd-bdy">
+                    <h5>{{'Service Type' | translate}}: <span>{{item.service_type}}</span></h5>
+                    <p>{{'Description' | translate}}: <span>{{item.description}}</span></p>
+                  </div>
+                </div>
+                <div class="srmyBookFooter">
+                  <div class="srmRating">
+                    <button type="submit" class="rejectBtn" (click)="viewDetails(item._id)">{{'Query Details' | translate}}</button>
+                  </div>
+                  <div class="fixed_opt">
+                    <span class="def_btn" (click)="providerReply(item._id)">{{'Providers Reply' | translate}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- <div class="row">
+            <div class="col-md-6" *ngFor="let addressList of addressData; let i = index">
+              <div class="prof_add_info">
+                <div class="loc_img locNewimg">
+                  <img *ngIf="addressList.address_type == 1" src="./assets/images/booked.png" alt="">
+                  <img *ngIf="addressList.address_type == 2" src="./assets/images/locate.png" alt="">
+                </div>
+                <p class="prof_title" *ngIf="addressList.address_type == 1">Home Address <span
+                    *ngIf="addressList.default_status == 1"> (Default)</span></p>
+                <p class="prof_title" *ngIf="addressList.address_type == 2">Office Address <span
+                    *ngIf="addressList.default_status == 1"> (Default)</span></p>
+                <p>{{addressList.street_address}} {{addressList.city}} {{addressList.state}} {{addressList.zip_code}}
+                </p>
+                <div class="myaddressBtn">
+                  <button type="submit" class="rejectBtn" (click)="deleteAddress(addressList._id)">Delete</button>
+                  <button type="submit" class="" (click)="editAddress(addressList._id)">Edit</button>
+                  <button type="button" (click)="setDefaultAddress(addressList._id)"
+                    *ngIf="addressList.default_status == 0">Set Address As Default</button>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <!-- <button type="submit" (click)="addNewAddress()" class="">Add a New Address</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,220 @@
+<section class="homeBannerbg innerBanner">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="socialLink socialBlack">
+          <span class="socialText">Social</span>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-google-plus-g"></i></a>
+        </div>
+        <div class="sliderInn">
+          <div class="slideTxt">
+            <h1>Our Services</h1>
+            <p>
+              Providing you with the peace of mind you deserve is what initiates the services we offer.
+            </p>
+            <!--                           <a href="" class="mulColor"><span>Make an appointment</span></a>-->
+            <form class="form-inline bannerSearch">
+              <input class="form-control" name="category_name" id="category_name" type="text" placeholder="Search"
+                aria-label="Search" [(ngModel)]="category_name">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
+                (click)='searchCategory(category_name)'><i class="fas fa-search"></i></button>
+            </form>
+          </div>
+          <div class="slideImg"><img src="./assets/images/innerbanner.jpg" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sr-serviceinnn">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="sr_servBlock">
+          <li *ngFor="let category of categoryData  | paginate: { itemsPerPage: 6, currentPage: page } ;let i = index">
+            <img src="{{category.category_image}}" alt="">
+            <h5>{{category.category_name}}</h5>
+            <!--<p>It is a long established fact that a reader will be distracted by the readable. </p>-->
+            <a [routerLink]="" (click)="subCategoryList(category.category_id)"
+              *ngIf="category.sub_category_status == true" class="booknow"><span>View Services</span></a>
+
+            <a [routerLink]="" *ngIf="category.sub_category_status == false && login_status == 1" class="booknow"
+              (click)='getServicePrice("cat",category.category_id,category.aq_status)'><span>Book Now</span></a>
+
+            <a href="#" data-toggle="modal" data-target="#demo-1"
+              *ngIf="category.sub_category_status == false && login_status == 0"
+              class="btn btn-success"><span>Login</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row" *ngIf="categoryData?.length == 0">
+      <div class="col-md-12">
+        <span style="text-align: center;width: 100%;display: block;">Data not found</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section *ngIf="categoryData?.length > 0">
+  <div aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </ul>
+  </div>
+</section>
+<section class="sr-serviceinnn" *ngIf="queryCategoryStatus?.query_category_status">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="sr_servBlock">
+          <li>
+            <a href="javascript:void(0)" (click)="imgSrc()" data-toggle="modal" data-target="#querySubmitForm">
+              <img src="./assets/images/query-service-img.png" alt="" style="height: 100px">
+              <h5>Request for a query</h5>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mapBg"><img src="./assets/images/map.jpg" alt=""></section>
+
+<div class="modal fade loginModal quotModal" id="querySubmitForm" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Request For Quote</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="queryServiceForm" (ngSubmit)="saveQueryService()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="first_name"
+                placeholder="First Name" readonly>
+            </div>
+            <div class="error"
+                *ngIf="queryServiceForm.controls['first_name'].hasError('required') && queryServiceForm.controls['first_name'].touched">
+                Please enter your first name
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="last_name"
+                placeholder="Last Name" readonly>
+            </div>
+            <div class="error"
+                *ngIf="queryServiceForm.controls['last_name'].hasError('required') && queryServiceForm.controls['last_name'].touched">
+                Please enter your last name
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="mobile_no"
+                placeholder="Mobile no." readonly>
+            </div>
+            <div class="error"
+            *ngIf="queryServiceForm.controls['mobile_no'].hasError('required') && queryServiceForm.controls['mobile_no'].touched">
+            Please enter your mobile no.
+          </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <textarea class="form-control" autocomplete="off" formControlName="address"
+                placeholder="Address" readonly></textarea>
+            </div>
+            <div class="error"
+                *ngIf="queryServiceForm.controls['address'].hasError('required') && queryServiceForm.controls['address'].touched">
+                Please enter your address
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="service_type"
+                placeholder="Service type">
+            </div>
+            <div class="error"
+                *ngIf="queryServiceForm.controls['service_type'].hasError('required') && queryServiceForm.controls['service_type'].touched">
+                Please enter service type
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <textarea class="form-control" autocomplete="off" formControlName="description"
+                placeholder="Description"></textarea>
+            </div>
+            <div class="error"
+            *ngIf="queryServiceForm.controls['description'].hasError('required') && queryServiceForm.controls['description'].touched">
+            Please enter description
+          </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="attachedImages mrgDefault20">
+                <input id="uploadFile" placeholder="Attach image(s)" disabled="disabled" />
+                <div class="fileUpload">
+                  <span><i class="fas fa-paperclip"></i></span>
+                  <input id="uploadBtn" (change)="readURL($event);" type="file" class="upload"
+                    formControlName="query_image" multiple />
+                </div>
+              </div>
+              <div *ngIf="imageSrc">
+                <img class="rounded mb-3" *ngFor="let url of imageSrc" [src]="url" width="130" alt="selected image" style="padding: 10px;" />
+              </div>
+            </div>
+            <div class="error"
+            *ngIf="queryServiceForm.controls['query_image'].hasError('required') && queryServiceForm.controls['query_image'].touched">
+            Image is required
+          </div>
+          </div>
+          <button class="query-submit-btn" type="submit"
+            [disabled]="queryServiceForm.invalid">Submit</button>&nbsp;&nbsp;&nbsp;
+          <!-- <button type="button" data-dismiss="modal">Cancel</button> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

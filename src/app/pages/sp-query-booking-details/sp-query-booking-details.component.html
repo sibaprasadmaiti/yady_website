@@ -1,0 +1,605 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <ul class="leftPanel">
+
+          <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change
+              Password</a></li>
+          <li><a routerLink="/document-list"><span><i class="far fa-file-invoice"></i></span>Documents</a></li>
+          <li>
+            <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>Services</a>
+          </li>
+          <li>
+            <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+          </li>
+          <li>
+            <a routerLink="/sp-query-booking-list" class="active"><span><i class="fa fa-calendar"
+                  style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>Working Hours</a>
+          </li>
+          <li><a routerLink="/working-area-list"><span><i class="far fa-place-of-worship"></i></span>Working Area</a>
+          </li>
+          <li><a routerLink="/sp-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a (click)="readNotification()" routerLink="/notification"><span><img src="./assets/images/notification.png"
+                  alt=""></span>Notifications
+              <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+            </a>
+          </li>
+        </ul>
+      </div> -->
+
+      <div class="col-md-12">
+        <div class="inner_main_content">
+          <h3 class="innerHdn"><a routerLink="/sp-query-booking-list" class="for-back"><i class="fas  fa-arrow-left"></i> </a> Query Job Details</h3>
+          <div class="row">
+            <!-- Job details -->
+            <div class="col-md-6">
+              <div class="prof_add_info bdInfo">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/booked.png" alt="">
+                </div>
+                <p class="prof_title">Booking ID: <span>{{ bookingData?.booking_job_no }}</span></p>
+                <p class="prof_title">Booked On: <span>{{
+                    bookingData?.booking_date | date: 'EE, MMM d, y' }}</span></p>
+                <p class="prof_title">Booking Status:
+                  <span *ngIf="bookingData?.booking_status == 1">Upcoming</span>
+                  <span *ngIf="bookingData?.booking_status == 2 && bookingData?.start_status == 0">On-Going</span>
+                  <span *ngIf="bookingData?.booking_status == 2 && bookingData?.start_status == 1">Service has
+                    Started</span>
+                  <span *ngIf="bookingData?.booking_status == 3">Completed</span>
+                </p>
+              </div>
+            </div>
+            <!-- SR details and on the way button -->
+            <div class="col-md-6">
+              <div class="tabinfo_block bdinfoBlog" style="height: auto;">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/locate.png" alt="">
+                </div>
+                <div class="tabinfo_cont job_info">
+                  <p><span>Name : </span><strong>{{ bookingData?.customer_name }}</strong></p>
+                  <p><span>Address : </span><strong>{{ bookingData?.full_address }}</strong></p>
+                  <p><span>Phone : </span><strong>{{bookingData?.customer_number}}</strong></p>
+
+                  <div class="call_optB" *ngIf="trackingStatus != 2">
+                    <div *ngIf="trackingStatus == 0">
+                      <span>On the way </span>
+                      <label class="switch"><input type="checkbox" [(ngModel)]="onTheWayChecked"
+                          (change)="onTheWay($event)">
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div *ngIf="trackingStatus == 1">
+                      <span>You are now on the way </span>
+                    </div>
+                    <div *ngIf="trackingStatus == 0">
+                      <a href="tel:{{bookingData?.customer_number}}" class="def_btn">Call</a>
+                    </div>
+                    <!-- <a *ngIf="trackingStatus == 0" class="ubtn" href="tel:{{bookingData?.customer_number}}">Call</a> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Booking direction map -->
+            <div class="col-md-6" *ngIf="bookingData?.booking_status != 3">
+              <div>
+                <agm-map [latitude]="spLat" [longitude]="spLng" [zoom]="8">
+                  <agm-direction [origin]="origin" [destination]="destination" [renderOptions]="renderOptions"
+                    [markerOptions]="markerOptions" [optimizeWaypoints]="true">
+                  </agm-direction>
+                </agm-map>
+              </div>
+              <div style="margin-top: 10px;margin-bottom: 10px">
+                <button type="button" class="def_btn px-3 py-2 my-3" *ngIf="trackingStatus == 1" (click)="startTracking()">Start
+                  tracking</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="def_btn2 px-3 py-2 my-3" *ngIf="trackingStatus == 1" (click)="stopTrackingConfirm()">Stop
+                  tracking</button>
+              </div>
+            </div>
+            <!-- Booking amount -->
+            <div class="col-md-6">
+              <div class="price_content_block">
+                <p class="cont_adjt"><span>price: </span><strong>{{bookingData?.actual_cost}}
+                    {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt add_border"><span>Tax: </span><strong>0 {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt"><span>Total: </span>
+                  <strong>{{bookingData?.actual_cost}} {{bookingData?.currency}}</strong>
+                </p>
+                <p class="cont_adjt add_border" *ngIf="bookingData?.extra_part_total_cost == 0"><span>Discount: </span><strong>-0 {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt" *ngIf="bookingData?.extra_part_total_cost > 0"><span>Discount: </span><strong>-0 {{bookingData?.currency}}</strong></p>
+
+                <p *ngIf="bookingData?.extra_part_total_cost > 0" class="cont_adjt add_border"><span>Additional part(s) cost: </span><strong>{{bookingData?.extra_part_total_cost}}
+                  {{bookingData?.currency}}</strong></p>
+                <!-- <p class="cont_adjt add_border"><span>Discount: </span><strong>-0 {{bookingData?.currency}}</strong></p> -->
+                <div class="totle_pric_txt noBrdrBtm">
+                  <p class="cont_adjt" *ngIf="bookingData?.wallet_pay_status == 1"><span>Order Total: </span>
+                    <strong *ngIf="bookingData?.extra_part_total_cost > 0">{{bookingData?.actual_cost + bookingData?.extra_part_total_cost}} {{bookingData?.currency}}</strong>
+                  <strong *ngIf="bookingData?.extra_part_total_cost == 0">{{bookingData?.actual_cost}} {{bookingData?.currency}}</strong>
+                  </p>
+                  <p class="cont_adjt add_border" *ngIf="bookingData?.wallet_pay_status == 0"><span>Order Total: </span>
+                    <strong *ngIf="bookingData?.extra_part_total_cost > 0">{{bookingData?.actual_cost + bookingData?.extra_part_total_cost}} {{bookingData?.currency}}</strong>
+                  <strong *ngIf="bookingData?.extra_part_total_cost == 0">{{bookingData?.actual_cost}} {{bookingData?.currency}}</strong>
+                  </p>
+                </div>
+                <p class="cont_adjt add_border" *ngIf="bookingData?.wallet_pay_status == 1"><span>Wallet Amount Used: </span><strong style="color: #004E4E;font-weight: 600;">{{ bookingData?.used_wallet_money }} {{bookingData?.currency}}</strong></p>
+                <div class="totle_pric_txt noBrdrBtm">
+                  <p class="cont_adjt" *ngIf="bookingData?.wallet_pay_status == 1"><span>Total Pay: </span>
+                    <strong *ngIf="bookingData?.extra_part_total_cost > 0">{{ (bookingData?.actual_cost + bookingData?.extra_part_total_cost) - bookingData?.used_wallet_money }} {{bookingData?.currency}}</strong>
+                  <strong *ngIf="bookingData?.extra_part_total_cost == 0">{{ bookingData?.actual_cost - bookingData?.used_wallet_money }} {{ bookingData?.currency }}</strong>
+                  </p>
+                  <p class="cont_adjt" *ngIf="bookingData?.wallet_pay_status == 0"><span>Total Pay: </span>
+                    <strong *ngIf="bookingData?.extra_part_total_cost > 0">{{ bookingData?.actual_cost + bookingData?.extra_part_total_cost }} {{bookingData?.currency}}</strong>
+                  <strong *ngIf="bookingData?.extra_part_total_cost == 0">{{ bookingData?.actual_cost }} {{ bookingData?.currency }}</strong>
+                  </p>
+                </div>
+                <div class="totle_pric_txt noBrdrBtm">
+                  <p class="cont_adjt"><span style="overflow: unset;">Payment method: </span><strong
+                      *ngIf="bookingData?.paid_medium == 1">Card</strong><strong
+                      *ngIf="bookingData?.paid_medium == 2">Cash</strong></p>
+                </div>
+              </div>
+            </div>
+             <!-- Additional parts -->
+             <div class="col-md-6" *ngIf="bookingData?.extra_part_status && (bookingData?.booking_status == 2 || bookingData?.booking_status == 3)">
+              <div class="tabinfo_block bdinfoBlog" style="height: auto;margin-top: 25px;">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/additionalparts.png" alt="additional-parts-image" width="45px">
+                </div>
+                <div *ngFor="let item of bookingData?.extra_part; index as i;">
+                  <div class="tabinfo_cont job_info">
+                    <h5 style="text-align: center;">Parts Request: {{i+1}}</h5>
+                    <p><span>Part(s) Name: </span><strong>{{ item?.additional_parts }}</strong></p>
+                    <p><span>Reason: </span><strong>{{ item?.reason }}</strong></p>
+                    <p><span>Part(s) Cost: </span><strong>{{item?.extra_part_cost}} {{bookingData?.currency}}</strong></p>
+                    <button class="def_btn2 mt-3" data-toggle="modal" [attr.data-target]="'#pauseImage'+i">Parts Image(s)</button>
+                    <p *ngIf="item?.extra_part_confirm_status == 1"><strong>Your extra parts request has been accepted by the service requester.</strong></p>
+                    <p *ngIf="item?.extra_part_confirm_status == 2"><strong style="color: red;">Your extra parts request has been rejected by the service requester.</strong></p>
+                  </div>
+                  <hr *ngIf="(i+1) < bookingData?.extra_part?.length" />
+                </div>
+
+              </div>
+            </div>
+            <!-- Additional time -->
+            <div class="col-md-6"  *ngIf="bookingData?.extra_time.length > 0">
+              <div class="tabinfo_block bdinfoBlog" style="height: auto;margin-top: 25px;">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/clock-img.png" alt="clock-image" width="45px">
+                </div>
+                <div  *ngFor="let item of bookingData?.extra_time; index as i;">
+                  <div class="tabinfo_cont job_info">
+                    <h5 style="text-align: center;">Time Request: {{i+1}}</h5>
+                    <p *ngIf="item.extra_day_confirm_status == 0"><strong>You have requested for additional 1 day for this service.</strong></p>
+                    <p *ngIf="item.extra_day_confirm_status == 1"><strong>Your requeste for additional 1 day is accepted by the service requester.</strong></p>
+                    <p *ngIf="item.extra_day_confirm_status == 2"><strong style="color: red;">Your extra time requeste is rejected by the service requester.</strong></p>
+                  </div>
+                  <hr *ngIf="(i+1) < bookingData?.extra_time?.length" />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-6"  *ngIf="(extraTimeCount > 0 && extraDayConfirmStatus == 0) || extraTimeSubmit">
+              <div class="tabinfo_block bdinfoBlog" style="height: auto;margin-top: 25px;">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/clock-img.png" alt="clock-image" width="45px">
+                </div>
+                <div class="tabinfo_cont job_info">
+                  <p><strong>You have requested for additional 1 day for this service.</strong></p>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- Start and Complete query service -->
+            <div class="col-md-6" *ngIf="trackingStatus == 2 && bookingStatus == 2">
+              <h5 class="spjdHdn" *ngIf="startStatus == 0">You can start your service now.</h5>
+              <h5 class="spjdHdn" *ngIf="startStatus == 1">Service has been started.</h5>
+              <div class="start-complete-btn">
+                <button type="button" *ngIf="startStatus == 0"  data-toggle="modal" data-target="#startJobModal" class="def_btn" >Start</button>
+                <button *ngIf="startStatus == 1" class="ubtn" disabled>Start</button>
+                <button class="def_btn" (click)="completeJob()">Complete</button>
+              </div>
+              <!-- Additional parts and time dropdown -->
+              <div class="mb-3" *ngIf="startStatus == 1 && (!adminApprovalStatus || extraPartConfirmStatus) && (bookingData?.extra_part_count < 3 || bookingData?.extra_time_count < 3)">
+                <div class="newAddressSelect">
+                  <select class="form-control" (change)="changeReason($event)">
+                    <option value="">Choose reason</option>
+                    <option value="additional-time" *ngIf="bookingData?.extra_time_status == 1 && extraDayConfirmStatus != 0 &&  bookingData?.extra_time_count > 0">Additional time</option>
+                    <option value="additional-time" *ngIf="bookingData?.extra_time_status == 1 && extraDayConfirmStatus == 0 && bookingData?.extra_time_count == 0">Additional time</option>
+                    <option value="additional-parts-required" *ngIf="bookingData?.extra_part_count < 3">Additional
+                      parts required</option>
+                  </select>
+                </div>
+              </div>
+              <!-- Pause for additional time form -->
+              <div class="mb-3" *ngIf="additionalTime">
+                <h5 class="spjdHdn">**There is an extension of 1 day available for this service.</h5>
+                <button class="def_btn" (click)="requestForExtraTime()">Request for extra time</button>
+              </div>
+
+              <!-- Pause for additional parts form -->
+              <div class="mb-3" *ngIf="additionalPartsRequired && extraPartCount < 3 && extraPartConfirmStatus != 0">
+                <form [formGroup]="additionalPartsForm" (ngSubmit)="additionalPartsSubmit(2)">
+                  <h5 class="spjdHdn">Description of required parts<span style="color: red;">*</span></h5>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <textarea class="form-control" formControlName="additional_parts" cols="40" rows="3"
+                        placeholder="Write about your parts description"></textarea>
+                    </div>
+                  </div>
+                  <div class="error"
+                    *ngIf="additionalPartsForm.controls['additional_parts'].hasError('required') && additionalPartsForm.controls['additional_parts'].touched">
+                    Please enter description for parts.
+                  </div>
+
+                  <h5 class="spjdHdn">Reson For Pause<span style="color: red;">*</span></h5>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <textarea class="form-control" formControlName="reason" cols="40" rows="3"
+                        placeholder="Write your reason"></textarea>
+                    </div>
+                  </div>
+                  <div class="error"
+                    *ngIf="additionalPartsForm.controls['reason'].hasError('required') && additionalPartsForm.controls['reason'].touched">
+                    Please enter pause reason.
+                  </div>
+
+                  <h5 class="spjdHdn">Additional Cost<span style="color: red;">*</span></h5>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="number" class="form-control" min="1" formControlName="cost" placeholder="100">
+                    </div>
+                  </div>
+                  <div class="error"
+                    *ngIf="additionalPartsForm.controls['cost'].hasError('required') && additionalPartsForm.controls['cost'].touched">
+                    Please enter cost.
+                  </div>
+
+                  <h5 class="spjdHdn">Add Images<span style="color: red;">*</span></h5>
+                  <div class="attachedImages mrgDefault20">
+                    <input id="uploadFile" placeholder="Attach image(s)" disabled="disabled" />
+                    <div class="fileUpload">
+                      <span><i class="fas fa-paperclip"></i></span>
+                      <input id="uploadBtn" type="file" accept="image/*" formControlName="pause_image" class="upload"
+                        (change)="imagePreview($event);" multiple />
+                    </div>
+                  </div>
+                  <div class="error"
+                    *ngIf="additionalPartsForm.controls['pause_image'].hasError('required') && additionalPartsForm.controls['pause_image'].touched">
+                    Please choose photo for pause reason.
+                  </div>
+
+                  <img *ngFor="let url of urls" [src]="url" alt="Reason image" height="200" width="200"
+                    style="padding: 5px;object-fit: contain;" />
+
+                  <div>
+                    <button type="submit" class="def_btn" [disabled]="additionalPartsForm.invalid">Submit</button>
+                  </div>
+                </form>
+              </div>
+              <!-- Additional parts admin approval -->
+              <div class="mb-3" *ngIf="bookingData?.extra_part_status && !extraPartConfirmStatus">
+                <div class="newAddressSelect">
+                  <select class="form-control" disabled>
+                    <option value="additional-parts-required">Additional parts required</option>
+                  </select>
+                </div>
+                <h5 class="spjdHdn" *ngIf="adminApprovalStatus">Admin approved extra parts</h5>
+
+                <h5 class="spjdHdn">Description of required parts</h5>
+                <div class="form-group">
+                  <div class="input-group">
+                    <textarea class="form-control" value="{{ bookingData?.additional_parts }}" cols="40"
+                      rows="3" readonly></textarea>
+                  </div>
+                </div>
+                <h5 class="spjdHdn">Reason For Pause</h5>
+                <div class="form-group">
+                  <div class="input-group">
+                    <textarea class="form-control" value="{{ bookingData?.reason }}" cols="40" rows="3" readonly></textarea>
+                  </div>
+                </div>
+                <h5 class="spjdHdn">Additional Cost</h5>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="number" class="form-control" min="1" value="{{ bookingData?.extra_part_cost }}" readonly>
+                  </div>
+                </div>
+                <h5 class="spjdHdn">Images</h5>
+                <div *ngIf="pauseImage.length > 0">
+                  <img *ngFor="let url of pauseImage" [src]="url.pause_image" alt="Reason image" height="200" width="200"
+                  style="padding: 5px;object-fit: contain;" />
+                </div>
+                <div *ngIf="pauseImage.length == 0">Image not found.</div>
+              </div>
+            </div>
+
+            <!-- Write a review -->
+            <div class="col-md-6"
+              *ngIf="(bookingData?.rating == null || bookingData?.review == null) && bookingData?.booking_status == 3">
+              <div style="margin: 15px;">
+                <button type="button" class="newaddons" (click)="writeReview()">Write a Review</button>
+              </div>
+            </div>
+            <!-- Review Show -->
+            <div class="col-md-6"
+              *ngIf="bookingData?.booking_status == 3 && (bookingData?.rating || bookingData?.review)">
+              <p style="text-align: center;"><strong>Review</strong></p>
+              <div class="providers_info_wrap providers_info_wrap2">
+                <div class="providers_info" style="display: block;">
+                  <div class="bookRating">
+                    <div class="providers_pic">
+                      <img src="./assets/images/pic1.png" alt="">
+                    </div>
+                    <div class="providers_name">
+                      <p><strong>{{ bookingData?.customer_name }}</strong></p>
+                      <span>{{ bookingData?.review_date }}</span>
+                      <div class="star">
+                        <!-- <img src="./assets/images/star.png" alt=""> -->
+                        <span>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 1"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating == null"></i>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 2"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 2"></i>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 3"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 3"></i>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 4"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 4"></i>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating == 5"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 5"></i>
+                        </span>
+                      </div>
+                      <div *ngIf="bookingData?.booking_status == 3 && bookingData?.review != null">
+                        {{bookingData?.review}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <button type="button" *ngIf="bookingData?.one_hour_status" (click)="bookingDirection(bookingData?._id)">Booking Direction</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade loginModal quotModal" id="startJobModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">You want to start this job?</h4><br />
+            <button class="def_btn" (click)="startJob()">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br />
+            <button class="def_btn" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" (click)="stopTracking()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <!-- <button class="def_btn2" data-dismiss="modal">No</button> -->
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="onTheWayModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="completeServiceModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" (click)="completeService()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="warningmodal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" data-dismiss="modal">Ok</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="warning_modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn2" data-dismiss="modal">Ok</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="ratingReviewModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn">Rating & Review</h3>
+            <div class="">
+              <span>
+                <i class='fa fa-star fa-fw start-col-yell' id="star1" (click)="startRating($event,1)"
+                  *ngIf="bookingData?.rating >= 1" data-value="1"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star1" (click)="startRating($event,1)"
+                  *ngIf="bookingData?.rating == null" data-value="1"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star2" (click)="startRating($event,2)"
+                  *ngIf="bookingData?.rating >= 2" data-value="2"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star2" (click)="startRating($event,2)"
+                  *ngIf="bookingData?.rating < 2" data-value="2"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star3" (click)="startRating($event,3)"
+                  *ngIf="bookingData?.rating >= 3" data-value="3"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star3" (click)="startRating($event,3)"
+                  *ngIf="bookingData?.rating < 3" data-value="3"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star4" (click)="startRating($event,4)"
+                  *ngIf="bookingData?.rating >= 4" data-value="4"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star4" (click)="startRating($event,4)"
+                  *ngIf="bookingData?.rating < 4" data-value="4"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star5" (click)="startRating($event,5)"
+                  *ngIf="bookingData?.rating == 5" data-value="5"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star5" (click)="startRating($event,5)"
+                  *ngIf="bookingData?.rating < 5" data-value="5"></i>
+              </span>
+            </div>
+            <div>
+              <div class="form-group">
+                <div class="input-group">
+                  <textarea class="form-control" [(ngModel)]="reviewText" autocomplete="off" name="reviewText"
+                    placeholder="Write here"></textarea>
+                </div>
+              </div>
+
+              <!-- <textarea cols="40" rows="1" [(ngModel)]="reviewText" name="reviewText"
+                placeholder="Write here"></textarea> -->
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary" (click)="submitReview()"
+                style="width: auto;">Submit</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngFor="let item of bookingData?.extra_part; index as i;">
+  <div class="modal fade loginModal quotModal" [attr.id]="'pauseImage'+i" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <h5>Pause Image(s)</h5><br />
+          <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" *ngIf="item.pause_image.length > 0">
+              <div class="carousel-item " [ngClass]="{active:isFirst}"
+                *ngFor="let image of item.pause_image; index as i;first as isFirst">
+                <img class="d-block w-100" src="{{image.pause_image}}" alt="Document" width="460" height="345" style="object-fit: contain;">
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls1" *ngIf="item.pause_image.length > 1" role="button"
+              data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color:#00B2B2"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls1" *ngIf="item.pause_image.length > 1" role="button"
+              data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true" style="background-color:#00B2B2"></span>
+              <span class="sr-only">Next</span>
+            </a>
+            <div *ngIf="item.pause_image.length == 0">Image not found.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

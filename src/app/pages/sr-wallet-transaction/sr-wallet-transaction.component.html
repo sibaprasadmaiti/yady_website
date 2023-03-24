@@ -1,0 +1,104 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>Edit Profile</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change
+              Password</a></li>
+          <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment
+              Options</a></li>
+          <li><a routerLink="/my-address-list"><span><img src="./assets/images/locate.png" alt=""></span>Address</a>
+          </li>
+          <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/my-query-list" class="active"><span><i class="far fa-file-search"
+                  style="font-size:30px"></i></span>My Query</a>
+          </li>
+          <li>
+            <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a (click)="srReadNotification()" routerLink="/sr-notification"><span><img
+                  src="./assets/images/notification.png" alt=""></span>Notifications
+              <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+            </a>
+          </li>
+
+        </ul>
+        </div>
+      </div> -->
+      <div class="col-md-12">
+        <h3 class="innerHdn"><a routerLink="/sr-wallet" class="for-back"><i class="fas  fa-arrow-left"></i> </a>  My Transaction Details</h3>
+        <div class="myAddress">
+          <table class="table table-striped">
+            <thead>
+             <tr>
+               <!-- <th>Booking Id</th> -->
+               <th>Booking Type</th>
+               <th>Transaction Date</th>
+               <!-- <th>Transaction Type</th> -->
+               <th>Description</th>
+               <th>Transaction Money</th>
+               <!-- <th>Currency</th> -->
+             </tr>
+            </thead>
+            <tbody *ngIf="myTransactionData.length > 0">
+             <tr *ngFor="
+             let myTransaction of myTransactionData
+               | paginate: { itemsPerPage: perPage, currentPage: page, totalItems: totalRecords };
+             let i = index
+           ">
+               <!-- <td>{{ myTransaction.booking_id }}</td> -->
+               <td><strong style="color: #00B2B2;">{{ myTransaction.booking_type }}</strong></td>
+               <td>{{ myTransaction.date }}</td>
+               <!-- <td>{{ myTransaction.transact_type }}</td> -->
+               <td>{{ myTransaction.description }}</td>
+               <td>
+                <span *ngIf="myTransaction.transact_type == 0" style="color: #004E4E;"><strong>+{{ myTransaction.transact_money }} {{ myTransaction.currency }}</strong></span>
+                <span *ngIf="myTransaction.transact_type == 1" style="color: red;"><strong>-{{ myTransaction.transact_money }} {{ myTransaction.currency }}</strong></span>
+              </td>
+               <!-- <td>{{ myTransaction.currency }}</td> -->
+             </tr>
+            </tbody>
+            <tbody  *ngIf="myTransactionData.length == 0">
+              <tr>
+                <td colspan="4">Data not found.</td>
+               </tr>
+            </tbody>
+           </table>
+           <div class="has-text-centered" style="text-align: center;">
+            <pagination-controls (pageChange)="nextPage(page = $event)"></pagination-controls>
+          </div>
+          <!-- <div class="row">
+            <div class="col-md-6">
+              <div class="prof_add_info">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/service-type.png" alt="image" style="width: 75%;">
+                </div>
+                <h5 class="prof_title">Service Type</h5>
+                <p>{{myQueryDetails?.service_type}}</p>
+              </div>
+              <button class="mb-5" type="button" *ngIf="myQueryDetails?.query_image.length > 0" data-toggle="modal" data-target="#serviceImage">Service Image(s)</button>
+            </div>
+            <div class="col-md-6">
+              <div class="prof_add_info">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/service-description.png" alt="image" style="width: 75%;">
+                </div>
+                <h5 class="prof_title">Service Description</h5>
+                <p>{{myQueryDetails?.description}}</p>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,719 @@
+<footer>
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-3 footerlogo">
+        <img src="./assets/images/logo.png" alt="">
+        <p><i class="fal fa-envelope"></i> Contact@yady.com</p>
+        <p><i class="fal fa-phone-alt"></i> +97142942940</p>
+      </div>
+      <div class="col-md-3">
+        <h4>Information</h4>
+        <div class="footLink">
+          <a href="">Home</a>
+          <a href="">Service</a>
+          <a href="">About Us</a>
+          <a href="">Contact Us</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <h4>Legal</h4>
+        <div class="footLink">
+          <a href="">Terms &amp; Conditions</a>
+          <a href="">Privacy Policy</a>
+          <a href="">FAQ</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <h4>Subscribe</h4>
+        <form class="subscribeform">
+          <input type="text" class="form-control" placeholder="Enter your email">
+          <button type="submit" class="">Subscribe</button>
+        </form>
+        <p>
+          <a href=""><img src="./assets/images/playstore.png" alt=""></a>
+          <a href=""><img src="./assets/images/appstore.png" alt=""></a>
+        </p>
+        <p>
+          <button type="button" *ngIf="logtoken == '' || logtoken == undefined" class="submit-cls" data-toggle="modal"
+            data-target="#sp_login_modal" data-dismiss="modal">Service Provider Login</button>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footerBtm">
+          <span class="footerSocial">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+          </span>
+          <p>copyright © {{currentYear}} <a href="">Yady</a>. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- [ Modal #1 ] -->
+<div class="modal fade loginModal" id="demo-1" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="./assets/images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Sign In</h5>
+        <h6>Hi there! Nice to see you again</h6>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="loginForm" (ngSubmit)="loginData()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Input email" formControlName="email" id="email" />
+            </div>
+            <div class="error"
+              *ngIf="loginForm.controls['email'].hasError('required') && loginForm.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+            <div class="error"
+              *ngIf="loginForm.controls['email'].hasError('pattern') && loginForm.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="password" class="form-control" placeholder="Input Password" formControlName="password"
+                id="password" />
+            </div>
+            <div class="error"
+              *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched">
+              Please enter password.
+            </div>
+            <div class="error"
+              *ngIf="loginForm.controls['password'].hasError('minlength') && loginForm.controls['password'].touched">
+              Invalid password.
+            </div>
+            <div class="error"
+              *ngIf="loginForm.controls['password'].hasError('maxlength') && loginForm.controls['password'].touched">
+              Invalid password.
+            </div>
+          </div>
+          <p class="forgotPass"><a href="" data-toggle="modal" data-target="#forgetpassword" data-dismiss="modal">Forgot
+              Password?</a></p>
+          <button type="submit" class="submit-cls" [disabled]="loginForm.invalid">Submit</button>
+        </form>
+        <p>Or</p>
+        <p>Sign in with</p>
+        <div class="loginSocial">
+          <a href="javascript:void(0)" class="loginBtn loginBtn--facebook" (click)="facebookLogin(1)"><i class="fab fa-facebook-f"></i></a>
+          <a href="javascript:void(0)" #loginRef><i class="fab fa-google"></i></a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <p>New User? <a href="" data-toggle="modal" data-target="#demo-3" data-dismiss="modal">Sign Up</a></p>
+      </div>
+      <!--<button type="submit" (click)="logOut()">Logout</button>-->
+    </div>
+  </div>
+</div>
+
+
+<!-- [ Forget Password ] -->
+<div class="modal fade loginModal" id="forgetpassword" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="./assets/images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Forget Password</h5>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="forgetPassForm" (ngSubmit)="forgetPassword()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Input email" formControlName="email" id="email" />
+            </div>
+            <div class="error"
+              *ngIf="forgetPassForm.controls['email'].hasError('required') && forgetPassForm.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+            <div class="error"
+              *ngIf="forgetPassForm.controls['email'].hasError('pattern') && forgetPassForm.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+          </div>
+          <p class="forgotPass"><a href="" data-toggle="modal" data-target="#demo-1" data-dismiss="modal">Back To
+              Login?</a></p>
+          <button type="submit" class="submit-cls" [disabled]="forgetPassForm.invalid">Submit</button>
+        </form>
+        <!-- <p>Or</p>
+        <p>Sign in with</p>
+        <div class="loginSocial">
+          <a href=""><i class="fab fa-facebook-f"></i></a>
+          <a href=""><i class="fab fa-google"></i></a>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <p>New User? <a href="" data-toggle="modal" data-target="#demo-3" data-dismiss="modal">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [ Modal #2 ] -->
+<div class="modal fade loginModal" id="demo-2" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Sign Up</h5>
+        <h6>Please enter your mobile number for sign up</h6>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="reg1Form" (ngSubmit)="verifyMobileOTP()">
+          <div class="form-group phn phoneNobg">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="mobile_no" ng2TelInput
+                (countryChange)="onCountryChange($event)" (intlTelInputObject)="telInputObject($event)" />
+            </div>
+            <div>{{timeleft2}}</div>
+            <button type="button" [hidden]="isShowDiv3" class="btn btn-primary" (click)="getMobileOTP($event)">Send
+              OTP</button>
+            <button type="button" [hidden]="isShowDiv4" class="btn btn-primary" (click)="resendMobileOTP($event)">Resend
+              OTP</button>
+            <input type="hidden" class="form-control" formControlName="country_code">
+            <div class="error"
+              *ngIf="reg1Form.controls['mobile_no'].hasError('required') && reg1Form.controls['mobile_no'].touched">
+              Please enter mobile number.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="mobile_otp" disabled
+                placeholder="Mobile OTP" />
+            </div>
+            <div class="error"
+              *ngIf="reg1Form.controls['mobile_otp'].hasError('required') && reg1Form.controls['mobile_otp'].touched">
+              Please enter mobile OTP.
+            </div>
+          </div>
+          <button type="submit" [disabled]="reg1Form.invalid">Verify OTP</button>
+        </form>
+        <!--<p>Or</p>-->
+        <!--<p>Sign in with</p>-->
+        <!--<div class="loginSocial">
+            <a href=""><i class="fab fa-facebook-f"></i></a>
+            <a href=""><i class="fab fa-google"></i></a>
+        </div>-->
+      </div>
+      <!--<div class="modal-footer">
+           <p>Have an Account? <a href="" data-toggle="modal" data-target="#demo-1" data-dismiss="modal">Sign In</a></p>
+        </div>-->
+    </div>
+  </div>
+</div>
+
+<!-- [ Modal #3 ] -->
+<div class="modal fade loginModal" id="demo-3" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Sign Up</h5>
+        <h6>Please enter email for sign up</h6>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="reg2Form" (ngSubmit)="verifyEmailOTP()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="email" autocomplete="off" class="form-control" formControlName="email"
+                placeholder="Input email" />
+            </div>
+            <div>{{timeleft}}</div>
+            <button type="button" [hidden]="isShowDiv" class="btn btn-primary" (click)="getEmailOTP($event)">Send
+              OTP</button>
+            <button type="button" [hidden]="isShowDiv2" class="btn btn-primary" (click)="resendEmailOTP($event)">Resend
+              OTP</button>
+            <div class="error"
+              *ngIf="reg2Form.controls['email'].hasError('required') && reg2Form.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+            <div class="error"
+              *ngIf="reg2Form.controls['email'].hasError('pattern') && reg2Form.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="email_otp"
+                placeholder="Email OTP" disabled />
+            </div>
+            <div class="error"
+              *ngIf="reg2Form.controls['email_otp'].hasError('required') && reg2Form.controls['email_otp'].touched">
+              Please enter email OTP.
+            </div>
+          </div>
+          <button type="submit" [disabled]="reg2Form.invalid">Verify OTP</button>
+        </form>
+        <!-- <p>Or</p>
+        <p>Sign in with</p>
+        <div class="loginSocial">
+          <a href=""><i class="fab fa-facebook-f"></i></a>
+          <a href="javascript:void(0)"><i class="fab fa-google"></i></a>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <p>Have an Account? <a href="" data-toggle="modal" data-target="#demo-1" data-dismiss="modal">Sign In</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [ Modal #4 ] -->
+<div class="modal fade loginModal" id="demo-4" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Sign Up</h5>
+        <h6>Please enter your details for sign up</h6>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="reg3Form" (ngSubmit)="saveUser()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="first_name"
+                placeholder="First Name" />
+            </div>
+            <div class="error"
+              *ngIf="reg3Form.controls['first_name'].hasError('required') && reg3Form.controls['first_name'].touched">
+              Please enter first name.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="last_name"
+                placeholder="Last Name" />
+            </div>
+            <div class="error"
+              *ngIf="reg3Form.controls['last_name'].hasError('required') && reg3Form.controls['last_name'].touched">
+              Please enter last name.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="password" autocomplete="off" class="form-control" formControlName="password"
+                placeholder="Input Password" />
+            </div>
+            <div class="error"
+              *ngIf="reg3Form.controls['password'].hasError('required') && reg3Form.controls['password'].touched">
+              Please enter password.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="password" autocomplete="off" class="form-control" formControlName="confirm_password"
+                placeholder="Confirm Password" />
+            </div>
+            <div class="error"
+              *ngIf="reg3Form.controls['confirm_password'].hasError('required') && reg3Form.controls['confirm_password'].touched">
+              Please enter confirm password.
+            </div>
+          </div>
+          <button type="submit" [disabled]="reg3Form.invalid">Submit</button>
+        </form>
+        <!--<p>Or</p>
+        <p>Sign in with</p>
+        <div class="loginSocial">
+            <a href=""><i class="fab fa-facebook-f"></i></a>
+            <a href=""><i class="fab fa-google"></i></a>
+        </div>-->
+      </div>
+      <!--<div class="modal-footer">
+           <p>Have an Account? <a href="" data-toggle="modal" data-target="#demo-1" data-dismiss="modal">Sign In</a></p>
+        </div>-->
+    </div>
+  </div>
+</div>
+
+<!-- [ paymentCard Modal ] -->
+<div class="modal fade loginModal quotModal" id="paymentcard" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>Add credit card details</h5>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="paymentForm" (ngSubmit)="payment()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="tel" class="form-control" (keyup)="cardNumberFormat($event)" id="cardNumber" placeholder="Card Number*" maxlength="19" formControlName="card_number"
+                required />
+            </div>
+            <div class="error"
+              *ngIf="paymentForm.controls['card_number'].hasError('required') && paymentForm.controls['card_number'].touched">
+              Please enter card number.
+            </div>
+            <div
+              *ngIf="paymentForm.controls['card_number'].hasError('pattern') && paymentForm.controls['card_number'].touched">
+              Please enter a valid card number.
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Month(MM)*" maxlength="2" formControlName="month" required />
+              </div>
+              <div class="error"
+                *ngIf="paymentForm.controls['month'].hasError('required') && paymentForm.controls['month'].touched">
+                Please enter month.
+              </div>
+              <div *ngIf="paymentForm.controls['month'].hasError('pattern') && paymentForm.controls['month'].touched">
+                Please enter a valid month.
+              </div>
+            </div>
+            <div class="col-md-4 form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Year(YYYY)*" maxlength="4" formControlName="year" required />
+              </div>
+              <div class="error"
+                *ngIf="paymentForm.controls['year'].hasError('required') && paymentForm.controls['year'].touched">
+                Please enter year.
+              </div>
+              <div *ngIf="paymentForm.controls['year'].hasError('pattern') && paymentForm.controls['year'].touched">
+                Please enter a valid year.
+              </div>
+            </div>
+            <div class="col-md-4 form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="CVV*" maxlength="4" formControlName="cvv" required />
+              </div>
+              <div class="error"
+                *ngIf="paymentForm.controls['cvv'].hasError('required') && paymentForm.controls['cvv'].touched">
+                Please enter cvv.
+              </div>
+              <div *ngIf="paymentForm.controls['cvv'].hasError('pattern') && paymentForm.controls['cvv'].touched">
+                Please enter a valid cvv.
+              </div>
+            </div>
+          </div>
+          <div class="provideModalbtn">
+            <button type="submit" class="rejectBtn" data-dismiss="modal">Cancel</button>
+            <button type="submit" [disabled]="paymentForm.invalid">Save Card</button>
+          </div>
+          <script>
+            document.getElementById('cardNumber').addEventListener('input', function (e) {
+              e.target.value = e.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim();
+            });
+          </script>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [ SP Login Modal ] -->
+<div class="modal fade loginModal" id="sp_login_modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="./assets/images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Sign In</h5>
+        <h6>Hi there! Nice to see you again</h6>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="loginFormSP" (ngSubmit)="spLogin()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Input email" formControlName="email" id="email" />
+            </div>
+            <div class="error"
+              *ngIf="loginFormSP.controls['email'].hasError('required') && loginFormSP.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+            <div class="error"
+              *ngIf="loginFormSP.controls['email'].hasError('pattern') && loginFormSP.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="password" class="form-control" placeholder="Input Password" formControlName="password"
+                id="password" />
+            </div>
+            <div class="error"
+              *ngIf="loginFormSP.controls['password'].hasError('required') && loginFormSP.controls['password'].touched">
+              Please enter password.
+            </div>
+            <div class="error"
+              *ngIf="loginFormSP.controls['password'].hasError('minlength') && loginFormSP.controls['password'].touched">
+              Invalid password.
+            </div>
+            <div class="error"
+              *ngIf="loginFormSP.controls['password'].hasError('maxlength') && loginFormSP.controls['password'].touched">
+              Invalid password.
+            </div>
+          </div>
+          <p class="forgotPass"><a href="" data-toggle="modal" data-target="#spforgetpassword"
+              data-dismiss="modal">Forgot Password?</a></p>
+          <button type="submit" class="submit-cls" [disabled]="loginFormSP.invalid">Submit</button>
+        </form>
+        <!-- <p>Or</p>
+        <p>Sign in with</p>
+        <div class="loginSocial">
+          <a href="javascript:void(0)"  (click)="facebookLogin(2)"><i class="fab fa-facebook-f"></i></a>
+          <a href="javascript:void(0)" #spLoginRef><i class="fab fa-google"></i></a>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <p>New User? <a href="" data-toggle="modal" data-target="#sp_email_verify" data-dismiss="modal">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- [ SP Email Verification ] -->
+<div class="modal fade loginModal" id="sp_email_verify" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Sign Up</h5>
+        <h6>Please enter email for sign up</h6>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="emailVerifyForm" (ngSubmit)="verifySPEmailOTP()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="email" autocomplete="off" class="form-control" formControlName="email"
+                placeholder="Input email" />
+            </div>
+            <div>{{timeleft}}</div>
+            <button type="button" [hidden]="sendButtonShow" class="btn btn-primary" (click)="getEmailOTPSP($event)">Send
+              OTP</button>
+            <button type="button" [hidden]="reSendButtonShow" class="btn btn-primary"
+              (click)="resendEmailOTPSP($event)">Resend OTP</button>
+            <div class="error"
+              *ngIf="emailVerifyForm.controls['email'].hasError('required') && emailVerifyForm.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+            <div class="error"
+              *ngIf="emailVerifyForm.controls['email'].hasError('pattern') && emailVerifyForm.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="email_otp"
+                placeholder="Email OTP" disabled />
+            </div>
+            <div class="error"
+              *ngIf="emailVerifyForm.controls['email_otp'].hasError('required') && emailVerifyForm.controls['email_otp'].touched">
+              Please enter email OTP.
+            </div>
+          </div>
+          <button type="submit" [disabled]="emailVerifyForm.invalid">Verify OTP</button>
+        </form>
+        <!-- <p>Or</p>
+        <p>Sign in with</p>
+        <div class="loginSocial">
+          <a href=""><i class="fab fa-facebook-f"></i></a>
+          <a href=""><i class="fab fa-google"></i></a>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <p>Have an Account? <a href="" data-toggle="modal" data-target="#sp_login_modal" data-dismiss="modal">Sign
+            In</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [ SP Mobile Verify ] -->
+<div class="modal fade loginModal" id="sp_mobile_verify" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Sign Up</h5>
+        <h6>Please enter your mobile number for sign up</h6>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="mobileVerifyForm" (ngSubmit)="verifyMobileOTPSP()">
+          <div class="form-group phn phoneNobg">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="mobile_no" ng2TelInput
+                (countryChange)="onCountryChange($event)" (intlTelInputObject)="telInputObject($event)" />
+            </div>
+            <div>{{timeleft2}}</div>
+            <button type="button" [hidden]="sendMobileButton" class="btn btn-primary"
+              (click)="getMobileOTPSP($event)">Send OTP</button>
+            <button type="button" [hidden]="resendMobileButton" class="btn btn-primary"
+              (click)="resendMobileOTPSP($event)">Resend OTP</button>
+            <input type="hidden" class="form-control" formControlName="country_code">
+            <div class="error"
+              *ngIf="mobileVerifyForm.controls['mobile_no'].hasError('required') && mobileVerifyForm.controls['mobile_no'].touched">
+              Please enter mobile number.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="mobile_otp" disabled
+                placeholder="Mobile OTP" />
+            </div>
+            <div class="error"
+              *ngIf="mobileVerifyForm.controls['mobile_otp'].hasError('required') && mobileVerifyForm.controls['mobile_otp'].touched">
+              Please enter mobile OTP.
+            </div>
+          </div>
+          <button type="submit" [disabled]="mobileVerifyForm.invalid">Verify OTP</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [ SP Register ] -->
+<div class="modal fade loginModal" id="sp_register" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Sign Up</h5>
+        <h6>Please enter your details for sign up</h6>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="spSaveForm" (ngSubmit)="saveSP()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="first_name"
+                placeholder="First Name" />
+            </div>
+            <div class="error"
+              *ngIf="spSaveForm.controls['first_name'].hasError('required') && spSaveForm.controls['first_name'].touched">
+              Please enter first name.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" autocomplete="off" class="form-control" formControlName="last_name"
+                placeholder="Last Name" />
+            </div>
+            <div class="error"
+              *ngIf="spSaveForm.controls['last_name'].hasError('required') && spSaveForm.controls['last_name'].touched">
+              Please enter last name.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="password" autocomplete="off" class="form-control" formControlName="password"
+                placeholder="Input Password" />
+            </div>
+            <div class="error"
+              *ngIf="spSaveForm.controls['password'].hasError('required') && spSaveForm.controls['password'].touched">
+              Please enter password.
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input type="password" autocomplete="off" class="form-control" formControlName="confirm_password"
+                placeholder="Confirm Password" />
+            </div>
+            <div class="error"
+              *ngIf="spSaveForm.controls['confirm_password'].hasError('required') && spSaveForm.controls['confirm_password'].touched">
+              Please enter confirm password.
+            </div>
+          </div>
+          <button type="submit" [disabled]="spSaveForm.invalid">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <p>Have an Account? <a href="" data-toggle="modal" data-target="#sp_login_modal" data-dismiss="modal">Sign
+            In</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [ SP Forget Password ] -->
+<div class="modal fade loginModal" id="spforgetpassword" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <img src="./assets/images/logo.png" alt="">
+      </div>
+      <div class="modal-body">
+        <h5>Forget Password</h5>
+        <span style="font-weight: 500;color: #0e6060;font-size: 13px">{{ infoMessage }}</span>
+        <span style="font-weight: 500;color: #ff0000;font-size: 13px">{{ infoMessageRed }}</span>
+        <form [formGroup]="spforgetPassForm" (ngSubmit)="spforgetPassword()">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Input email" formControlName="email" id="email" />
+            </div>
+            <div class="error"
+              *ngIf="spforgetPassForm.controls['email'].hasError('required') && spforgetPassForm.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+            <div class="error"
+              *ngIf="spforgetPassForm.controls['email'].hasError('pattern') && spforgetPassForm.controls['email'].touched">
+              Please enter a valid email.
+            </div>
+          </div>
+          <p class="forgotPass"><a href="" data-toggle="modal" data-target="#sp_login_modal" data-dismiss="modal">Back
+              To Login?</a></p>
+          <button type="submit" class="submit-cls" [disabled]="spforgetPassForm.invalid">Submit</button>
+        </form>
+        <!-- <p>Or</p>
+        <p>Sign in with</p>
+        <div class="loginSocial">
+          <a href=""><i class="fab fa-facebook-f"></i></a>
+          <a href=""><i class="fab fa-google"></i></a>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <p>New User? <a href="" data-toggle="modal" data-target="#sp_register" data-dismiss="modal">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+</div>

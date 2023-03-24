@@ -1,0 +1,141 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+      <div class="row">
+          <div class="col-md-4">
+              <!--
+            <button class="navbar-toggler editToggle" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent">
+                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+            </button>
+-->
+              <!--
+             <div class="collaplsLeft collapse" id="navbarToggleExternalContent">
+             </div>
+-->
+<button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+              <ul class="leftPanel">
+                <!--<li><a href="#"><span><img src="./assets/images/editprofile.png" alt=""></span>Account</a></li>-->
+                <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+                <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+                  alt=""></span>Change Password</a></li>
+                  <li>
+                    <a routerLink="/change-language"
+                      ><span
+                        ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                      >Change Language</a
+                    >
+                  </li>
+                <li><a routerLink="/document-list"><span><i class="far fa-file-invoice"></i></span>Documents</a></li>
+                <li>
+                  <a routerLink="/service-list" class="active"><span><i class="fab fa-servicestack"></i></span>Services</a>
+                </li>
+                <li>
+                  <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+                </li>
+                <li>
+                  <a routerLink="/sp-query-booking-list"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+                    Bookings</a>
+                </li>
+                <li>
+                  <a routerLink="/sp-earning-list"
+                    ><span><img src="./assets/images/earning-money.png" alt="earning" /></span
+                    >Earnings</a
+                  >
+                </li>
+                <li>
+                  <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>Working Hours</a>
+                </li>
+                <li><a routerLink="/working-area-list"><span><i class="far fa-place-of-worship"></i></span>Working Area</a>
+                </li>
+                <li><a routerLink="/sp-booking-list"><span><img src="./assets/images/booked.png"
+                        alt=""></span>My Bookings</a></li>
+                <li>
+                  <a (click)="readNotification()" routerLink="/notification"><span><img src="./assets/images/notification.png"
+                        alt=""></span>Notifications
+                        <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                      </a>
+                    </li>
+              </ul>
+              </div>
+          </div>
+          <div class="col-md-8">
+              <div class="inner_main_content">
+                  <h3 class="innerHdn">Services</h3>
+                  <form>
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <!-- <label class="label_opt">About</label>
+                              <textarea class="form-control" placeholder="About"></textarea> -->
+                              <button type="button" class="" (click)="addService()">Add Services</button>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="label_opt">Categories</label>
+                              <div class="select_info_catg">
+                                  <div class="catgopt" *ngFor="let item of myServiceList">
+                                      <span>{{ item.category_name }}</span>
+                                      <span class="close_icon"><img src="./assets/images/close.png" (click)="deteteCat(item.category_id, item.category_name)" alt=""></span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="label_opt">Sub Categories</label>
+                              <div class="select_info_catg">
+                                  <div class="catgopt" *ngFor="let item of myServiceListSubCat">
+                                      <span>{{ item.sub_category_name }}</span>
+                                      <span class="close_icon"><img src="./assets/images/close.png" (click)="deteteSubcat(item.sub_category_id, item.sub_category_name)" alt=""></span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- <button type="submit" class="">Submit</button> -->
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h5 style="text-align: center;">{{message}}</h5><br />
+            <button class="def_btn" (click)="deleteCategory()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h5 style="text-align: center;">{{message}}</h5><br />
+            <button class="def_btn" data-dismiss="modal">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

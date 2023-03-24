@@ -1,0 +1,5 @@
+@media(max-width:1200px){
+    span.mobile-nom {
+        right: 20px !important;
+    }
+}

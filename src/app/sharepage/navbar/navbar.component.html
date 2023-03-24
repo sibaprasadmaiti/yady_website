@@ -1,0 +1,74 @@
+<header>
+	<section class="header">
+		<div class="container customContainer">
+			<div class="row">
+				<div class="col-md-12 headerTop">
+					<nav class="navbar navbar-expand-lg">
+					<div class="logoBg"><a routerLink=""><img src="./assets/images/logo.png" alt=""></a></div>
+					  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav mr-auto">
+						  <li class="nav-item active">
+							<a class="nav-link" routerLink="" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+								<i class="fas fa-home-lg-alt"></i>
+								<span class="sr-only">(current)</span>
+							</a>
+						  </li>
+						  <li class="nav-item">
+							<a class="nav-link" *ngIf="userType != 2" routerLink="service-category" routerLinkActive="active-link">Services</a>
+						  </li>
+						  <li class="nav-item">
+							<a class="nav-link" routerLink="about" routerLinkActive="active-link">About Us</a>
+						  </li>
+						  <li class="nav-item">
+							<a class="nav-link" routerLinkActive="active-link" >How It Work</a>
+						  </li>
+						  <li class="nav-item">
+							<a class="nav-link" routerLinkActive="active-link" >Faqs</a>
+						  </li>
+						  <li class="nav-item">
+							<a class="nav-link" routerLink="contact" routerLinkActive="active-link">Contact Us</a>
+						  </li>
+<!--
+						  <li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  Dropdown
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							  <a class="dropdown-item" href="#">Action</a>
+							  <a class="dropdown-item" href="#">Another action</a>
+							  <div class="dropdown-divider"></div>
+							  <a class="dropdown-item" href="#">Something else here</a>
+							</div>
+						  </li>
+-->
+						</ul>
+					  </div>
+
+					  <div class="responsiveBtn">
+						  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+						  </button>
+						  <div class="loginMain">
+							  <a href="#" *ngIf="login_exists == 'b'" data-toggle="modal" data-target="#demo-1"><img src="./assets/images/loginIcon.svg" alt=""/>&nbsp;Login</a>
+
+								<div class="dropdown" *ngIf="login_exists == 'a'">
+									<button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+										<span><img class="mr-2" src="{{ userDetails?.profile_image }}" alt="user" (error)="onImgError($event)" style="width: 40px;object-fit: contain;border: 1px solid #ccc;border-radius: 25px;" /></span>
+										<span class="profilename">{{firstlattere}}  <!--{{Firstlatterelastname}} --> <i class="fal fa-angle-down"></i></span>
+									</button>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: auto;">
+										<a class="dropdown-item mn-a" routerLink="/profile"> My Profile</a>
+                    <a class="dropdown-item mn-a" routerLink="/change-language"> Change Language</a>
+										<a class="dropdown-item mn-a" href="" (click)="logOut()"><img src="./assets/images/logout.png" alt=""/> Logout</a>
+									</div>
+								</div>
+
+
+						  </div>
+					  </div>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+</header>

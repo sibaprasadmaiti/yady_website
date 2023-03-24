@@ -1,0 +1,101 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>Edit Profile</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change
+              Password</a></li>
+          
+          <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment
+              Options</a></li>
+          <li><a routerLink="/my-address-list" class="active"><span><img src="./assets/images/locate.png"
+                  alt=""></span>Address</a></li>
+          <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/my-query-list"><span><i class="far fa-file-search" style="font-size:30px"></i></span>My
+              Query</a>
+          </li>
+          <li>
+            <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a (click)="srReadNotification()" routerLink="/sr-notification"><span><img
+                  src="./assets/images/notification.png" alt=""></span>Notifications
+              <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+            </a>
+          </li>
+        </ul>
+        </div>
+      </div> -->
+      <div class="col-md-12 addNewAddress">
+        <h3 class="innerHdn"><a routerLink="/my-address-list" class="for-back"><i class="fas  fa-arrow-left"></i> </a>  Edit Address</h3>
+        <span style="color: #00b2b2">{{infoMessage}}</span>
+        <form [formGroup]="addressForm" (ngSubmit)="updateAddress()">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control" id="street_address" formControlName="street_address"
+                placeholder="Address">
+              <div class="error"
+                *ngIf="addressForm.controls['street_address'].hasError('required') && addressForm.controls['street_address'].touched">
+                Please enter street address.
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control" formControlName="house_no" id="house_no"
+                placeholder="Flat, House Name, House No., Appartment" autocomplete="off">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control" formControlName="land_mark" placeholder="Landmark">
+            </div>
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control" formControlName="city" id="city" placeholder="Town / City">
+              <div class="error"
+                *ngIf="addressForm.controls['city'].hasError('required') && addressForm.controls['city'].touched">
+                Please enter city.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control" placeholder="State" formControlName="state" id="state">
+              <div class="error"
+                *ngIf="addressForm.controls['state'].hasError('required') && addressForm.controls['state'].touched">
+                Please enter state.
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <input type="hidden" class="form-control" placeholder="Zip Code" formControlName="zip_code" id="zip_code">
+              <div class="error"
+                *ngIf="addressForm.controls['zip_code'].hasError('required') && addressForm.controls['zip_code'].touched">
+                Please enter zip code.
+              </div>
+            </div>
+            <input type="hidden" class="form-control" id="lat" placeholder="lat" formControlName="lattitude">
+            <input type="hidden" class="form-control" id="long" placeholder="long" formControlName="longitude">
+          </div>
+          <div class="row newAddRadio">
+            <div class="col-md-6">
+              <span class="radioLft">
+                <input type="radio" [checked]="address_type == 1" id="test1" name="address_type"
+                  formControlName="address_type" value="1"><label for="test1">Home</label>
+              </span>
+              <span class="radioLft">
+                <input type="radio" [checked]="address_type == 2" id="test2" name="address_type"
+                  formControlName="address_type" value="2"><label for="test2">Oǘce/Commercial</label>
+              </span>
+            </div>
+          </div>
+          <button type="submit" class="" [disabled]="addressForm.invalid">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

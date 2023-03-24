@@ -1,0 +1,92 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>Edit Profile</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change
+              Password</a></li>
+          <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment
+              Options</a></li>
+          <li><a routerLink="/my-address-list"><span><img src="./assets/images/locate.png" alt=""></span>Address</a>
+          </li>
+          <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/my-query-list" class="active"><span><i class="far fa-file-search"
+                  style="font-size:30px"></i></span>My Query</a>
+          </li>
+          <li>
+            <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a (click)="srReadNotification()" routerLink="/sr-notification"><span><img
+                  src="./assets/images/notification.png" alt=""></span>Notifications
+              <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+            </a>
+          </li>
+
+        </ul>
+        </div>
+      </div> -->
+      <div class="col-md-12">
+        <h3 class="innerHdn"><a routerLink="/my-query-list" class="for-back"><i class="fas  fa-arrow-left"></i> </a> {{'Query Details' | translate}}</h3>
+        <div class="myAddress">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="prof_add_info">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/service-type.png" alt="image" style="width: 75%;">
+                </div>
+                <h5 class="prof_title">{{'Service Type' | translate}}</h5>
+                <p>{{myQueryDetails?.service_type}}</p>
+              </div>
+              <button class="mb-5" type="button" *ngIf="myQueryDetails?.query_image.length > 0" data-toggle="modal" data-target="#serviceImage">{{'Service Image(s)' | translate}}</button>
+            </div>
+            <div class="col-md-6">
+              <div class="prof_add_info">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/service-description.png" alt="image" style="width: 75%;">
+                </div>
+                <h5 class="prof_title">{{'Service Description' | translate}}</h5>
+                <p>{{myQueryDetails?.description}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="modal fade loginModal quotModal" id="serviceImage" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>{{'Service Image(s)' | translate}}</h5><br />
+        <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" *ngIf="myQueryDetails?.query_image.length > 0">
+            <div class="carousel-item " [ngClass]="{active:isFirst}" *ngFor="let image of myQueryDetails?.query_image; index as i;first as isFirst">
+                <img class="d-block w-100" src="{{image.query_image}}" alt="Document" width="460" height="345">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleControls1" *ngIf="myQueryDetails?.query_image.length > 1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color:#00B2B2"></span>
+            <span class="sr-only">{{'Previous' | translate}}</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls1" *ngIf="myQueryDetails?.query_image.length > 1" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="background-color:#00B2B2"></span>
+            <span class="sr-only">{{'Next' | translate}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

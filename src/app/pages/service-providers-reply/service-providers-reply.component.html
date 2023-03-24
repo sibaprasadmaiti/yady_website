@@ -1,0 +1,65 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>Edit Profile</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change
+              Password</a></li>
+          <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment
+              Options</a></li>
+          <li><a routerLink="/my-address-list"><span><img src="./assets/images/locate.png" alt=""></span>Address</a>
+          </li>
+          <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/my-query-list" class="active"><span><i class="far fa-file-search"
+                  style="font-size:30px"></i></span>My Query</a>
+          </li>
+          <li>
+            <a routerLink="/query-bookings"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a (click)="srReadNotification()" routerLink="/sr-notification"><span><img
+                  src="./assets/images/notification.png" alt=""></span>Notifications
+              <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+            </a>
+          </li>
+          
+        </ul>
+        </div>
+      </div> -->
+      <div class="col-md-12">
+        <h3 class="innerHdn" style="margin-bottom: 0px;"><a routerLink="/my-query-list" class="for-back"><i class="fas  fa-arrow-left"></i> </a> Providers Reply</h3>
+        <div class="myAddress">
+          <div class="row" *ngIf="queryReplyData.length > 0">
+            <div class="col-md-6" *ngFor="let item of queryReplyData" style="padding-bottom: 15px;">
+              <div class="srbookingBlock" style="width: 100%;">
+                <div class="srmyBooking">
+                  <div class="srmBtext crd-bdy">
+                    <h5>{{item.service_provider_name}}</h5>
+                    <p>"{{item.description}}"</p>
+                    <p><span style="color: #00B2B2;">Total cost required {{item.cost}} {{item.currency}}</span></p>
+                    <p><span style="color: #00B2B2;">Service requires {{item.days}} days</span></p>
+                  </div>
+                </div>
+                <div class="srmyBookFooter">
+                  <div class="fixed_opt">
+                    <span class="def_btn" (click)="bookService(item.query_service_assign_id)">Book Service</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="queryReplyData.length == 0">
+            <h5>Data not found.</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+.pay-wallet-btn{
+  display: flex;
+  align-items:center;
+  padding: 8px 30px;
+}
+.pay-wallet-btn span{
+  font-size: 20px;
+  padding-right: 5px;
+}
+.pay-wallet-div{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}

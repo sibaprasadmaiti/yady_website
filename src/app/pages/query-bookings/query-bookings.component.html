@@ -1,0 +1,258 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ Open Left menu</button>
+                    <div class="sidepanel" id="mySidepanel">
+                      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>Edit Profile</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change
+              Password</a></li>
+              <li>
+                <a routerLink="/change-language"
+                  ><span
+                    ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                  >Change Language</a
+                >
+              </li>
+          <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment
+              Options</a></li>
+          <li><a routerLink="/my-address-list"><span><img src="./assets/images/locate.png" alt=""></span>Address</a>
+          </li>
+          <li><a routerLink="/sr-wallet"><span><img src="./assets/images/wallet-menu.png" alt="sr wallet"></span>My Wallet</a></li>
+          <li><a routerLink="/my-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/my-query-list" ><span><i class="far fa-file-search"
+                  style="font-size:30px"></i></span>My Query</a>
+          </li>
+          <li>
+            <a routerLink="/query-bookings" class="active"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/sr-notification"><span><img
+                  src="./assets/images/notification.png" alt=""></span>Notifications
+              <span *ngIf="srNewNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/help-center"
+              ><span
+                ><img
+                  src="./assets/images/help-center.png"
+                  alt="help center" /></span>Help Center</a>
+          </li>
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/helpcenter.png" alt=""></span>Help Center</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/notification.png" alt=""></span>Notifications</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>-->
+          <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/faq.png" alt=""></span>FAQ</a></li>-->
+        </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="inner_main_content">
+          <h3 class="innerHdn">Query Bookings</h3>
+          <div class="tabsection">
+
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+              <li class="nav-item">
+                <a class="nav-link show active" id="pills-upcoming-tab" data-toggle="pill" href="#pills-upcoming"
+                  (click)="queryBookingList(1)">Upcoming</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-ongoing-tab" data-toggle="pill" href="#pills-ongoing"
+                  (click)="queryBookingList(2)">On-Going</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-completed-tab" data-toggle="pill" href="#pills-completed"
+                  (click)="queryBookingList(3)">Completed</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-upcoming" role="tabpanel" aria-labelledby="pills-upcoming-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="srbookingBlock"
+                    *ngFor="let upcomingBookingList of booking_data | paginate: { itemsPerPage: 9, currentPage: page } ; let i = index">
+                    <div class="srmyBooking srtBatchaddtop">
+                      <img class="cat-img" src="{{upcomingBookingList.query_images[0]?.q_booking_img}}" alt="">
+                      <div *ngIf="upcomingBookingList.start_status == 1" class="batchimg-icon"><img class="batch-img" src="./assets/images/service-start.png" alt="Batch Image"></div>
+                      <div class="srmBtext crd-bdy">
+
+
+                        <h5>{{upcomingBookingList.service_type}}</h5>
+                        <p>{{upcomingBookingList.booking_job_no}}</p>
+                        <p>{{ upcomingBookingList.booking_date | date : 'EE, MMM d, y' }}</p>
+                        <div class="completeJb">{{upcomingBookingList.booking_status}}</div>
+                      </div>
+                    </div>
+                    <div class="srmyBookFooter">
+                      <div class="srmRating">
+                        <img src="{{upcomingBookingList.sp_profile_img}}" alt="">
+                        <div class="">
+                          <h6>{{upcomingBookingList.sp_name}}</h6>
+                          <!-- <div class="star">
+                            <img src="./assets/images/star.png" alt="">
+                          </div> -->
+                          <div>
+                            <span *ngIf="upcomingBookingList?.rating != null">
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating >= 1"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating == 0"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating >= 2"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating < 2"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating >= 3"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating < 3"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating >= 4"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating < 4"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="upcomingBookingList?.rating == 5"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="upcomingBookingList?.rating < 5"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(upcomingBookingList.query_booking_id)">View</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No upcoming records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+
+              <div class="tab-pane fade" id="pills-ongoing" role="tabpanel" aria-labelledby="pills-ongoing-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="srbookingBlock"
+                    *ngFor="let ongoingBookingList of booking_data | paginate: { itemsPerPage: 9, currentPage: page } ; let i = index">
+                    <div class="srmyBooking srtBatchaddtop">
+                      <img class="cat-img" src="{{ongoingBookingList.query_images[0]?.q_booking_img}}" alt="">
+                      <div *ngIf="ongoingBookingList.start_status == 1" class="batchimg-icon"><img class="batch-img" src="./assets/images/service-start.png" alt="Batch image"></div>
+                      <div class="srmBtext crd-bdy">
+
+                        <div *ngIf="ongoingBookingList.tracking_status == 1"><img class="batch-img" src="./assets/images/on-the-way.png" alt="Batch image"></div>
+                        <h5>{{ongoingBookingList.service_type}}</h5>
+                        <p>{{ongoingBookingList.booking_job_no}}</p>
+                        <p>{{ ongoingBookingList.booking_date | date : 'EE, MMM d, y' }}</p>
+                        <div class="completeJb">{{ongoingBookingList.booking_status}}</div>
+                      </div>
+                    </div>
+                    <div class="srmyBookFooter">
+                      <div class="srmRating">
+                        <img src="{{ongoingBookingList.sp_profile_img}}" alt="">
+                        <div class="">
+                          <h6>{{ongoingBookingList.sp_name}}</h6>
+                          <!-- <div class="star">
+                            <img src="./assets/images/star.png" alt="">
+                          </div> -->
+                          <div>
+                            <span *ngIf="ongoingBookingList?.rating != null">
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating >= 1"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating == 0"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating >= 2"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating < 2"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating >= 3"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating < 3"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating >= 4"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating < 4"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="ongoingBookingList?.rating == 5"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="ongoingBookingList?.rating < 5"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(ongoingBookingList.query_booking_id)">View</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No ongoing records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+
+              <div class="tab-pane fade" id="pills-completed" role="tabpanel" aria-labelledby="pills-completed-tab">
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length > 0">
+                  <div class="srbookingBlock"
+                    *ngFor="let completedBookingList of booking_data | paginate: { itemsPerPage: 9, currentPage: page } ; let i = index">
+                    <div class="srmyBooking srtBatchaddtop">
+                      <img class="cat-img" src="{{completedBookingList.query_images[0]?.q_booking_img}}" alt="">
+                      <div class="batchimg-icon"><img class="batch-img" src="./assets/images/completed.png" alt="Batch image"></div>
+                      <div class="srmBtext crd-bdy">
+
+                        <h5>{{completedBookingList.service_type}}</h5>
+                        <p>{{completedBookingList.booking_job_no}}</p>
+                        <p>{{ completedBookingList.booking_date | date : 'EE, MMM d, y' }}</p>
+                        <div class="completeJb">{{completedBookingList.booking_status}}</div>
+                      </div>
+                    </div>
+                    <div class="srmyBookFooter">
+                      <div class="srmRating">
+                        <img src="{{completedBookingList.sp_profile_img}}" alt="">
+                        <div class="">
+                        <h6>{{completedBookingList.sp_name}}</h6>
+                          <!-- <div class="star">
+                            <img src="./assets/images/star.png" alt="">
+                          </div> -->
+                          <div>
+                            <!-- <img src="./assets/images/star.png" alt=""> -->
+                            <span *ngIf="completedBookingList?.rating != null">
+
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating >= 1"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating == 0"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating >= 2"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating < 2"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating >= 3"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating < 3"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating >= 4"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating < 4"></i>
+                              <i class='fa fa-star fa-fw start-col-yell' *ngIf="completedBookingList?.rating == 5"></i>
+                              <i class='fa fa-star fa-fw start-col' *ngIf="completedBookingList?.rating < 5"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fixed_opt">
+                        <span class="def_btn" (click)="viewDetails(completedBookingList.query_booking_id)">View</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tabinfo_wrap" *ngIf="booking_data?.length == 0">
+                  <div><strong>No complete records found.</strong></div>
+                </div>
+                <section class="pgn" *ngIf="booking_data?.length > 0">
+                  <div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

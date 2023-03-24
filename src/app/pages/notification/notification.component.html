@@ -1,0 +1,122 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <div class="col-md-4">
+        <button class="sideBtn btn-block btn-info text-center mb-3" onclick="openNav()"> ☰ {{'Open Left menu' | translate}}</button>
+        <div class="sidepanel" id="mySidepanel">
+        <ul class="leftPanel">
+          <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>{{'Edit Profile' | translate}}</a>
+          </li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+            alt=""></span>{{'Change Password' | translate}}</a></li>
+            <li>
+              <a routerLink="/change-language"
+                ><span
+                  ><img src="./assets/images/changelanguage.png" alt="change language" /></span
+                >{{'Change Language' | translate}}</a
+              >
+            </li>
+          <li>
+            <a routerLink="/document-list">
+              <span><i class="far fa-file-invoice"></i></span>{{'Documents' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>{{'Services' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>{{'Query Request' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/sp-query-booking-list"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>{{'Query Bookings' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/sp-earning-list"
+              ><span><img src="./assets/images/earning-money.png" alt="earning" /></span
+              >{{'Earnings' | translate}}</a
+            >
+          </li>
+          <li>
+            <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>{{'Working Hours' | translate}}</a>
+          </li>
+          <li><a routerLink="/working-area-list"><span><i class="far fa-place-of-worship"></i></span>{{'Working Area' | translate}}</a>
+          </li>
+          <li><a routerLink="/sp-booking-list"><span><img src="./assets/images/booked.png" alt=""></span>{{'My Bookings' | translate}}</a>
+          </li>
+          <li>
+            <a routerLink="/notification" class="active"><span><img src="./assets/images/notification.png"
+                  alt=""></span>{{'Notifications' | translate}}
+                  <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">{{'New' | translate}}</span>
+                </a>
+              </li>
+        </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <h3 class="innerHdn">{{'Notifications' | translate}}</h3>
+        <!-- <div class="">
+          <button type="submit" class="rejectBtn" data-dismiss="modal">Read</button>
+          <button type="submit">Unread</button>
+        </div> -->
+        <div class="row" *ngIf="notificationList.length > 0">
+          <div class="col-md-6" *ngFor="let item of notificationList | paginate: { itemsPerPage: perPage, currentPage: page, totalItems: totalRecords };
+          let i = index">
+            <div class="notificationText">
+              <div style="float: right;" (click)="deleteNotification(item.notification_id)"><i class="fa fa-trash"
+                  title="Delete Notification" aria-hidden="true" style="cursor: pointer;"></i></div>
+              <h6>{{item.title}}</h6>
+              <p>{{item.msg}}</p>
+              <span>{{ item.received_date | date : 'EE, MMM d, y' }} {{'at' | translate}} {{item.received_time}}</span>
+            </div>
+          </div>
+          <div class="has-text-centered">
+            <pagination-controls (pageChange)="nextPage(page = $event)"></pagination-controls>
+          </div>
+        </div>
+        <div class="row" *ngIf="notificationList.length == 0">
+          <div class="col-md-6">
+            <h5>{{'Data not found' | translate}}.</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button> -->
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+              <h4 style="text-align: center;">{{message}}</h4><br /><br />
+              <button class="def_btn2" data-dismiss="modal">{{'Ok' | translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button> -->
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+              <h4 style="text-align: center;">{{message}}</h4><br /><br />
+              <button class="def_btn2" data-dismiss="modal">{{'Ok' | translate}}</button>
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

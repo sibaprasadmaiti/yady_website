@@ -1,0 +1,11 @@
+<agm-map [latitude]="splat" [longitude]="spLong" [zoom]='13'>
+    <!-- <agm-marker [latitude]="splat" [longitude]="spLong" [iconUrl]='{"url": spMarkerImg,"scaledSize": {"height": 40, "width": 40, "resizeMode": "contain"}}'></agm-marker>
+    <agm-marker [latitude]="srlat" [longitude]="srLong" [iconUrl]='{"url": srMarkerImg,"scaledSize": {"height": 40, "width": 40, "resizeMode": "contain"}}'></agm-marker> -->
+   <!-- <agm-polyline [visible]="true" [strokeWeight]="5"  [strokeColor]="polyLineColor">
+      <agm-polyline-point [latitude]="splat" [longitude]="spLong"> </agm-polyline-point>
+      <agm-polyline-point [latitude]="srlat" [longitude]="srLong"> </agm-polyline-point>
+    </agm-polyline> -->
+  <agm-direction [origin]="origin" [destination]="destination" [renderOptions]="renderOptions"
+  [markerOptions]="markerOptions" [optimizeWaypoints]="true">
+  </agm-direction>
+</agm-map>

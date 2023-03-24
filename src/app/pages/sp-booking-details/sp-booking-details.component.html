@@ -1,0 +1,1139 @@
+<section class="editProfileBg">
+  <div class="container customContainer">
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <ul class="leftPanel">
+
+          <li><a routerLink="/profile"><span><i class="far fa-user-edit"></i></span>Edit Profile</a></li>
+          <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png"
+            alt=""></span>Change Password</a></li>
+          <li><a routerLink="/document-list"><span><i class="far fa-file-invoice"></i></span>Documents</a></li>
+          <li>
+            <a routerLink="/service-list"><span><i class="fab fa-servicestack"></i></span>Services</a>
+          </li>
+          <li>
+            <a routerLink="/query-request-list"><span><i class='far fa-comment-alt'></i></span>Query Request</a>
+          </li>
+          <li>
+            <a routerLink="/sp-query-booking-list"><span><i class="fa fa-calendar" style="font-size:36px"></i></span>Query
+              Bookings</a>
+          </li>
+          <li>
+            <a routerLink="/working-hours"><span><i class="far fa-business-time"></i></span>Working Hours</a>
+          </li>
+          <li><a routerLink="/working-area-list"><span><i class="far fa-place-of-worship"></i></span>Working Area</a>
+          </li>
+          <li><a routerLink="/sp-booking-list" class="active"><span><img src="./assets/images/booked.png"
+                  alt=""></span>My Bookings</a>
+          </li>
+          <li>
+            <a (click)="readNotification()" routerLink="/notification"><span><img src="./assets/images/notification.png"
+                  alt=""></span>Notifications
+                  <span *ngIf="newNotification" class="badge badge-light" style="color: red;width: 45px;">New</span>
+                </a>
+              </li>
+        </ul>
+      </div> -->
+
+      <div class="col-md-12">
+        <div class="inner_main_content">
+          <h3 class="innerHdn"><a routerLink="/sp-booking-list" class="for-back"><i class="fas  fa-arrow-left"></i> </a>
+            My Booking Details</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="prof_add_info bdInfo">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/booked.png" alt="">
+                </div>
+                <p class="prof_title">Booking ID: <span>{{ bookingData?.booking_id }}</span></p>
+                <p class="prof_title">Booked On: <span>{{
+                    bookingData?.booking_date | date }} at {{ bookingData?.booking_time }}</span></p>
+                <p class="prof_title">Booking Status: <span *ngIf="bookingData?.booking_status == 2">Completed</span>
+                  <span *ngIf="bookingData?.booking_status == 0">Pending</span>
+                  <span
+                    *ngIf="bookingData?.booking_status == 1 && bookingData?.reschedule_status == 0 && bookingData?.sp_reschedule_status == 0">Upcoming</span>
+                  <span
+                    *ngIf="bookingData?.booking_status == 1 && (bookingData?.reschedule_status == 1 || bookingData?.sp_reschedule_status == 1)">Rescheduled</span>
+                  <span *ngIf="bookingData?.booking_status == 3 && bookingData?.start_status == 0">On-Going</span>
+                  <span *ngIf="bookingData?.booking_status == 3 && bookingData?.start_status == 1">Service has
+                    Started</span>
+                  <span *ngIf="bookingData?.booking_status == 4">Cancel</span>
+                </p>
+                <p *ngIf="bookingData?.booking_status == 0">{{ bookingData?.cat_subcat_name }}</p>
+                <p class="prof_title" *ngIf="bookingData?.booking_status == 2">Total Service Time:
+                  <span>{{totalServiceTime}}</span>
+                </p>
+                <p class="bdServ"
+                  *ngIf="(bookingData?.booking_status == 1 || bookingData?.booking_status == 3) && bookingData?.start_status == 0">
+                  Service
+                  will be started on
+                  {{ bookingData?.booking_date | date }} at {{ bookingData?.booking_time }}</p>
+
+
+                <!-- <p class="bdServ">Service completed on Saturday,
+                  20 June, 2021 at 3:30 PM</p> -->
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="tabinfo_block bdinfoBlog" style="height: auto;">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/locate.png" alt="">
+                </div>
+                <div class="tabinfo_cont job_info">
+                  <p><span>Name : </span><strong>{{ bookingData?.customer_name }}</strong></p>
+                  <p><span>Address : </span><strong>{{ bookingData?.customer_address }}</strong></p>
+
+                  <p *ngIf="bookingData?.booking_status != 0"><span>Phone : </span><strong>+91 98319 14023</strong></p>
+
+                  <div class="call_optB"
+                    *ngIf="bookingData?.booking_status == 1 && bookingData?.one_hour_status == 1 && trackingStatus != 2">
+                    <div *ngIf="trackingStatus == 0">
+                      <span>On the way </span>
+                      <label class="switch"><input type="checkbox" [(ngModel)]="onTheWayChecked"
+                          (change)="onTheWay($event)">
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div *ngIf="trackingStatus == 1">
+                      <span>You are now on the way </span>
+                    </div>
+                    <a *ngIf="trackingStatus < 2" class="ubtn" href="tel:98319 14023">Call</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="prof_add_info spjd">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/servicedetl.png" alt="">
+                </div>
+                <p class="prof_title">Service Details</p>
+                <p *ngIf="bookingData?.hour != '0'">Booked for {{ bookingData?.hour }} service
+                  {{bookingData?.cat_subcat_name}}</p>
+                <p *ngIf="bookingData?.hour == '0'">Booked for service {{bookingData?.cat_subcat_name}}</p>
+              </div>
+              <div class="prof_add_info bdInfo late-reason" *ngIf="bookingData?.late_status == 1">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/late.png" alt="">
+                </div>
+                <p class="prof_title">Late Reason</p>
+                <p>{{bookingData?.late_reason}}</p>
+              </div>
+            </div>
+            <!-- booking description -->
+            <div class="col-md-6" *ngIf="bookingData?.note || bookingData?.note_image.length > 0">
+              <div class="prof_add_info spjd" *ngIf="bookingData?.note">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/description.png" alt="" style="width: 75%;">
+                </div>
+                <p class="prof_title">Note</p>
+                <p>{{bookingData?.note}}</p>
+              </div>
+              <button class="def_btn sr-img-btn" *ngIf="bookingData?.note_image.length > 0" data-toggle="modal"
+                data-target="#noteImage">Service Image(s)</button>
+            </div>
+
+            <!-- Add-ons -->
+            <div class="col-md-6">
+              <div class="radioSection" *ngIf="bookingData?.add_ons.length > 0">
+                <h5>Add-Ons</h5>
+                <div class="radioInn" *ngFor="let item of bookingData?.add_ons; let i = index">
+                  <div class="custom-control custom-checkbox rateListCheck">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1{{i}}" checked disabled>
+                    <label class="custom-control-label" for="customCheck1{{i}}">{{ item }}</label>
+                    <p *ngIf="bookingData?.aq_ans">{{bookingData?.aq_ans[i]}}</p>
+                  </div>
+                  <!--<span class="radioRgt">500 AED/hr</span>-->
+                </div>
+              </div>
+              <div *ngIf="trackingStatus == 1">
+                <agm-map [latitude]="spLat" [longitude]="spLng">
+                  <agm-direction [origin]="origin" [destination]="destination" [renderOptions]="renderOptions"
+                    [markerOptions]="markerOptions" [optimizeWaypoints]="true">
+                  </agm-direction>
+                </agm-map>
+              </div>
+              <div style="margin-top: 10px;margin-bottom: 10px">
+                <button class="def_btn" *ngIf="trackingStatus == 1" (click)="showMap()">Start
+                  tracking</button>&nbsp;&nbsp;&nbsp;
+                <button class="def_btn" *ngIf="trackingStatus == 1" (click)="stopTrackingConfirm()">Stop
+                  tracking</button>
+              </div>
+              <div class="row">
+                <!-- Cancel Reason and image -->
+                <div class="col-md-12 mt-5" *ngIf="bookingData?.booking_status == 4">
+                 <div class="prof_add_info" style="margin-bottom: 30px;">
+                   <div class="loc_img locNewimg">
+                     <img src="./assets/images/cancel-icon.png" alt="" style="height: 40px;">
+                   </div>
+                   <p class="prof_title">Cancel Reason</p>
+                   <p>{{ cancelBookingReasonData?.cancel_reason }}</p>
+                 </div>
+                 <div class="cancel_image" style="text-align: center;">
+                   <button type="button" class="newaddons" data-toggle="modal" data-target="#cancelImage">Cancel Image(s)</button>
+                 </div>
+               </div>
+
+               <div class="col-md-12">
+                 <!-- <div class="bookingclock spjdImg"><img src="./assets/images/bookingclock.png" alt=""></div> -->
+                 <div *ngIf="trackingStatus == 2 && startStatus == 0 && bookingData?.booking_status != 4">
+                   <h5 class="spjdHdn">Status</h5>
+                   <div class="newAddressSelect">
+                     <select class="form-control" (change)="changeStatus($event)">
+                       <option value="">Choose status</option>
+                       <option value="work-in-prog">Work in progress</option>
+                       <option value="cancel">Cancel</option>
+                     </select>
+                   </div>
+                 </div>
+                 <div *ngIf="trackingStatus == 2 && startStatus == 1">
+                   <h5 class="spjdHdn">Status</h5>
+                   <div class="newAddressSelect">
+                     <select class="form-control" disabled>
+                       <option value="work-in-prog">Work in progress</option>
+                     </select>
+                   </div>
+                 </div>
+
+                 <!-- Booking Cancel section-->
+                 <div *ngIf="cancel">
+                   <form [formGroup]="cancelForm" (ngSubmit)="calcelReasonSubmit()">
+                     <h5 class="spjdHdn">Reson For Cancel</h5>
+                     <div class="newAddressSelect">
+                       <select class="form-control" formControlName="cancel_reason">
+                         <option value="">Choose reason</option>
+                         <option value="Customer is not at home">Customer is not at home</option>
+                         <option value="Address is not valid or found">Address is not valid or found</option>
+                         <option value="Busy work schedule">Busy work schedule</option>
+                         <option value="Others">Others</option>
+                       </select>
+                       <div class="error"
+                         *ngIf="cancelForm.controls['cancel_reason'].hasError('required') && cancelForm.controls['cancel_reason'].touched">
+                         Please choose reason.
+                       </div>
+                     </div>
+                     <h5 class="spjdHdn">Add Photos</h5>
+                     <div style="padding: 20px 0px;">
+                       <input type="file" class="form-control" accept="image/*" formControlName="cancel_image" id=""
+                         (change)="imgFileSelected($event);" multiple />
+                       <img *ngFor="let url of urls" [src]="url" alt="Reason image" height="200" width="200"
+                         style="padding: 5px;" />
+                       <div class="error"
+                         *ngIf="cancelForm.controls['cancel_image'].hasError('required') && cancelForm.controls['cancel_image'].touched">
+                         Please choose image.
+                       </div>
+                     </div>
+
+                     <button type="submit" class="def_btn" [disabled]="cancelForm.invalid">Submit</button>
+                   </form>
+                 </div>
+
+                 <!-- Booking working in progress-->
+                 <div *ngIf="workInProgress || startStatus == 1">
+                   <div style="display: flex;justify-content: center;margin-top: 20px;">
+                     <button type="button" class="newaddons" id="time" *ngIf="bookingData?.timer_display_status">{{
+                       displayTimer}}</button>
+                   </div>
+                   <div style="display: flex;justify-content: space-between;margin-top: 5px;">
+                     <button type="button" class="def_btn" *ngIf="startStatus == 0" (click)="startTimer()">Start</button>
+                     <button type="button" class="def_btn" *ngIf="startStatus == 1"
+                       (click)="completeJob()">Complete</button>
+                     <button type="button" class="ubtn" *ngIf="pauseStatus == 0" (click)="pauseTimer()">Pause</button>
+                     <button type="button" class="ubtn" *ngIf="pauseStatus == 1" (click)="resumeTimer()">Resume</button>
+                   </div>
+
+                   <div *ngIf="spRescheduleStatus == 0 || spRescheduleAcceptedStatus == 1">
+                     <!-- Hourely service  -->
+                     <div
+                       *ngIf="pauseStatus == 1 && (pauseType == 0 || confirmStatus == 1) && bookingData?.price_status == 1"
+                       style="margin-top: 20px;">
+                       <div class="newAddressSelect">
+                         <select class="form-control" (change)="changePauseReason($event)">
+                           <option value="">Choose reason</option>
+                           <option value="Additional time">Additional time</option>
+                           <option value="Additional parts required">Additional parts required</option>
+                         </select>
+                       </div>
+                     </div>
+                     <!-- Fixed cost service -->
+                     <div
+                       *ngIf="pauseStatus == 1 && (pauseType == 0 || confirmStatus == 1) && bookingData?.price_status == 2"
+                       style="margin-top: 20px;">
+                       <div class="newAddressSelect">
+                         <select class="form-control" disabled>
+                           <option value="Additional parts required">Additional parts required</option>
+                         </select>
+                       </div>
+                     </div>
+                     <!-- Pause for additional time-->
+                     <div *ngIf="additionalTime">
+                       <form [formGroup]="additionalTimeForm" (ngSubmit)="pauseReasonSubmit(1)">
+                         <h5 class="spjdHdn">How many hours you want to add?<span style="color: red;">*</span></h5>
+                         <input type="radio" name="additional_time" formControlName="additional_time" value="30"
+                           (change)="hourlyPrice(30)">&nbsp;
+                         <label> 30 mins</label>&nbsp;&nbsp;&nbsp;
+                         <input type="radio" name="additional_time" formControlName="additional_time" value="60"
+                           (change)="hourlyPrice(60)">&nbsp;
+                         <label> 1 hour</label>
+                         <div class="error"
+                           *ngIf="additionalTimeForm.controls['additional_time'].hasError('required') && additionalTimeForm.controls['additional_time'].touched">
+                           Please choose additional time.
+                         </div>
+                         <h5 class="spjdHdn">Reason For Pause<span style="color: red;">*</span></h5>
+                         <textarea formControlName="reason" cols="40" rows="3" placeholder="Write your reason"
+                           class="form-control"></textarea>
+                         <div class="error"
+                           *ngIf="additionalTimeForm.controls['reason'].hasError('required') && (additionalTimeForm.controls['reason'].touched)">
+                           Please enter the pause reason.
+                         </div>
+                         <h5 class="spjdHdn">Additional Cost<span *ngIf="hourly_price_tax > 0">(Inc {{hourly_price_tax}}% Tax)</span><span style="color: red;">*</span></h5>
+                         <input type="text" class="form-control" formControlName="cost" readonly>
+                         <div class="error"
+                           *ngIf="additionalTimeForm.controls['cost'].hasError('required') && additionalTimeForm.controls['cost'].touched">
+                           Cost is required.
+                         </div>
+                         <div style="margin-top: 20px;">
+                           <button type="submit" class="def_btn" [disabled]="additionalTimeForm.invalid">Submit</button>
+                         </div>
+                       </form>
+                     </div>
+                     <!-- Already Pause for additional time-->
+                     <div *ngIf="pauseType == 1 && confirmStatus == 0" style="margin-top: 20px;">
+                       <div class="newAddressSelect">
+                         <select class="form-control" disabled>
+                           <option value="Additional time">Additional time</option>
+                         </select>
+                       </div>
+                       <h5 class="spjdHdn">How many hours you want to add?</h5>
+                       <div *ngIf="bookingData?.additional_time == 30">
+                         <input type="radio" checked>&nbsp;
+                         <label> 30 mins</label>&nbsp;&nbsp;&nbsp;
+                       </div>
+                       <div *ngIf="bookingData?.additional_time == 60">
+                         <input type="radio" checked>&nbsp;
+                         <label> 1 hour</label>
+                       </div>
+                       <h5 class="spjdHdn">Reason For Pause</h5>
+                       <textarea cols="40" rows="3" placeholder="Write your reason"
+                         readonly>{{ bookingData?.reason }}</textarea>
+                       <h5 class="spjdHdn">Additional Cost<span *ngIf="hourly_price_tax > 0">(Inc {{hourly_price_tax}}% Tax)</span></h5>
+                       <input type="text" class="form-control" value="{{ bookingData?.cost }} {{bookingData?.currency}}"
+                         readonly>
+                     </div>
+
+
+                     <!-- Pause for additional parts form-->
+                     <div *ngIf="additionalParts && spRescheduleStatus == 0">
+                       <div *ngIf="spRescheduleStatus == 0 && spRescheduleAcceptedStatus == 0">
+                         <input type="radio" name="additionalParts" value="1" (change)="rescheduleButton(1)" checked>&nbsp;
+                         <label class="spjdHdn"> Parts available</label><br />
+                         <input type="radio" name="additionalParts" value="2" (change)="rescheduleButton(2)">&nbsp;
+                         <label class="spjdHdn"> Parts is not available</label>
+                       </div>
+                       <div *ngIf="!rescheduleService">
+                         <form [formGroup]="additionalPartsForm" (ngSubmit)="pauseReasonSubmit(2)">
+                           <h5 class="spjdHdn">Description of required parts<span style="color: red;">*</span></h5>
+                           <textarea formControlName="additional_parts" cols="40" rows="3"
+                             placeholder="Write about your parts description" class="form-control"></textarea>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['additional_parts'].hasError('required') && additionalPartsForm.controls['additional_parts'].touched">
+                             Please enter description for parts.
+                           </div>
+
+                           <h5 class="spjdHdn">Reason For Pause<span style="color: red;">*</span></h5>
+                           <textarea formControlName="reason" cols="40" rows="3" placeholder="Write your reason"
+                             class="form-control"></textarea>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['reason'].hasError('required') && additionalPartsForm.controls['reason'].touched">
+                             Please enter the pause reason.
+                           </div>
+
+                           <h5 class="spjdHdn">Additional Cost<span style="color: red;">*</span></h5>
+                           <input type="number" class="form-control" min="1" formControlName="cost" placeholder="100">
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['cost'].hasError('required') && additionalPartsForm.controls['cost'].touched">
+                             Please enter cost.
+                           </div>
+
+                           <h5 class="spjdHdn">Add Images<span style="color: red;">*</span></h5>
+                           <input type="file" class="form-control" accept="image/*" formControlName="pause_image"
+                             (change)="imgFileSelected($event);" multiple>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['pause_image'].hasError('required') && additionalPartsForm.controls['pause_image'].touched">
+                             Please choose photo for pause reason.
+                           </div>
+
+                           <img *ngFor="let url of urls" [src]="url" alt="Reason image" height="200" width="200"
+                             style="padding: 5px;" />
+
+                           <div style="margin-top: 20px;">
+                             <button *ngIf="!additionalPartsSubmitBtn" type="button" class="btn btn-primary"
+                               style="margin-top: 10px;" (click)="pauseReschedule($event)">Submit</button>
+                             <button *ngIf="additionalPartsSubmitBtn" type="submit" class="def_btn"
+                               [disabled]="additionalPartsForm.invalid">Submit</button>
+                           </div>
+                         </form>
+                       </div>
+                       <div *ngIf="rescheduleService" style="margin-top: 20px;">
+                         <button type="button" class="ubtn" (click)="calenderOpen(bookingData?.booking_date)">Reschedule
+                           Service</button>
+                         <div class="dateCalender">
+                           <div class="app__main">
+                             <div class="calendar">
+                               <div id="spcalendar"></div>
+                             </div>
+                           </div>
+                           <div *ngIf="timeSlotArray?.length > 0">
+                             <button type="button" *ngFor="let slot of timeSlotArray" class="btn btn-primary slot-btn"
+                               style="margin: 5px;"
+                               (click)="chooseSlot(slot.datetime, slot.date, slot.time)">{{slot.result}}</button>
+                           </div>
+                           <div *ngIf="chooseSlotArray.length > 0">
+                             <h5 class="spjdHdn">Request for following time slot</h5>
+                             <div *ngFor="let slot of chooseSlotArray; let i = index">
+                               <input type="checkbox" id="customCheck{{i}}" checked disabled> {{slot}}
+                             </div>
+                             <button type="button" class="btn btn-primary" style="margin-top: 10px;"
+                               (click)="pauseReschedule($event)">Submit</button>
+                           </div>
+
+                         </div>
+                       </div>
+
+                     </div>
+
+                     <!-- additional parts form for fixed cost service -->
+                     <div *ngIf="bookingData?.price_status == 2 && spRescheduleStatus == 0">
+                       <div *ngIf="spRescheduleStatus == 0 && spRescheduleAcceptedStatus == 0">
+                         <input type="radio" name="additionalParts" value="1" (change)="rescheduleButton(1)" checked>&nbsp;
+                         <label class="spjdHdn"> Parts available</label><br />
+                         <input type="radio" name="additionalParts" value="2" (change)="rescheduleButton(2)">&nbsp;
+                         <label class="spjdHdn"> Parts is not available</label>
+                       </div>
+                       <div *ngIf="!rescheduleService">
+                         <form [formGroup]="additionalPartsForm" (ngSubmit)="pauseReasonSubmit(2)">
+                           <h5 class="spjdHdn">Description of required parts<span style="color: red;">*</span></h5>
+                           <textarea formControlName="additional_parts" cols="40" rows="3"
+                             placeholder="Write about your parts description" class="form-control"></textarea>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['additional_parts'].hasError('required') && additionalPartsForm.controls['additional_parts'].touched">
+                             Please enter description for parts.
+                           </div>
+
+                           <h5 class="spjdHdn">Reson For Pause<span style="color: red;">*</span></h5>
+                           <textarea formControlName="reason" cols="40" rows="3" placeholder="Write your reason"
+                             class="form-control"></textarea>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['reason'].hasError('required') && additionalPartsForm.controls['reason'].touched">
+                             Please enter the pause reason.
+                           </div>
+
+                           <h5 class="spjdHdn">Additional Cost<span style="color: red;">*</span></h5>
+                           <input type="number" class="form-control" min="1" formControlName="cost" placeholder="100">
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['cost'].hasError('required') && additionalPartsForm.controls['cost'].touched">
+                             Please enter cost.
+                           </div>
+
+                           <h5 class="spjdHdn">Add Images<span style="color: red;">*</span></h5>
+                           <input type="file" class="form-control" accept="image/*" formControlName="pause_image"
+                             (change)="imgFileSelected($event);" multiple>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['pause_image'].hasError('required') && additionalPartsForm.controls['pause_image'].touched">
+                             Please choose photo for pause reason.
+                           </div>
+
+                           <img *ngFor="let url of urls" [src]="url" alt="Reason image" height="200" width="200"
+                             style="padding: 5px;" />
+
+                           <div style="margin-top: 20px;">
+                             <button *ngIf="!additionalPartsSubmitBtn" type="button" class="btn btn-primary"
+                               style="margin-top: 10px;" (click)="pauseReschedule($event)">Submit</button>
+                             <button *ngIf="additionalPartsSubmitBtn" type="submit" class="def_btn"
+                               [disabled]="additionalPartsForm.invalid">Submit</button>
+                           </div>
+                         </form>
+                       </div>
+                       <div *ngIf="rescheduleService" style="margin-top: 20px;">
+                         <button type="button" class="ubtn" (click)="calenderOpen(bookingData?.booking_date)">Reschedule
+                           Service</button>
+                         <div class="dateCalender">
+                           <div class="app__main">
+                             <div class="calendar">
+                               <div id="spcalendar"></div>
+                             </div>
+                           </div>
+                           <div *ngIf="timeSlotArray?.length > 0">
+                             <button type="button" *ngFor="let slot of timeSlotArray" class="btn btn-primary slot-btn"
+                               style="margin: 5px;"
+                               (click)="chooseSlot(slot.datetime, slot.date, slot.time)">{{slot.result}}</button>
+                           </div>
+                           <div *ngIf="chooseSlotArray.length > 0">
+                             <h5 class="spjdHdn">Request for following time slot</h5>
+                             <div *ngFor="let slot of chooseSlotArray; let i = index">
+                               <input type="checkbox" id="customCheck{{i}}" checked disabled>{{slot}}
+                             </div>
+                             <button type="button" class="btn btn-primary" style="margin-top: 10px;"
+                               (click)="pauseReschedule($event)">Submit</button>
+                           </div>
+
+                         </div>
+                       </div>
+
+                     </div>
+
+                     <!-- After reschedule date & time submission for additional parts-->
+                     <div
+                       *ngIf="spRescheduleStatus == 1 && spRescheduleAcceptedStatus == 1 && confirmStatus == 0 && additional_parts == null">
+                       <div class="newAddressSelect" style="margin-top: 20px;">
+                         <select class="form-control" disabled>
+                           <option>Additional parts required</option>
+                         </select>
+                       </div>
+                       <div class="newAddressSelect" *ngIf="adminApprovalStatus==1" style="margin-top: 10px;">
+                         <select class="form-control" disabled style="color: currentColor;">
+                           <option> Admin approved the request.</option>
+                         </select>
+                       </div>
+
+                       <form [formGroup]="additionalPartsForm" (ngSubmit)="pauseReasonSubmit(2)">
+                         <div class="prof_add_info bdInfo" style="margin-top: 50px;">
+                           <div class="loc_img locNewimg">
+                             <img src="./assets/images/booked.png" alt="">
+                           </div>
+                           <p class="prof_title">Reschedule date & time</p>
+                           <p class="prof_title"><span>{{ bookingData?.formatted_date }} at {{
+                               bookingData?.formatted_time }}</span></p>
+                         </div>
+                         <h5 class="spjdHdn">Description of required parts</h5>
+                         <textarea formControlName="additional_parts" cols="40" rows="3"
+                           placeholder="Write about your parts description" class="form-control"></textarea>
+                         <div class="error"
+                           *ngIf="additionalPartsForm.controls['additional_parts'].hasError('required') && additionalPartsForm.controls['additional_parts'].touched">
+                           Please enter description for parts.
+                         </div>
+
+                         <h5 class="spjdHdn">Reson For Pause</h5>
+                         <textarea formControlName="reason" cols="40" rows="3" placeholder="Write your reason"
+                           class="form-control"></textarea>
+                         <div class="error"
+                           *ngIf="additionalPartsForm.controls['reason'].hasError('required') && additionalPartsForm.controls['reason'].touched">
+                           Please enter the pause reason.
+                         </div>
+
+                         <h5 class="spjdHdn">Additional Cost</h5>
+                         <input type="number" class="form-control" min="1" formControlName="cost" placeholder="100">
+                         <div class="error"
+                           *ngIf="additionalPartsForm.controls['cost'].hasError('required') && additionalPartsForm.controls['cost'].touched">
+                           Please enter cost.
+                         </div>
+
+                         <h5 class="spjdHdn">Add Images</h5>
+                         <input type="file" class="form-control" accept="image/*" formControlName="pause_image"
+                           (change)="imgFileSelected($event);" multiple>
+                         <div class="error"
+                           *ngIf="additionalPartsForm.controls['pause_image'].hasError('required') && additionalPartsForm.controls['pause_image'].touched">
+                           Please choose photo for pause reason.
+                         </div>
+                         <img *ngFor="let url of urls" [src]="url" alt="Reason image" height="200" width="200"
+                           style="padding: 5px;" />
+
+                         <div style="margin-top: 20px;">
+                           <button *ngIf="additionalPartsSubmitBtn" type="submit" class="def_btn"
+                             [disabled]="additionalPartsForm.invalid">Submit</button>
+                         </div>
+                       </form>
+                     </div>
+
+                     <!-- After reschedul for additional parts-->
+                     <div *ngIf="pauseType == 2 && additionalParts && spRescheduleStatus == 1  && formattedDate">
+                       <div *ngIf="spRescheduleStatus == 1 && spRescheduleAcceptedStatus == 1">
+                         <div class="prof_add_info bdInfo" style="margin-top: 50px;">
+                           <div class="loc_img locNewimg">
+                             <img src="./assets/images/booked.png" alt="">
+                           </div>
+                           <p class="prof_title">Reschedule date & time</p>
+                           <p class="prof_title"><span>{{ bookingData?.formatted_date }} at {{
+                               bookingData?.formatted_time }}</span></p>
+                         </div>
+                       </div>
+
+                       <div *ngIf="!rescheduleService">
+                         <form [formGroup]="additionalPartsForm" (ngSubmit)="pauseReasonSubmit(2)">
+                           <h5 class="spjdHdn">Description of required parts</h5>
+                           <textarea formControlName="additional_parts" cols="40" rows="3"
+                             placeholder="Write about your parts description" class="form-control"></textarea>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['additional_parts'].hasError('required') && additionalPartsForm.controls['additional_parts'].touched">
+                             Please enter description for parts.
+                           </div>
+
+                           <h5 class="spjdHdn">Reson For Pause</h5>
+                           <textarea formControlName="reason" cols="40" rows="3" placeholder="Write your reason"
+                             class="form-control"></textarea>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['reason'].hasError('required') && additionalPartsForm.controls['reason'].touched">
+                             Please enter the pause reason.
+                           </div>
+
+                           <h5 class="spjdHdn">Additional Cost</h5>
+                           <input type="number" class="form-control" min="1" formControlName="cost" placeholder="100">
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['cost'].hasError('required') && additionalPartsForm.controls['cost'].touched">
+                             Please enter cost.
+                           </div>
+
+                           <h5 class="spjdHdn">Add Images</h5>
+                           <input type="file" class="form-control" accept="image/*" formControlName="pause_image"
+                             (change)="imgFileSelected($event);" multiple>
+                           <div class="error"
+                             *ngIf="additionalPartsForm.controls['pause_image'].hasError('required') && additionalPartsForm.controls['pause_image'].touched">
+                             Please choose photo for pause reason.
+                           </div>
+                           <img *ngFor="let url of urls" [src]="url" alt="Reason image" height="200" width="200"
+                             style="padding: 5px;" />
+
+                           <div style="margin-top: 20px;">
+                             <button *ngIf="!additionalPartsSubmitBtn" type="button" class="btn btn-primary"
+                               style="margin-top: 10px;" (click)="pauseReschedule($event)">Submit</button>
+                             <button *ngIf="additionalPartsSubmitBtn" type="submit" class="def_btn"
+                               [disabled]="additionalPartsForm.invalid">Submit</button>
+                           </div>
+                         </form>
+                       </div>
+
+
+                       <div *ngIf="rescheduleService" style="margin-top: 20px;">
+                         <button type="button" class="ubtn" (click)="calenderOpen(bookingData?.booking_date)">Reschedule
+                           Service</button>
+                         <div class="dateCalender">
+                           <div class="app__main">
+                             <div class="calendar">
+                               <div id="spcalendar"></div>
+                             </div>
+                           </div>
+                           <div *ngIf="timeSlotArray?.length > 0">
+                             <button type="button" *ngFor="let slot of timeSlotArray" class="btn btn-primary"
+                               style="margin: 5px;"
+                               (click)="chooseSlot(slot.datetime, slot.date, slot.time)">{{slot.result}}</button>
+                           </div>
+                           <div *ngIf="chooseSlotArray.length > 0">
+                             <h5 class="spjdHdn">Request for following time slot</h5>
+                             <div *ngFor="let slot of chooseSlotArray; let i = index">
+                               <input type="checkbox" id="customCheck{{i}}" checked disabled> {{slot}}
+                             </div>
+                             <!-- <button type="button" class="btn btn-primary" style="margin-top: 10px;" (click)="pauseReschedule()">Submit</button> -->
+                           </div>
+
+                         </div>
+                       </div>
+                     </div>
+
+                     <!-- Parts available disabled form for additional parts-->
+                     <div
+                       *ngIf="pauseType == 2 && confirmStatus == 0 && (spRescheduleStatus == 0 || spRescheduleStatus == 1) && additional_parts != null"
+                       style="margin-top: 20px;">
+                       <div class="newAddressSelect" style="margin-top: 10px;">
+                         <select class="form-control" disabled>
+                           <option>Additional parts required</option>
+                         </select>
+                       </div>
+                       <div class="newAddressSelect" *ngIf="adminApprovalStatus==1" style="margin-top: 10px;">
+                         <select class="form-control" disabled style="color: currentColor;">
+                           <option> Admin approved the request.</option>
+                         </select>
+                       </div>
+                       <div *ngIf="bookingData?.sp_reschedule_status == 0">
+                         <input type="radio" name="additionalParts" checked>&nbsp;
+                         <label class="spjdHdn"> Parts available</label>
+                       </div>
+                       <div *ngIf="bookingData?.sp_reschedule_status == 1">
+                         <input type="radio" name="additionalParts" checked>&nbsp;
+                         <label class="spjdHdn"> Parts is not available</label>
+                       </div>
+
+                       <div *ngIf="spRescheduleStatus == 1 && spRescheduleAcceptedStatus == 1">
+                         <div class="prof_add_info bdInfo" style="margin-top: 50px;">
+                           <div class="loc_img locNewimg">
+                             <img src="./assets/images/booked.png" alt="">
+                           </div>
+                           <p class="prof_title">Reschedule date & time</p>
+                           <p class="prof_title"><span>{{ bookingData?.formatted_date }} at {{ bookingData?.formatted_time
+                               }}</span></p>
+                         </div>
+
+                       </div>
+
+                       <h5 class="spjdHdn">Description of required parts</h5>
+                       <textarea cols="40" rows="3" placeholder="Write about your parts description" class="form-control"
+                         readonly>{{ bookingData?.additional_parts }}</textarea>
+                       <h5 class="spjdHdn">Reson For Pause</h5>
+                       <textarea cols="40" rows="3" placeholder="Write your reason" class="form-control"
+                         readonly> {{ bookingData?.reason }}</textarea>
+                       <h5 class="spjdHdn">Additional Cost</h5>
+                       <input type="number" class="form-control" min="1" placeholder="100" value="{{ bookingData?.cost }}"
+                         readonly>
+                       <h5 class="spjdHdn">Add Images</h5>
+                       <img *ngFor="let imge of bookingData?.pause_image" [src]="imge.pause_image" alt="Reason image"
+                         height="200" width="200" style="padding: 5px;" />
+                     </div>
+
+                   </div>
+                   <div *ngIf="spRescheduleStatus == 1 && spRescheduleAcceptedStatus == 0 && confirmStatus == 0">
+                     <div class="newAddressSelect" style="margin-top: 10px;">
+                       <select class="form-control" disabled style="color: currentColor;font-size: larger;">
+                         <option> Awaiting for service requester approval.</option>
+                       </select>
+                     </div>
+                   </div>
+
+
+                 </div>
+               </div>
+             </div>
+            </div>
+            <!-- instruction -->
+            <div class="col-md-6" *ngIf="bookingData?.instruction">
+              <div class="prof_add_info spjd">
+                <div class="loc_img locNewimg">
+                  <img src="./assets/images/instruction.png" alt="" style="width: 75%;">
+                </div>
+                <p class="prof_title">Service Instruction</p>
+                <p>{{bookingData?.instruction}}</p>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div class="price_content_block">
+                <p class="cont_adjt"><span>{{bookingData?.cat_subcat_name}} : </span><strong>{{bookingData?.price}}
+                    {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt" *ngIf="bookingData?.aq_status == 1"><span>Add-Ons : </span><strong
+                    >{{bookingData?.add_on_cost}}
+                    {{bookingData?.currency}}</strong></p>
+
+                <p class="cont_adjt" *ngIf="bookingData?.aq_status == 2"><span>Add-Ons : </span><strong
+                    >{{bookingData?.material_cost}}
+                    {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt add_border"><span>Inspection Charge : </span><strong
+                    >{{bookingData?.inspection_cost}}
+                    {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt"><span>Discount : </span><strong
+                  *ngIf="bookingData?.promo_code_apply !=''">-{{bookingData?.promo_code_apply}}
+                  {{bookingData?.currency}}</strong><strong *ngIf="bookingData?.promo_code_apply ==''">-0
+                  {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt"><span>Before Tax Total : </span><strong>{{bookingData?.before_tax_cost}}
+                      {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt add_border"><span>Tax : </span><strong>{{bookingData?.tax}}
+                    {{bookingData?.currency}}</strong></p>
+                <p class="cont_adjt"><span>Total : </span>
+                  <strong>{{bookingData?.before_tax_cost + bookingData?.tax}}
+                    {{bookingData?.currency}}</strong>
+                  </p>
+                  <p class="cont_adjt add_border"><span>Wallet Amount Used : </span>
+                    <strong *ngIf="bookingData?.wallet_pay_status == 1">{{bookingData?.used_wallet_money}}
+                    {{bookingData?.currency}}</strong>
+                    <strong *ngIf="bookingData?.wallet_pay_status == 0">0 {{bookingData?.currency}}</strong>
+                  </p>
+
+                <div class="totle_pric_txt noBrdrBtm">
+                  <p class="cont_adjt"><span>Order Total : </span>
+                      <strong>{{ bookingData?.order_total }}
+                        {{bookingData?.currency}}</strong>
+                  </p>
+                </div>
+                <div class="totle_pric_txt add_border">
+                  <p class="cont_adjt"><span>Additional Cost : </span><strong>{{bookingData?.addtional_total_cost}}
+                      {{bookingData?.currency}}</strong></p>
+                </div>
+                  <div class="totle_pric_txt noBrdrBtm">
+                    <p class="cont_adjt"><span>Total Pay : </span>
+                        <strong>{{ bookingData?.order_total + bookingData?.addtional_total_cost }}
+                          {{bookingData?.currency}}</strong>
+                    </p>
+                  </div>
+                <div class="totle_pric_txt noBrdrBtm">
+                  <p class="cont_adjt"><span style="overflow: unset;">Payment method : </span><strong
+                      *ngIf="bookingData?.paid_medium == 1">Card</strong><strong
+                      *ngIf="bookingData?.paid_medium == 2">Cash</strong></p>
+                </div>
+              </div>
+
+              <div
+                *ngIf="bookingData?.booking_status == 1 && bookingData?.late_status != 1 && bookingData?.start_status == 0 && trackingStatus == 0">
+                <span>I'll be late </span>
+                <label class="switch"><input type="checkbox" [(ngModel)]="iwillbeLetChecked"
+                    (change)="iWillBeLeat($event)">
+                  <span class="slider round"></span>
+                </label>
+                <div *ngIf="iwillbeleatformOpen">
+                  <form [formGroup]="iWillbeLeatForm" (ngSubmit)="iWillBeLateSubmit()">
+                    <textarea formControlName="reason" cols="40" rows="3" placeholder="Reason for late"
+                      class="form-control"></textarea>
+                    <div class="error"
+                      *ngIf="iWillbeLeatForm.controls['reason'].hasError('required') && (iWillbeLeatForm.controls['reason'].touched)">
+                      Please enter the reason.
+                    </div>
+                    <div style="margin-top: 20px;">
+                      <button type="submit" class="def_btn" [disabled]="iWillbeLeatForm.invalid">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-6">
+              <div class="providers_info_wrap providers_info_wrap2 bookingDetlUsr"
+                *ngIf="bookingData?.booking_status == 2 && (bookingData?.rating || bookingData?.review)">
+                <div class="providers_info">
+                  <div class="bookRating">
+                    <div class="providers_pic">
+                      <img src="{{bookingData?.customer_image}}" (error)="onImgError($event)" alt="customer">
+                    </div>
+                    <div class="providers_name">
+                      <p>{{bookingData?.customer_name}}
+                        <span class="srbIcon">
+                          <!-- <i class="far fa-heart"></i> -->
+                        </span>
+                      </p>
+                      <div class="star">
+                        <!-- <img src="./assets/images/star.png" alt=""> -->
+                        <span>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 1"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating == null"></i>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 2"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 2"></i>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 3"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 3"></i>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating >= 4"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 4"></i>
+                          <i class='fa fa-star fa-fw start-col-yell' *ngIf="bookingData?.rating == 5"></i>
+                          <i class='fa fa-star fa-fw start-col' *ngIf="bookingData?.rating < 5"></i>
+                        </span>
+                      </div>
+                      <div *ngIf="bookingData?.booking_status == 2 && bookingData?.review != null">
+                        {{bookingData?.review}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                *ngIf="(bookingData?.rating == null || bookingData?.review == null) && bookingData?.booking_status == 2"
+                style="margin: 15px;">
+                <button type="button" class="newaddons" (click)="writeReview()">Write a Review</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <button type="button" *ngIf="bookingData?.one_hour_status" (click)="bookingDirection(bookingData?._id)">Booking Direction</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade loginModal quotModal" id="successModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/success_tick.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" (click)="stopTracking()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="onTheWayModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="startTimerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" (click)="startService()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="pauseTimerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" (click)="pauseService()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="resumeTimerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" (click)="resumeService()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="completeServiceModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn" (click)="completeService()">Yes</button>&nbsp;&nbsp;&nbsp;
+            <button class="def_btn2" data-dismiss="modal">No</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="jobNotStartedModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn2" data-dismiss="modal">Ok</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="warning_modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button> -->
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <img src="./assets/images/warning.png" class="mx-auto d-block" alt="" style="height:100px">
+            <h4 style="text-align: center;">{{message}}</h4><br /><br />
+            <button class="def_btn2" data-dismiss="modal">Ok</button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade loginModal quotModal" id="ratingReviewModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="innerHdn">Rating & Review</h3>
+            <div class="">
+              <span>
+                <i class='fa fa-star fa-fw start-col-yell' id="star1" (click)="startRating($event,1)"
+                  *ngIf="bookingData?.rating >= 1" data-value="1"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star1" (click)="startRating($event,1)"
+                  *ngIf="bookingData?.rating == null" data-value="1"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star2" (click)="startRating($event,2)"
+                  *ngIf="bookingData?.rating >= 2" data-value="2"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star2" (click)="startRating($event,2)"
+                  *ngIf="bookingData?.rating < 2" data-value="2"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star3" (click)="startRating($event,3)"
+                  *ngIf="bookingData?.rating >= 3" data-value="3"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star3" (click)="startRating($event,3)"
+                  *ngIf="bookingData?.rating < 3" data-value="3"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star4" (click)="startRating($event,4)"
+                  *ngIf="bookingData?.rating >= 4" data-value="4"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star4" (click)="startRating($event,4)"
+                  *ngIf="bookingData?.rating < 4" data-value="4"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col-yell' id="star5" (click)="startRating($event,5)"
+                  *ngIf="bookingData?.rating == 5" data-value="5"></i>&nbsp;
+                <i class='fa fa-star fa-fw start-col' id="star5" (click)="startRating($event,5)"
+                  *ngIf="bookingData?.rating < 5" data-value="5"></i>
+              </span>
+            </div>
+            <div>
+              <textarea cols="40" rows="1" class="form-control" [(ngModel)]="reviewText" name="reviewText"
+                placeholder="Write here"></textarea>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary mt-3" (click)="submitReview()"
+                style="width: auto;">Submit</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="cancelImage" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>Cancel Image(s)</h5><br />
+        <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" *ngIf="cancelBookingReasonData">
+            <div class="carousel-item " [ngClass]="{active:isFirst}" *ngFor="let image of cancelBookingReasonData?.cancel_image; index as i;first as isFirst">
+                <img class="d-block w-100" src="{{image.cancel_image}}" alt="Document" width="460" height="345">
+            </div>
+          </div>
+          <div class="carousel-inner" *ngIf="!cancelBookingReasonData">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="./assets/images/no-image.jpg" alt="Document" width="460" height="345">
+            </div>
+          </div>
+
+          <a class="carousel-control-prev" href="#carouselExampleControls1" *ngIf="cancelBookingReasonData?.cancel_image.length > 1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls1" *ngIf="cancelBookingReasonData?.cancel_image.length > 1" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade loginModal quotModal" id="noteImage" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>Service Image(s)</h5><br />
+        <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" *ngIf="bookingData?.note_image.length > 0">
+            <div class="carousel-item " [ngClass]="{active:isFirst}"
+              *ngFor="let image of bookingData?.note_image; index as i;first as isFirst">
+              <img class="d-block w-100" src="{{image.booking_img}}" alt="Document" width="460" height="345">
+            </div>
+          </div>
+          <div class="carousel-inner" *ngIf="bookingData?.note_image.length == 0">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="./assets/images/no-imge.jpg" alt="Document" width="460" height="345">
+            </div>
+          </div>
+
+          <a class="carousel-control-prev" href="#carouselExampleControls1" *ngIf="bookingData?.note_image.length > 1"
+            role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls1" *ngIf="bookingData?.note_image.length > 1"
+            role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

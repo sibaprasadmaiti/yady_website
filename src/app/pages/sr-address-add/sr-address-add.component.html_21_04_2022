@@ -1,0 +1,75 @@
+<section class="editProfileBg">
+        <div class="container customContainer">
+            <div class="row">
+                <div class="col-md-4">
+                    <ul class="leftPanel">
+                        <li><a routerLink="/profile"><span><img src="./assets/images/editprofile.png" alt=""></span>Edit Profile</a></li>
+                        <li><a routerLink="/change_password"><span><img src="./assets/images/changepassword.png" alt=""></span>Change Password</a></li>
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/changelanguage.png" alt=""></span>Change Language</a></li>-->
+                        <li><a routerLink="/payment-option"><span><img src="./assets/images/paymentoption.png" alt=""></span>Payment Options</a></li>
+						<li><a routerLink="/my-address-list" class="active"><span><img src="./assets/images/locate.png" alt=""></span>Address</a></li>
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/helpcenter.png" alt=""></span>Help Center</a></li>-->
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/notification.png" alt=""></span>Notifications</a></li>-->
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/privacypolicy.png" alt=""></span>Privacy Policy</a></li>-->
+                        <!--<li><a href="javascript:void(0)"><span><img src="./assets/images/faq.png" alt=""></span>FAQ</a></li>-->
+                    </ul>
+                </div>
+                <div class="col-md-8 addNewAddress">
+                    <h3 class="innerHdn">Add A New Address</h3>
+					<span style="color: #00b2b2">{{infoMessage}}</span>
+					<button class="useCurrentlocation" (click)="getCurrentLocation()"><i class="fas fa-location"></i> Use The Current Location</button>
+                    <div class="newAddressOr">Or</div>
+                    <form [formGroup]="addressForm" (ngSubmit)="addAddress()">
+                        <div class="row">
+							<div class="form-group col-md-6">
+                                <input type="text" class="form-control" id="street_address" formControlName="street_address" placeholder="Area, Street, Locality">
+								<div class="error text-danger" *ngIf="addressForm.controls['street_address'].hasError('required') && addressForm.controls['street_address'].touched">
+									Please enter street address.
+								</div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" formControlName="house_no" placeholder="Flat, House No., Appartment">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" formControlName="land_mark" placeholder="Landmark">
+								<div class="error text-danger" *ngIf="addressForm.controls['land_mark'].hasError('required') && addressForm.controls['land_mark'].touched">
+									Please enter landmark.
+								</div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" formControlName="city" placeholder="Town / City">
+								<div class="error text-danger" *ngIf="addressForm.controls['city'].hasError('required') && addressForm.controls['city'].touched">
+									Please enter city.
+								</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" placeholder="State" formControlName="state">
+								<div class="error text-danger" *ngIf="addressForm.controls['state'].hasError('required') && addressForm.controls['state'].touched">
+									Please enter state.
+								</div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" placeholder="Zip Code" formControlName="zip_code" id="zip_code" onchange="getCoordinates()">
+								<div class="error text-danger" *ngIf="addressForm.controls['zip_code'].hasError('required') && addressForm.controls['zip_code'].touched">
+									Please enter zip code.
+								</div>
+                            </div>
+							<input type="hidden" class="form-control" id="lat" placeholder="lat" formControlName="lattitude">
+							<input type="hidden" class="form-control" id="long" placeholder="long" formControlName="longitude">
+                        </div>
+                        <div class="row newAddRadio">
+                            <div class="col-md-6">
+                                <span class="radioLft"><input type="radio" id="test1" name="address_type" formControlName="address_type" value="1"><label for="test1">Home</label></span>
+                                <span class="radioLft"><input type="radio" id="test2" name="address_type" formControlName="address_type" value="2"><label for="test2">Oǘce/Commercial</label></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="" [disabled]="addressForm.invalid">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
